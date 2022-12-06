@@ -15,7 +15,7 @@ public class AOtherwiseBNode extends DefaultNode {
 
     @Override
     public TreeStates execute(AIContext context) {
-        return isNode.isTrue(context.getPlayer(), context) ? planANode.execute(context) : planBNode.execute(context);
+        return isNode.isTrue(context) ? planANode.execute(context) : planBNode.execute(context);
     }
 
     @Override

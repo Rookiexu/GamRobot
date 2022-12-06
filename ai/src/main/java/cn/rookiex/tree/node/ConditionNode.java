@@ -2,7 +2,6 @@ package cn.rookiex.tree.node;
 
 
 import cn.rookiex.tree.AIContext;
-import cn.rookiex.tree.TreePlayer;
 import cn.rookiex.tree.TreeStates;
 
 /**
@@ -12,7 +11,7 @@ public abstract class ConditionNode extends DefaultNode {
 
     @Override
     public TreeStates execute(AIContext context) {
-        if(isTrue(context.getPlayer(), context)){
+        if(isTrue(context)){
             for (Node node : sonNode) {
                 TreeStates ecResult = node.execute(context);
                 //如果子节点返回错误或者运行中,向父节点返回错误或运行中
@@ -26,5 +25,5 @@ public abstract class ConditionNode extends DefaultNode {
         }
     }
 
-    public abstract boolean isTrue(TreePlayer player, AIContext context);
+    public abstract boolean isTrue(AIContext context);
 }
