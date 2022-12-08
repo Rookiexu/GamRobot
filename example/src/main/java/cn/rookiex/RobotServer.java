@@ -3,6 +3,9 @@ package cn.rookiex;
 import cn.rookiex.manager.RobotConfig;
 import cn.rookiex.manager.RobotManager;
 import cn.rookiex.module.ModuleManager;
+import cn.rookiex.robot.*;
+
+import java.util.Map;
 
 /**
  * @author rookieX 2022/12/6
@@ -25,21 +28,24 @@ public class RobotServer {
     private RobotConfig robotConfig;
 
     public void init(){
-        RobotManager robotManager = new RobotManager();
-        robotManager.init();
-        this.robotManager = robotManager;
+        this.robotManager = new RobotManager();
+        robotManager.initProcessor();
+        robotManager.initRobot(new MyRobotFactory());
 
-        ModuleManager moduleManager = new ModuleManager();
+        this.moduleManager = new ModuleManager();
         moduleManager.init();
-        this.moduleManager = moduleManager;
     }
 
-    public void run(){
-        this.robotManager.run();
+    public void start(){
+        Map<Integer, RobotProcessor> processorMap = this.robotManager.getProcessorMap();
+        for (RobotProcessor value : processorMap.values()) {
+            value.start();
+        }
     }
 
     public static void main(String[] args) {
         RobotServer instance = RobotServer.getInstance();
         instance.init();
+        instance.start();
     }
 }
