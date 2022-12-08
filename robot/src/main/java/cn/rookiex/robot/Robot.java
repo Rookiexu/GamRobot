@@ -1,10 +1,11 @@
 package cn.rookiex.robot;
 
 import cn.rookiex.client.Client;
-import cn.rookiex.event.ReqEvent;
 import cn.rookiex.event.RespEvent;
+import cn.rookiex.module.Module;
 import io.netty.channel.ChannelFuture;
 import lombok.Data;
+import lombok.extern.log4j.Log4j2;
 
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -13,22 +14,13 @@ import java.util.concurrent.LinkedBlockingQueue;
  * @author rookieX 2022/12/5
  */
 @Data
-public class Robot {
+@Log4j2
+public class Robot{
 
     /**
      * 服务器连接
      */
     private ChannelFuture channel;
-
-    /**
-     * 加载事件队列,登录初始化等等,整个机器人流程只执行一次
-     */
-    private Queue<ReqEvent> loadQueue = new LinkedBlockingQueue<ReqEvent>();
-
-    /**
-     * 请求事件队列
-     */
-    private Queue<ReqEvent> reqQueue = new LinkedBlockingQueue<ReqEvent>();
 
     /**
      * 响应事件队列
@@ -55,10 +47,15 @@ public class Robot {
      */
     private int executorId;
 
+    /**
+     * 执行上下文
+     */
+    private RobotContext robotContext;
 
-    public void initChannel(ChannelFuture channel){
-        this.channel = channel;
-    }
+    private Module currentMod;
+
+    private int waitRespId;
+
 
     public void initChannel(String ip, int port) throws Exception {
         this.channel = Client.newChannel(ip, port);
@@ -80,5 +77,31 @@ public class Robot {
 
     public int getExecutorId() {
         return executorId;
+    }
+
+
+    public void setRobotContext(RobotContext robotContext) {
+        this.robotContext = robotContext;
+    }
+
+    public RobotContext getRobotContext() {
+        return robotContext;
+    }
+
+    public void dealRespEvent() {
+        RespEvent poll = respQueue.poll();
+        if (poll != null){
+            poll.dealResp(this.robotContext);
+            if (waitRespId != 0 && poll.eventId() == waitRespId){
+                waitRespId = 0;
+            }
+        }
+    }
+
+    public void dealSendEvent() {
+        Module currentMod = getCurrentMod();
+        if (currentMod == null){
+
+        }
     }
 }
