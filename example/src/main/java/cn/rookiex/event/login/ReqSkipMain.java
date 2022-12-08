@@ -9,7 +9,8 @@ import cn.rookiex.event.ReqEvent;
  */
 public class ReqSkipMain implements ReqEvent {
 
-    public int getRespEventId() {
-        return 2;
+    @Override
+    public int eventId() {
+        return 0;
     }
 }

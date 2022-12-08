@@ -9,7 +9,8 @@ import cn.rookiex.event.ReqEvent;
  */
 public class ReqLogin implements ReqEvent {
 
-    public int getRespEventId() {
+    @Override
+    public int eventId() {
         return 0;
     }
 }
