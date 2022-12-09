@@ -125,6 +125,10 @@ public class Robot{
     }
 
     public void dealSendEvent() {
+        //check 是否到处理时间
+        //check 是否需要等返回消息
+            //check 是否已经获得返回消息
+
         ReqEvent executeEvent = getExecuteEvent();
         if (executeEvent != null) {
             executeEvent.dealReq(this.robotContext);
@@ -132,6 +136,7 @@ public class Robot{
     }
 
     private ReqEvent getExecuteEvent() {
+        //ai module 和 普通的order module 需要有不同的分支
         int currentStage = getCurrentStage();
         //根据当前阶段,获得当前执行的mod
         Module currentMod = getCurrentMod();
