@@ -1,12 +1,16 @@
 package cn.rookiex.robot;
 
 import cn.rookiex.client.Client;
+import cn.rookiex.core.Message;
+import cn.rookiex.event.ReqEvent;
 import cn.rookiex.event.RespEvent;
 import cn.rookiex.module.Module;
+import cn.rookiex.module.ModuleManager;
 import io.netty.channel.ChannelFuture;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 
+import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -25,7 +29,7 @@ public class Robot{
     /**
      * 响应事件队列
      */
-    private Queue<RespEvent> respQueue = new LinkedBlockingQueue<RespEvent>();
+    private Queue<Message> respQueue = new LinkedBlockingQueue<Message>();
 
     /**
      * 机器人id
@@ -53,6 +57,14 @@ public class Robot{
     private RobotContext robotContext;
 
     private Module currentMod;
+
+    /**
+     * 0 : pre
+     * 1 : order
+     * 3 : disorder
+     *
+     */
+    private int currentStage;
 
     private int waitRespId;
 
@@ -89,19 +101,41 @@ public class Robot{
     }
 
     public void dealRespEvent() {
-        RespEvent poll = respQueue.poll();
+        Message poll = respQueue.poll();
+
         if (poll != null){
-            poll.dealResp(this.robotContext);
-            if (waitRespId != 0 && poll.eventId() == waitRespId){
+            int id = poll.messageId();
+            RespEvent respEvent = getRespEvent(id);
+            if (respEvent == null){
+                log.error("消息号 : " + id + " ,不存在对应相应handler");
+            }else {
+                respEvent.dealResp(poll, this.robotContext);
+            }
+
+            if (waitRespId != 0 && poll.messageId() == waitRespId){
                 waitRespId = 0;
             }
         }
     }
 
-    public void dealSendEvent() {
-        Module currentMod = getCurrentMod();
-        if (currentMod == null){
+    private RespEvent getRespEvent(int id) {
+        ModuleManager moduleManager = this.robotContext.getRobotManager().getModuleManager();
+        Map<Integer, RespEvent> respEventMap = moduleManager.getRespEventMap();
+        return respEventMap.get(id);
+    }
 
+    public void dealSendEvent() {
+        ReqEvent executeEvent = getExecuteEvent();
+        if (executeEvent != null) {
+            executeEvent.dealReq(this.robotContext);
         }
+    }
+
+    private ReqEvent getExecuteEvent() {
+        int currentStage = getCurrentStage();
+        //根据当前阶段,获得当前执行的mod
+        Module currentMod = getCurrentMod();
+        ReqEvent nextEvent = currentMod.getNextEvent();
+        return nextEvent;
     }
 }

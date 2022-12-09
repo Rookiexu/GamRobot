@@ -1,5 +1,6 @@
 package cn.rookiex.manager;
 
+import cn.rookiex.module.ModuleManager;
 import cn.rookiex.robot.Robot;
 import cn.rookiex.robot.RobotContext;
 import cn.rookiex.robot.RobotFactory;
@@ -22,6 +23,8 @@ import java.util.concurrent.atomic.AtomicLong;
 public class RobotManager {
 
     private final RobotConfig config = new RobotConfig();
+
+    private final  ModuleManager moduleManager = new ModuleManager();
 
     private final Map<Integer, RobotProcessor> processorMap = Maps.newHashMap();
 
@@ -98,5 +101,9 @@ public class RobotManager {
                 System.exit(-1);
             }
         }
+    }
+
+    public void initModules() {
+        this.moduleManager.init();
     }
 }

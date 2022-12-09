@@ -1,5 +1,6 @@
 package cn.rookiex.event.login;
 
+import cn.rookiex.core.Message;
 import cn.rookiex.event.RespEvent;
 import cn.rookiex.robot.RobotContext;
 
@@ -13,7 +14,7 @@ public class RespSetName implements RespEvent {
     }
 
     @Override
-    public void dealResp(RobotContext robotContext) {
+    public void dealResp(Message message, RobotContext robotContext) {
 
     }
 }

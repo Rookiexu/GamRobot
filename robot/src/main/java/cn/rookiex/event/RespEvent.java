@@ -1,5 +1,6 @@
 package cn.rookiex.event;
 
+import cn.rookiex.core.Message;
 import cn.rookiex.robot.RobotContext;
 
 /**
@@ -7,5 +8,5 @@ import cn.rookiex.robot.RobotContext;
  */
 public interface RespEvent extends Event {
 
-    void dealResp(RobotContext robotContext);
+    void dealResp(Message message, RobotContext robotContext);
 }

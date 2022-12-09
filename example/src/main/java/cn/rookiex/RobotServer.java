@@ -2,7 +2,6 @@ package cn.rookiex;
 
 import cn.rookiex.manager.RobotConfig;
 import cn.rookiex.manager.RobotManager;
-import cn.rookiex.module.ModuleManager;
 import cn.rookiex.robot.*;
 
 import java.util.Map;
@@ -21,7 +20,6 @@ public class RobotServer {
         return robotServer;
     }
 
-    private ModuleManager moduleManager;
 
     private RobotManager robotManager;
 
@@ -30,10 +28,8 @@ public class RobotServer {
     public void init(){
         this.robotManager = new RobotManager();
         robotManager.initProcessor();
-        robotManager.initRobot(new MyRobotFactory());
-
-        this.moduleManager = new ModuleManager();
-        moduleManager.init();
+        robotManager.initRobot(new DefaultRobotFactory());
+        robotManager.initModules();
     }
 
     public void start(){

@@ -5,7 +5,7 @@ import cn.rookiex.manager.RobotManager;
 /**
  * @author rookieX 2022/12/7
  */
-public class MyRobotContext implements RobotContext {
+public class DefaultRobotContext implements RobotContext {
 
     private RobotManager robotManager;
 

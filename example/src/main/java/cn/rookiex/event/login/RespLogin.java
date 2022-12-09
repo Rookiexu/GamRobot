@@ -1,6 +1,8 @@
 package cn.rookiex.event.login;
 
+import cn.rookiex.core.Message;
 import cn.rookiex.event.RespEvent;
+import cn.rookiex.robot.Robot;
 import cn.rookiex.robot.RobotContext;
 
 /**
@@ -13,7 +15,9 @@ public class RespLogin implements RespEvent {
     }
 
     @Override
-    public void dealResp(RobotContext robotContext) {
+    public void dealResp(Message message, RobotContext robotContext) {
+        Robot robot = robotContext.getRobot();
+        String message1 = message.getMessage(String.class);
 
     }
 }

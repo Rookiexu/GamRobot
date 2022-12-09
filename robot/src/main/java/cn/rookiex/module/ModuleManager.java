@@ -40,7 +40,7 @@ public class ModuleManager {
     /**
      * 响应事件map
      */
-    private final Map<String, RespEvent> respEventMap = Maps.newHashMap();
+    private final Map<Integer, RespEvent> respEventMap = Maps.newHashMap();
 
     public void init(){
         initEvents();
@@ -87,13 +87,18 @@ public class ModuleManager {
                 if (!clazz.isInterface()) {
                     for (Class<?> anInterface : interfaces) {
                         if (anInterface == ReqEvent.class) {
+                            //请求可以重复,同一个消息可能在不同module有不同的处理
                             String simpleName = clazz.getSimpleName();
                             reqEventMap.put(simpleName, (ReqEvent) clazz.newInstance());
                         }
 
                         if (anInterface == RespEvent.class) {
-                            String simpleName = clazz.getSimpleName();
-                            respEventMap.put(simpleName, (RespEvent) clazz.newInstance());
+                            //响应全局只有一个,可以分发逻辑,但是不能重复
+                            RespEvent respEvent = (RespEvent) clazz.newInstance();
+                            if (respEventMap.containsKey(respEvent.eventId())){
+                                log.error("加载压测事件, 响应事件存在重复处理 : " + respEvent.eventId());
+                            }
+                            respEventMap.put(respEvent.eventId(), respEvent);
                         }
                     }
                 }
