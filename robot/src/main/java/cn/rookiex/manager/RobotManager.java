@@ -24,6 +24,8 @@ public class RobotManager {
 
     private final RobotConfig config = new RobotConfig();
 
+    private final Record record = new Record();
+
     private final  ModuleManager moduleManager = new ModuleManager();
 
     private final Map<Integer, RobotProcessor> processorMap = Maps.newHashMap();
@@ -48,8 +50,10 @@ public class RobotManager {
         for (int i = 0; i < threadCount; i++) {
             RobotProcessor robotProcessor = new RobotProcessor();
             ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+            robotProcessor.setId(i);
             robotProcessor.setExecutorService(singleThreadExecutor);
             robotProcessor.setRobotManager(this);
+            robotProcessor.register(record);
             processorMap.put(i, robotProcessor);
         }
 
@@ -82,6 +86,7 @@ public class RobotManager {
     public void initRobot(RobotFactory robotFactory) {
         int threadCount = getConfig().getThreadCount();
         int robotCount = config.getRobotCount();
+        Record record = getRecord();
         for (int i = 0; i < robotCount; i++) {
             try {
                 Robot robot = robotFactory.newRobot(this);
@@ -96,6 +101,7 @@ public class RobotManager {
                 robotContext.setRobotManager(this);
                 robotContext.setRobot(robot);
                 robot.setRobotContext(robotContext);
+                record.getTotalRobot().incrementAndGet();
             } catch (Exception e) {
                 log.info(e, e);
                 System.exit(-1);

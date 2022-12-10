@@ -15,4 +15,7 @@ public interface ObservedEvents {
      */
     String INCR_LOGIN = "incrLogin";
 
+    String INCR_SEND = "incrSend";
+    String INCR_RESP = "incrResp";
+    String INCR_RESP_DEAL = "incrRespDeal";
 }

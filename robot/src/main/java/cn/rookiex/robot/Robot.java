@@ -2,11 +2,12 @@ package cn.rookiex.robot;
 
 import cn.rookiex.client.Client;
 import cn.rookiex.core.Message;
-import cn.rookiex.event.ReqEvent;
-import cn.rookiex.event.RespEvent;
+import cn.rookiex.event.ReqGameEvent;
+import cn.rookiex.event.RespGameEvent;
+import cn.rookiex.manager.RobotConfig;
 import cn.rookiex.module.Module;
 import cn.rookiex.module.ModuleManager;
-import io.netty.channel.ChannelFuture;
+import io.netty.channel.Channel;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 
@@ -24,7 +25,7 @@ public class Robot{
     /**
      * 服务器连接
      */
-    private ChannelFuture channel;
+    private Channel channel;
 
     /**
      * 响应事件队列
@@ -68,11 +69,6 @@ public class Robot{
 
     private int waitRespId;
 
-
-    public void initChannel(String ip, int port) throws Exception {
-        this.channel = Client.newChannel(ip, port);
-    }
-
     public void setId(long id) {
         this.id = id;
         this.fullName = simpleName + "_" + id;
@@ -105,7 +101,7 @@ public class Robot{
 
         if (poll != null){
             int id = poll.messageId();
-            RespEvent respEvent = getRespEvent(id);
+            RespGameEvent respEvent = getRespEvent(id);
             if (respEvent == null){
                 log.error("消息号 : " + id + " ,不存在对应相应handler");
             }else {
@@ -118,9 +114,9 @@ public class Robot{
         }
     }
 
-    private RespEvent getRespEvent(int id) {
+    private RespGameEvent getRespEvent(int id) {
         ModuleManager moduleManager = this.robotContext.getRobotManager().getModuleManager();
-        Map<Integer, RespEvent> respEventMap = moduleManager.getRespEventMap();
+        Map<Integer, RespGameEvent> respEventMap = moduleManager.getRespEventMap();
         return respEventMap.get(id);
     }
 
@@ -129,18 +125,34 @@ public class Robot{
         //check 是否需要等返回消息
             //check 是否已经获得返回消息
 
-        ReqEvent executeEvent = getExecuteEvent();
+        ReqGameEvent executeEvent = getExecuteEvent();
         if (executeEvent != null) {
             executeEvent.dealReq(this.robotContext);
         }
     }
 
-    private ReqEvent getExecuteEvent() {
+    private ReqGameEvent getExecuteEvent() {
         //ai module 和 普通的order module 需要有不同的分支
         int currentStage = getCurrentStage();
         //根据当前阶段,获得当前执行的mod
         Module currentMod = getCurrentMod();
-        ReqEvent nextEvent = currentMod.getNextEvent();
+        ReqGameEvent nextEvent = currentMod.getNextEvent();
         return nextEvent;
+    }
+
+    public void connect() throws Exception {
+        RobotConfig config = getRobotConfig();
+        String serverIp = config.getServerIp();
+        int serverPort = config.getServerPort();
+
+        this.channel = Client.newChannel(serverIp, serverPort);
+    }
+
+    private RobotConfig getRobotConfig() {
+        return this.robotContext.getRobotManager().getConfig();
+    }
+
+    public boolean isConnect() {
+        return this.channel != null && channel.isActive() ;
     }
 }
