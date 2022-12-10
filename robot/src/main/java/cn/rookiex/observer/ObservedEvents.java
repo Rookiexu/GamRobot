@@ -15,7 +15,23 @@ public interface ObservedEvents {
      */
     String INCR_LOGIN = "incrLogin";
 
+    /**
+     * 新增发消息
+     */
     String INCR_SEND = "incrSend";
+
+    /**
+     * 新增消息接收
+     */
     String INCR_RESP = "incrResp";
+
+    /**
+     * 新增消息接收处理完成
+     */
     String INCR_RESP_DEAL = "incrRespDeal";
+
+    /**
+     * 新增robot
+     */
+    String INCR_ROBOT = "incrRobot";
 }

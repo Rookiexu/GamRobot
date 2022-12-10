@@ -1,15 +1,21 @@
 package cn.rookiex.manager;
 
 import cn.rookiex.module.ModuleManager;
+import cn.rookiex.observer.Observable;
+import cn.rookiex.observer.ObservedEvents;
+import cn.rookiex.observer.ObservedParams;
+import cn.rookiex.observer.Observer;
 import cn.rookiex.robot.Robot;
 import cn.rookiex.robot.RobotContext;
 import cn.rookiex.robot.RobotFactory;
 import cn.rookiex.robot.RobotProcessor;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicLong;
@@ -20,7 +26,7 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 @Log4j2
 @Getter
-public class RobotManager {
+public class RobotManager implements Observable {
 
     private final RobotConfig config = new RobotConfig();
 
@@ -33,6 +39,8 @@ public class RobotManager {
     private AtomicLong idCounter;
 
     private Map<Integer, Robot> robotMap = Maps.newHashMap();
+
+    private final Set<Observer> observers = Sets.newConcurrentHashSet();
 
     private boolean stop;
 
@@ -63,10 +71,6 @@ public class RobotManager {
         log.info(this.config);
     }
 
-    public void run(){
-
-    }
-
     public boolean isStop() {
         return stop;
     }
@@ -86,7 +90,8 @@ public class RobotManager {
     public void initRobot(RobotFactory robotFactory) {
         int threadCount = getConfig().getThreadCount();
         int robotCount = config.getRobotCount();
-        Record record = getRecord();
+
+        Map<String, Object> event = Maps.newHashMap();
         for (int i = 0; i < robotCount; i++) {
             try {
                 Robot robot = robotFactory.newRobot(this);
@@ -101,7 +106,9 @@ public class RobotManager {
                 robotContext.setRobotManager(this);
                 robotContext.setRobot(robot);
                 robot.setRobotContext(robotContext);
-                record.getTotalRobot().incrementAndGet();
+
+                event.put(ObservedParams.PROCESSOR_ID, processorId);
+                notify(ObservedEvents.INCR_ROBOT, event);
             } catch (Exception e) {
                 log.info(e, e);
                 System.exit(-1);
@@ -111,5 +118,26 @@ public class RobotManager {
 
     public void initModules() {
         this.moduleManager.init();
+    }
+
+    @Override
+    public void register(Observer o) {
+        observers.add(o);
+    }
+
+    @Override
+    public void remove(Observer o) {
+        observers.remove(o);
+    }
+
+    @Override
+    public void notify(String message, Map<String, Object> infoMap) {
+        for (Observer observer : observers) {
+            try{
+                observer.update(message, infoMap);
+            }catch (Exception e){
+                log.error(e, e);
+            }
+        }
     }
 }

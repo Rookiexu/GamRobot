@@ -73,28 +73,40 @@ public class Record implements Observer {
             case ObservedEvents.INCR_RESP_DEAL:
                 dealIncrRespDeal(info);
                 break;
+            case ObservedEvents.INCR_ROBOT:
+                dealIncrRobot(info);
+                break;
         }
     }
 
-    private void dealIncrRespDeal(Map<String, Object> info) {
+    private void dealIncrRobot(Map<String, Object> info) {
+        Integer id = (Integer) info.get(ObservedParams.PROCESSOR_ID);
+        //todo
+    }
 
+    private void dealIncrRespDeal(Map<String, Object> info) {
+        Integer id = (Integer) info.get(ObservedParams.PROCESSOR_ID);
+        //todo
     }
 
     private void dealIncrResp(Map<String, Object> info) {
-
+        Integer id = (Integer) info.get(ObservedParams.PROCESSOR_ID);
+        //todo
     }
 
     private void dealIncrSend(Map<String, Object> info) {
-
+        Integer id = (Integer) info.get(ObservedParams.PROCESSOR_ID);
+        //todo
     }
 
     private void dealIncrLogin(Map<String, Object> info) {
-
+        Integer id = (Integer) info.get(ObservedParams.PROCESSOR_ID);
+        //todo
     }
 
     private void dealIncrCoon(Map<String, Object> info) {
         Integer id = (Integer) info.get(ObservedParams.PROCESSOR_ID);
         this.getTotalCoon().incrementAndGet();
-
+        //todo
     }
 }
