@@ -1,13 +1,13 @@
 package cn.rookiex.event.item;
 
 import cn.rookiex.core.Message;
-import cn.rookiex.event.RespEvent;
+import cn.rookiex.event.RespGameEvent;
 import cn.rookiex.robot.RobotContext;
 
 /**
  * @author rookieX 2022/12/6
  */
-public class RespItem implements RespEvent {
+public class RespItem implements RespGameEvent {
     @Override
     public int eventId() {
         return 0;

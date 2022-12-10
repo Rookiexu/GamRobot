@@ -1,6 +1,6 @@
 package cn.rookiex.event.login;
 
-import cn.rookiex.event.ReqEvent;
+import cn.rookiex.event.ReqGameEvent;
 import cn.rookiex.robot.RobotContext;
 
 /**
@@ -8,7 +8,7 @@ import cn.rookiex.robot.RobotContext;
  *
  * @author rookieX 2022/12/6
  */
-public class ReqLogin implements ReqEvent {
+public class ReqLogin implements ReqGameEvent {
 
     @Override
     public int eventId() {
