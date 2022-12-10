@@ -1,6 +1,6 @@
 package cn.rookiex.module.impl;
 
-import cn.rookiex.event.ReqEvent;
+import cn.rookiex.event.ReqGameEvent;
 import cn.rookiex.module.ModuleManager;
 import cn.rookiex.module.PreModule;
 import com.alibaba.fastjson.JSONArray;
@@ -16,7 +16,7 @@ import java.util.List;
 @Log4j2
 public class PreModuleImpl implements PreModule {
 
-    private List<ReqEvent> preEvents = Lists.newArrayList();
+    private List<ReqGameEvent> preEvents = Lists.newArrayList();
 
     @Override
     public void initPreConfig(JSONObject config, ModuleManager moduleManager) {
@@ -26,7 +26,7 @@ public class PreModuleImpl implements PreModule {
         if (inorderEvents != null) {
             List<String> strings = inorderEvents.toJavaList(String.class);
             for (String eventName : strings) {
-                ReqEvent reqEvent = moduleManager.getReqEventMap().get(eventName);
+                ReqGameEvent reqEvent = moduleManager.getReqEventMap().get(eventName);
                 if (reqEvent == null){
                     log.error("module : " + name + " ,加载pre event不存在 : " + eventName);
                 }else {
@@ -37,7 +37,7 @@ public class PreModuleImpl implements PreModule {
     }
 
     @Override
-    public List<ReqEvent> getPreEvents() {
+    public List<ReqGameEvent> getPreEvents() {
         return preEvents;
     }
 }

@@ -5,6 +5,6 @@ import cn.rookiex.robot.RobotContext;
 /**
  * @author rookieX 2022/12/5
  */
-public interface ReqEvent extends Event {
+public interface ReqGameEvent extends GameEvent {
     void dealReq(RobotContext robotContext);
 }

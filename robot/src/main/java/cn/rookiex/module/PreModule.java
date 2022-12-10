@@ -1,6 +1,6 @@
 package cn.rookiex.module;
 
-import cn.rookiex.event.ReqEvent;
+import cn.rookiex.event.ReqGameEvent;
 import com.alibaba.fastjson.JSONObject;
 
 import java.util.List;
@@ -17,5 +17,5 @@ public interface PreModule {
     /**
      * 前置事件,不参与模块循环
      */
-    List<ReqEvent> getPreEvents();
+    List<ReqGameEvent> getPreEvents();
 }

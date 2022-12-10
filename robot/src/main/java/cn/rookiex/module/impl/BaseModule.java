@@ -1,6 +1,6 @@
 package cn.rookiex.module.impl;
 
-import cn.rookiex.event.ReqEvent;
+import cn.rookiex.event.ReqGameEvent;
 import cn.rookiex.module.*;
 import cn.rookiex.tree.AIContext;
 import cn.rookiex.tree.node.Node;
@@ -52,12 +52,12 @@ public class BaseModule implements Module, PreModule, OrderModule, AITreeModule 
     }
 
     @Override
-    public List<ReqEvent> getInorderEvents() {
+    public List<ReqGameEvent> getInorderEvents() {
         return orderModule.getInorderEvents();
     }
 
     @Override
-    public List<ReqEvent> getDisorderEvents() {
+    public List<ReqGameEvent> getDisorderEvents() {
         return orderModule.getDisorderEvents();
     }
 
@@ -67,7 +67,7 @@ public class BaseModule implements Module, PreModule, OrderModule, AITreeModule 
     }
 
     @Override
-    public List<ReqEvent> getPreEvents() {
+    public List<ReqGameEvent> getPreEvents() {
         return preModule.getPreEvents();
     }
 
@@ -97,7 +97,7 @@ public class BaseModule implements Module, PreModule, OrderModule, AITreeModule 
     }
 
     @Override
-    public ReqEvent getNextEvent() {
+    public ReqGameEvent getNextEvent() {
 
         //当前阶段跳到下阶段
 

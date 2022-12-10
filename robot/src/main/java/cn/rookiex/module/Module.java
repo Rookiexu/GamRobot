@@ -1,6 +1,6 @@
 package cn.rookiex.module;
 
-import cn.rookiex.event.ReqEvent;
+import cn.rookiex.event.ReqGameEvent;
 import com.alibaba.fastjson.JSONObject;
 
 /**
@@ -19,7 +19,7 @@ public interface Module {
 
     void incrRunTimes();
 
-    ReqEvent getNextEvent();
+    ReqGameEvent getNextEvent();
 
     void init(JSONObject config, ModuleManager moduleManager);
 }

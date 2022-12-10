@@ -2,8 +2,8 @@ package cn.rookiex.module;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileReader;
-import cn.rookiex.event.ReqEvent;
-import cn.rookiex.event.RespEvent;
+import cn.rookiex.event.ReqGameEvent;
+import cn.rookiex.event.RespGameEvent;
 import cn.rookiex.module.impl.BaseModule;
 import cn.rookiex.units.PackageScanner;
 import com.alibaba.fastjson.JSONObject;
@@ -32,12 +32,12 @@ public class ModuleManager {
     /**
      * 请求事件map
      */
-    private final Map<String, ReqEvent> reqEventMap = Maps.newHashMap();
+    private final Map<String, ReqGameEvent> reqEventMap = Maps.newHashMap();
 
     /**
      * 响应事件map
      */
-    private final Map<Integer, RespEvent> respEventMap = Maps.newHashMap();
+    private final Map<Integer, RespGameEvent> respEventMap = Maps.newHashMap();
 
     public void init(){
         initEvents();
@@ -83,15 +83,15 @@ public class ModuleManager {
                 Class<?>[] interfaces = clazz.getInterfaces();
                 if (!clazz.isInterface()) {
                     for (Class<?> anInterface : interfaces) {
-                        if (anInterface == ReqEvent.class) {
+                        if (anInterface == ReqGameEvent.class) {
                             //请求可以重复,同一个消息可能在不同module有不同的处理
                             String simpleName = clazz.getSimpleName();
-                            reqEventMap.put(simpleName, (ReqEvent) clazz.newInstance());
+                            reqEventMap.put(simpleName, (ReqGameEvent) clazz.newInstance());
                         }
 
-                        if (anInterface == RespEvent.class) {
+                        if (anInterface == RespGameEvent.class) {
                             //响应全局只有一个,可以分发逻辑,但是不能重复
-                            RespEvent respEvent = (RespEvent) clazz.newInstance();
+                            RespGameEvent respEvent = (RespGameEvent) clazz.newInstance();
                             if (respEventMap.containsKey(respEvent.eventId())){
                                 log.error("加载压测事件, 响应事件存在重复处理 : " + respEvent.eventId());
                             }

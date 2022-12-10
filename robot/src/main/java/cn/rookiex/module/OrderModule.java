@@ -1,6 +1,6 @@
 package cn.rookiex.module;
 
-import cn.rookiex.event.ReqEvent;
+import cn.rookiex.event.ReqGameEvent;
 import com.alibaba.fastjson.JSONObject;
 
 import java.util.List;
@@ -17,12 +17,12 @@ public interface OrderModule {
     /**
      * 有序事件,先于乱序事件完成,参与模块循环
      */
-     List<ReqEvent> getInorderEvents();
+     List<ReqGameEvent> getInorderEvents();
 
     /**
      * 乱序事件
      */
-     List<ReqEvent> getDisorderEvents();
+     List<ReqGameEvent> getDisorderEvents();
 
 
 }
