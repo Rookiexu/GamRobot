@@ -12,7 +12,7 @@ import io.netty.handler.logging.LoggingHandler;
  * @author rookieX 2022/12/5
  */
 public class Client {
-    public static ChannelFuture newChannel(String ip, int port) throws Exception {
+    public static Channel newChannel(String ip, int port) throws Exception {
         // Configure the client.
         EventLoopGroup group = new NioEventLoopGroup();
         Bootstrap b = new Bootstrap();
@@ -29,6 +29,6 @@ public class Client {
                 });
 
         // Start the client.
-        return b.connect(ip, port).sync();
+        return b.connect(ip, port).sync().channel();
     }
 }
