@@ -20,6 +20,8 @@ public class BaseModule implements Module, PreModule, OrderModule, AITreeModule 
 
     private int order;
 
+    private int type;
+
     private final AITreeModule aiTreeModule = new AITreeModuleImpl();
 
     private final PreModule preModule = new PreModuleImpl();
@@ -72,13 +74,13 @@ public class BaseModule implements Module, PreModule, OrderModule, AITreeModule 
     }
 
     @Override
-    public void setName(String name) {
-        this.name = name;
+    public String getName() {
+        return name;
     }
 
     @Override
-    public String getName() {
-        return name;
+    public int getType() {
+        return type;
     }
 
     @Override
@@ -114,6 +116,12 @@ public class BaseModule implements Module, PreModule, OrderModule, AITreeModule 
             this.order = Integer.MAX_VALUE;
         }else {
             this.order = order;
+        }
+        Integer type = config.getInteger("type");
+        if (type == null){
+            this.type = Module.RANDOM;
+        }else {
+            this.type = type;
         }
 
         initAIConfig(config, moduleManager);
