@@ -52,7 +52,7 @@ public class RobotProcessor implements Runnable, Observable {
 
     @Override
     public void run() {
-        initEventMap();
+        initInfoMap();
         nextTick = System.currentTimeMillis() + robotManager.getTickStep();
         while (!robotManager.isStop()) {
             for (Robot robot : robotList) {
@@ -80,7 +80,7 @@ public class RobotProcessor implements Runnable, Observable {
         }
     }
 
-    private void initEventMap() {
+    private void initInfoMap() {
         Map<String,Object> eventMap = Maps.newHashMap();
         eventMap.put(ObservedParams.PROCESSOR_ID, getId());
 
