@@ -31,56 +31,27 @@ public class Record implements Observer {
 
     @Override
     public void update(String message, Map<String, Object> info) {
+        Integer id = (Integer) info.get(ObservedParams.PROCESSOR_ID);
         switch (message){
             case ObservedEvents.INCR_COON:
-                dealIncrCoon(info);
+                incrProcessorInt(id, ProcessorRecord::getTotalCoon);
                 break;
             case ObservedEvents.INCR_LOGIN:
-                dealIncrLogin(info);
+                incrProcessorInt(id, ProcessorRecord::getTotalLogin);
                 break;
             case ObservedEvents.INCR_SEND:
-                dealIncrSend(info);
+                incrProcessorLong(id, ProcessorRecord::getTotalSend);
                 break;
             case ObservedEvents.INCR_RESP:
-                dealIncrResp(info);
+                incrProcessorLong(id, ProcessorRecord::getTotalResp);
                 break;
             case ObservedEvents.INCR_RESP_DEAL:
-                dealIncrRespDeal(info);
+                incrProcessorLong(id, ProcessorRecord::getTotalRespDeal);
                 break;
             case ObservedEvents.INCR_ROBOT:
-                dealIncrRobot(info);
+                incrProcessorInt(id, ProcessorRecord::getTotalRobot);
                 break;
         }
-    }
-
-    private void dealIncrRobot(Map<String, Object> info) {
-        Integer id = (Integer) info.get(ObservedParams.PROCESSOR_ID);
-        getProcessorRecord(id).getTotalRobot().incrementAndGet();
-    }
-
-    private void dealIncrRespDeal(Map<String, Object> info) {
-        Integer id = (Integer) info.get(ObservedParams.PROCESSOR_ID);
-        getProcessorRecord(id).getTotalRespDeal().incrementAndGet();
-    }
-
-    private void dealIncrResp(Map<String, Object> info) {
-        Integer id = (Integer) info.get(ObservedParams.PROCESSOR_ID);
-        getProcessorRecord(id).getTotalResp().incrementAndGet();
-    }
-
-    private void dealIncrSend(Map<String, Object> info) {
-        Integer id = (Integer) info.get(ObservedParams.PROCESSOR_ID);
-        getProcessorRecord(id).getTotalSend().incrementAndGet();
-    }
-
-    private void dealIncrLogin(Map<String, Object> info) {
-        Integer id = (Integer) info.get(ObservedParams.PROCESSOR_ID);
-        getProcessorRecord(id).getTotalLogin().incrementAndGet();
-    }
-
-    private void dealIncrCoon(Map<String, Object> info) {
-        Integer id = (Integer) info.get(ObservedParams.PROCESSOR_ID);
-        getProcessorRecord(id).getTotalCoon().incrementAndGet();
     }
 
     public int getTotalInt(Function<ProcessorRecord, AtomicInteger> function){
@@ -99,5 +70,16 @@ public class Record implements Observer {
             total += apply.get();
         }
         return total;
+    }
+
+
+    public void incrProcessorInt(int id, Function<ProcessorRecord, AtomicInteger> function){
+        ProcessorRecord processorRecord = getProcessorRecord(id);
+        function.apply(processorRecord).incrementAndGet();
+    }
+
+    public void incrProcessorLong(int id, Function<ProcessorRecord, AtomicLong> function){
+        ProcessorRecord processorRecord = getProcessorRecord(id);
+        function.apply(processorRecord).incrementAndGet();
     }
 }
