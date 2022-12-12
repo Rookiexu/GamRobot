@@ -5,54 +5,25 @@ import cn.rookiex.observer.ObservedParams;
 import cn.rookiex.observer.Observer;
 import com.google.common.collect.Maps;
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author rookieX 2022/12/9
  */
 @Getter
+@Log4j2
 public class Record implements Observer {
-    // processor  累计执行send,累计resp,周期执行,周期send
-    // robot  机器人当前等待resp,累计执行send,累计resp
-    // total  全服执行机器人数量
 
-    private final AtomicInteger totalRobot = new AtomicInteger();
+    private Map<Integer,ProcessorRecord> processorRecordMap = Maps.newHashMap();
 
-    private final AtomicInteger totalCoon = new AtomicInteger();
-
-    private final AtomicInteger totalLogin = new AtomicInteger();
-
-    private final AtomicLong totalSend = new AtomicLong();
-
-    private final AtomicLong totalResp = new AtomicLong();
-
-    private final AtomicLong totalDealResp = new AtomicLong();
-
-    private final Map<Integer, AtomicLong> processorSend = Maps.newConcurrentMap();
-
-    private final Map<Integer, AtomicLong> processorResp = Maps.newConcurrentMap();
-
-    private final Map<Integer, AtomicLong> processorDealResp = Maps.newConcurrentMap();
-
-    public AtomicLong getProcessorSend(int id) {
-        return dealGet(id, processorSend);
-    }
-
-    public AtomicLong getProcessorResp(int id) {
-        return dealGet(id, processorResp);
-    }
-
-    public AtomicLong getProcessorDealResp(int id) {
-        return dealGet(id, processorDealResp);
-    }
-
-    public AtomicLong dealGet(int id, Map<Integer, AtomicLong> processorMap){
-        AtomicLong atomicLong = new AtomicLong();
-        AtomicLong put = processorMap.put(id, atomicLong);
-        return put == null ? atomicLong : put;
+    public ProcessorRecord getProcessorRecord(int id){
+        ProcessorRecord processorRecord = processorRecordMap.get(id);
+        if (processorRecord == null){
+            log.error("压测机器人执行线程不存在 : " + id, new Throwable());
+        }
+        return processorRecord;
     }
 
     @Override
@@ -81,32 +52,31 @@ public class Record implements Observer {
 
     private void dealIncrRobot(Map<String, Object> info) {
         Integer id = (Integer) info.get(ObservedParams.PROCESSOR_ID);
-        //todo
+        getProcessorRecord(id).getTotalRobot().incrementAndGet();
     }
 
     private void dealIncrRespDeal(Map<String, Object> info) {
         Integer id = (Integer) info.get(ObservedParams.PROCESSOR_ID);
-        //todo
+        getProcessorRecord(id).getTotalRespDeal().incrementAndGet();
     }
 
     private void dealIncrResp(Map<String, Object> info) {
         Integer id = (Integer) info.get(ObservedParams.PROCESSOR_ID);
-        //todo
+        getProcessorRecord(id).getTotalResp().incrementAndGet();
     }
 
     private void dealIncrSend(Map<String, Object> info) {
         Integer id = (Integer) info.get(ObservedParams.PROCESSOR_ID);
-        //todo
+        getProcessorRecord(id).getTotalSend().incrementAndGet();
     }
 
     private void dealIncrLogin(Map<String, Object> info) {
         Integer id = (Integer) info.get(ObservedParams.PROCESSOR_ID);
-        //todo
+        getProcessorRecord(id).getTotalLogin().incrementAndGet();
     }
 
     private void dealIncrCoon(Map<String, Object> info) {
         Integer id = (Integer) info.get(ObservedParams.PROCESSOR_ID);
-        this.getTotalCoon().incrementAndGet();
-        //todo
+        getProcessorRecord(id).getTotalCoon().incrementAndGet();
     }
 }
