@@ -38,7 +38,7 @@ public class RobotManager implements Observable {
 
     private AtomicLong idCounter;
 
-    private Map<Integer, Robot> robotMap = Maps.newHashMap();
+    private final Map<Integer, Robot> robotMap = Maps.newHashMap();
 
     private final Set<Observer> observers = Sets.newConcurrentHashSet();
 

@@ -135,9 +135,9 @@ public class Robot{
     }
 
     public void dealSendEvent() {
-        //check 是否到处理时间
-        //check 是否需要等返回消息
-            //check 是否已经获得返回消息
+        //TODO check 是否到处理时间
+        //TODO check 是否需要等返回消息
+        //TODO check 是否已经获得返回消息
 
         ReqGameEvent executeEvent = getExecuteEvent();
         if (executeEvent != null) {

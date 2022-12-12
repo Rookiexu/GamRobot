@@ -17,4 +17,9 @@ public class ReqSetName implements ReqGameEvent {
     public void dealReq(RobotContext robotContext) {
 
     }
+
+    @Override
+    public int waitId() {
+        return 0;
+    }
 }
