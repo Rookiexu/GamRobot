@@ -7,6 +7,9 @@ import cn.rookiex.event.RespGameEvent;
 import cn.rookiex.manager.RobotConfig;
 import cn.rookiex.module.Module;
 import cn.rookiex.module.ModuleManager;
+import cn.rookiex.observer.ObservedEvents;
+import cn.rookiex.observer.ObservedParams;
+import com.google.common.collect.Maps;
 import io.netty.channel.Channel;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
@@ -106,11 +109,22 @@ public class Robot{
                 log.error("消息号 : " + id + " ,不存在对应相应handler");
             }else {
                 respEvent.dealResp(poll, this.robotContext);
+                notify(ObservedEvents.INCR_RESP_DEAL, Maps.newHashMap());
             }
 
             if (waitRespId != 0 && poll.messageId() == waitRespId){
                 waitRespId = 0;
             }
+        }
+    }
+
+    private void notify(String eventType, Map<String, Object> info){
+        try {
+            info.put(ObservedParams.PROCESSOR_ID, getExecutorId());
+            RobotProcessor processor = getRobotContext().getRobotManager().getProcessor(getExecutorId());
+            processor.notify(eventType, info);
+        }catch (Exception e){
+            log.error(e, e);
         }
     }
 
@@ -128,6 +142,7 @@ public class Robot{
         ReqGameEvent executeEvent = getExecuteEvent();
         if (executeEvent != null) {
             executeEvent.dealReq(this.robotContext);
+            notify(ObservedEvents.INCR_SEND, Maps.newHashMap());
         }
     }
 

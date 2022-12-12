@@ -71,6 +71,14 @@ public class RobotManager implements Observable {
         log.info(this.config);
     }
 
+    public RobotProcessor getProcessor(int id){
+        RobotProcessor robotProcessor = processorMap.get(id);
+        if (robotProcessor == null){
+            log.error("压测机器人执行线程不存在 : " + id, new Throwable());
+        }
+        return robotProcessor;
+    }
+
     public boolean isStop() {
         return stop;
     }
