@@ -5,6 +5,7 @@ import cn.rookiex.core.Message;
 import cn.rookiex.event.ReqGameEvent;
 import cn.rookiex.event.RespGameEvent;
 import cn.rookiex.manager.RobotConfig;
+import cn.rookiex.manager.RobotManager;
 import cn.rookiex.module.Module;
 import cn.rookiex.module.ModuleManager;
 import cn.rookiex.observer.ObservedEvents;
@@ -14,6 +15,7 @@ import io.netty.channel.Channel;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -23,7 +25,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 @Data
 @Log4j2
-public class Robot{
+public class Robot {
 
     /**
      * 服务器连接
@@ -63,14 +65,21 @@ public class Robot{
     private Module currentMod;
 
     /**
-     * 0 : pre
-     * 1 : order
+     * 1 : pre
+     * 2 : order
      * 3 : disorder
-     *
      */
-    private int currentStage;
+    private int curStage;
+
+    private int curModIdx;
 
     private int waitRespId;
+
+    private int runTimes;
+
+    private List<Module> randomModules;
+
+    private int curEventIdx;
 
     public void setId(long id) {
         this.id = id;
@@ -99,31 +108,40 @@ public class Robot{
         return robotContext;
     }
 
+    public RobotManager getRobotManager() {
+        return robotContext.getRobotManager();
+    }
+
+    public ModuleManager getModuleManager() {
+        return getRobotManager().getModuleManager();
+    }
+
+
     public void dealRespEvent() {
         Message poll = respQueue.poll();
 
-        if (poll != null){
+        if (poll != null) {
             int id = poll.messageId();
             RespGameEvent respEvent = getRespEvent(id);
-            if (respEvent == null){
+            if (respEvent == null) {
                 log.error("消息号 : " + id + " ,不存在对应相应handler");
-            }else {
+            } else {
                 respEvent.dealResp(poll, this.robotContext);
                 notify(ObservedEvents.INCR_RESP_DEAL, Maps.newHashMap());
             }
 
-            if (waitRespId != 0 && poll.messageId() == waitRespId){
+            if (waitRespId != 0 && poll.messageId() == waitRespId) {
                 waitRespId = 0;
             }
         }
     }
 
-    private void notify(String eventType, Map<String, Object> info){
+    private void notify(String eventType, Map<String, Object> info) {
         try {
             info.put(ObservedParams.PROCESSOR_ID, getExecutorId());
             RobotProcessor processor = getRobotContext().getRobotManager().getProcessor(getExecutorId());
             processor.notify(eventType, info);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e, e);
         }
     }
@@ -145,10 +163,10 @@ public class Robot{
             executeEvent.dealReq(this.robotContext);
 
             boolean skip = this.robotContext.isSkip();
-            if (skip){
+            if (skip) {
                 this.waitRespId = 0;
                 this.robotContext.resetSkip();
-            }else {
+            } else {
                 this.waitRespId = executeEvent.waitId();
             }
             eventMap.put(ObservedParams.WAIT_RESP_ID, waitRespId);
@@ -158,13 +176,37 @@ public class Robot{
     }
 
     private ReqGameEvent getExecuteEvent() {
-        //ai module 和 普通的order module 需要有不同的分支
-        int currentStage = getCurrentStage();
-        //根据当前阶段,获得当前执行的mod
-        Module currentMod = getCurrentMod();
-        ReqGameEvent nextEvent = currentMod.getNextEvent();
-        return nextEvent;
+        int currentStage = getCurStage();
+
+        List<Module> modules = null;
+        switch (currentStage) {
+            case Module.PRE:
+                modules = getModuleManager().getPreModule();
+                break;
+            case Module.ORDER:
+                modules = getModuleManager().getOrderModule();
+                break;
+            case Module.RANDOM:
+                modules = this.randomModules;
+            default:
+                log.error("机器人执行过程,没有对应的执行阶段 : " + currentStage);
+        }
+        if (modules != null) {
+            int curModIdx = getCurModIdx();
+            int size = modules.size();
+            if (curModIdx == size){
+
+            }
+            Module module = modules.get(curModIdx);
+            //根据当前阶段,获得当前执行的mod
+            Module currentMod = getCurrentMod();
+            ReqGameEvent nextEvent = currentMod.getNextEvent();
+            return nextEvent;
+        }
+        return null;
     }
+
+
 
     public void connect() throws Exception {
         RobotConfig config = getRobotConfig();
@@ -179,6 +221,22 @@ public class Robot{
     }
 
     public boolean isConnect() {
-        return this.channel != null && channel.isActive() ;
+        return this.channel != null && channel.isActive();
+    }
+
+    public void setRandomModules(List<Module> randomModules) {
+        this.randomModules = randomModules;
+    }
+
+    public List<Module> getRandomModules() {
+        return randomModules;
+    }
+
+    public void setCurEventIdx(int curEventIdx) {
+        this.curEventIdx = curEventIdx;
+    }
+
+    public int getCurEventIdx() {
+        return curEventIdx;
     }
 }

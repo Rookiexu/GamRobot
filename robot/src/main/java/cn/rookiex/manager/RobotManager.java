@@ -1,5 +1,6 @@
 package cn.rookiex.manager;
 
+import cn.rookiex.module.Module;
 import cn.rookiex.module.ModuleManager;
 import cn.rookiex.observer.Observable;
 import cn.rookiex.observer.ObservedEvents;
@@ -9,11 +10,14 @@ import cn.rookiex.robot.Robot;
 import cn.rookiex.robot.RobotContext;
 import cn.rookiex.robot.RobotFactory;
 import cn.rookiex.robot.RobotProcessor;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -122,6 +126,18 @@ public class RobotManager implements Observable {
                 System.exit(-1);
             }
         }
+    }
+
+    public void robotInitModules(Robot robot){
+        ModuleManager moduleManager = getModuleManager();
+        List<Module> randomModule = moduleManager.getRandomModule();
+
+        robot.setCurStage(Module.PRE);
+        robot.setCurModIdx(0);
+        robot.setCurEventIdx(0);
+        List<Module> modules = Lists.newArrayList(randomModule);
+        Collections.shuffle(modules);
+        robot.setRandomModules(modules);
     }
 
     public void initModules() {
