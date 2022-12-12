@@ -8,6 +8,9 @@ import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Function;
 
 /**
  * @author rookieX 2022/12/9
@@ -78,5 +81,23 @@ public class Record implements Observer {
     private void dealIncrCoon(Map<String, Object> info) {
         Integer id = (Integer) info.get(ObservedParams.PROCESSOR_ID);
         getProcessorRecord(id).getTotalCoon().incrementAndGet();
+    }
+
+    public int getTotalInt(Function<ProcessorRecord, AtomicInteger> function){
+        int total = 0;
+        for (ProcessorRecord value : getProcessorRecordMap().values()) {
+            AtomicInteger apply = function.apply(value);
+            total += apply.get();
+        }
+        return total;
+    }
+
+    public long getTotalLong(Function<ProcessorRecord, AtomicLong> function){
+        long total = 0;
+        for (ProcessorRecord value : getProcessorRecordMap().values()) {
+            AtomicLong apply = function.apply(value);
+            total += apply.get();
+        }
+        return total;
     }
 }
