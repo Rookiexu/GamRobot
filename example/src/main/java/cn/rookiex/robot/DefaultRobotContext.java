@@ -11,6 +11,8 @@ public class DefaultRobotContext implements RobotContext {
 
     private Robot robot;
 
+    private boolean skip = false;
+
     @Override
     public void setRobotManager(RobotManager robotManager) {
         this.robotManager = robotManager;
@@ -29,5 +31,20 @@ public class DefaultRobotContext implements RobotContext {
     @Override
     public Robot getRobot() {
         return robot;
+    }
+
+    @Override
+    public boolean isSkip() {
+        return skip;
+    }
+
+    @Override
+    public void skipResp() {
+        skip = true;
+    }
+
+    @Override
+    public void resetSkip() {
+        this.skip = false;
     }
 }

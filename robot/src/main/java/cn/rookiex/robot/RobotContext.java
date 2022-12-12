@@ -15,4 +15,9 @@ public interface RobotContext {
 
     Robot getRobot();
 
+    boolean isSkip();
+
+    void skipResp();
+
+    void resetSkip();
 }

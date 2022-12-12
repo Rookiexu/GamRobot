@@ -7,4 +7,6 @@ import cn.rookiex.robot.RobotContext;
  */
 public interface ReqGameEvent extends GameEvent {
     void dealReq(RobotContext robotContext);
+
+    int waitId();
 }

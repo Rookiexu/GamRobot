@@ -141,8 +141,19 @@ public class Robot{
 
         ReqGameEvent executeEvent = getExecuteEvent();
         if (executeEvent != null) {
+            Map<String, Object> eventMap = Maps.newHashMap();
             executeEvent.dealReq(this.robotContext);
-            notify(ObservedEvents.INCR_SEND, Maps.newHashMap());
+
+            boolean skip = this.robotContext.isSkip();
+            if (skip){
+                this.waitRespId = 0;
+                this.robotContext.resetSkip();
+            }else {
+                this.waitRespId = executeEvent.waitId();
+            }
+            eventMap.put(ObservedParams.WAIT_RESP_ID, waitRespId);
+            eventMap.put(ObservedParams.IS_SKIP_RESP, skip);
+            notify(ObservedEvents.INCR_SEND, eventMap);
         }
     }
 

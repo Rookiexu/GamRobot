@@ -1,7 +1,9 @@
 package cn.rookiex.manager;
 
+import com.google.common.collect.Maps;
 import lombok.Getter;
 
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -22,5 +24,5 @@ public class ProcessorRecord {
 
     private final AtomicLong totalRespDeal = new AtomicLong();
 
-
+    private final Map<Integer, AtomicInteger> waitMsg = Maps.newConcurrentMap();
 }

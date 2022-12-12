@@ -40,7 +40,7 @@ public class Record implements Observer {
                 incrProcessorInt(id, ProcessorRecord::getTotalLogin);
                 break;
             case ObservedEvents.INCR_SEND:
-                incrProcessorLong(id, ProcessorRecord::getTotalSend);
+                dealSend(id, info);
                 break;
             case ObservedEvents.INCR_RESP:
                 incrProcessorLong(id, ProcessorRecord::getTotalResp);
@@ -51,6 +51,21 @@ public class Record implements Observer {
             case ObservedEvents.INCR_ROBOT:
                 incrProcessorInt(id, ProcessorRecord::getTotalRobot);
                 break;
+        }
+    }
+
+    private void dealSend(Integer id, Map<String, Object> info) {
+        incrProcessorLong(id, ProcessorRecord::getTotalSend);
+
+        ProcessorRecord processorRecord = getProcessorRecord(id);
+        boolean isSkip = (boolean) info.get(ObservedParams.IS_SKIP_RESP);
+        if (!isSkip){
+            int waitId = (int) info.get(ObservedParams.WAIT_RESP_ID);
+            AtomicInteger old = processorRecord.getWaitMsg().putIfAbsent(waitId, new AtomicInteger());
+            if (old == null){
+                old = processorRecord.getWaitMsg().get(waitId);
+            }
+            old.incrementAndGet();
         }
     }
 
