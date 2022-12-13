@@ -118,6 +118,7 @@ public class RobotManager implements Observable {
                 robotContext.setRobotManager(this);
                 robotContext.setRobot(robot);
                 robot.setRobotContext(robotContext);
+                robotInitModules(robot);
 
                 event.put(ObservedParams.PROCESSOR_ID, processorId);
                 notify(ObservedEvents.INCR_ROBOT, event);
@@ -126,6 +127,19 @@ public class RobotManager implements Observable {
                 System.exit(-1);
             }
         }
+    }
+
+    public void robotInitModules(Robot robot){
+        ModuleManager moduleManager = getModuleManager();
+        List<Module> randomModule = moduleManager.getRandomModule();
+
+        robot.setCurModStage(Module.PRE);
+        robot.setCurModIdx(0);
+        robot.setCurEventIdx(0);
+
+        List<Module> modules = Lists.newArrayList(randomModule);
+        Collections.shuffle(modules);
+        robot.setRandomModules(modules);
     }
 
     public void initModules() {
