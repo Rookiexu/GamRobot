@@ -8,6 +8,8 @@ import cn.rookiex.manager.RobotConfig;
 import cn.rookiex.manager.RobotManager;
 import cn.rookiex.module.Module;
 import cn.rookiex.module.ModuleManager;
+import cn.rookiex.module.stage.ModuleStage;
+import cn.rookiex.module.stage.RunModule;
 import cn.rookiex.observer.ObservedEvents;
 import cn.rookiex.observer.ObservedParams;
 import com.google.common.collect.Maps;
@@ -61,6 +63,11 @@ public class Robot {
      * 执行上下文
      */
     private RobotContext robotContext;
+
+    /**
+     * 执行状态模式
+     */
+    private ModuleStage runStage = new RunModule();
 
     /**
      * 1 : pre
@@ -186,33 +193,22 @@ public class Robot {
     }
 
     private ReqGameEvent getExecuteEvent() {
-        int currentStage = getCurModStage();
-
-        List<Module> modules = null;
-        switch (currentStage) {
-            case Module.PRE:
-                modules = getModuleManager().getPreModule();
-                break;
-            case Module.ORDER:
-                modules = getModuleManager().getOrderModule();
-                break;
-            case Module.RANDOM:
-                modules = this.randomModules;
-            default:
-                log.error("机器人执行过程,没有对应的执行阶段 : " + currentStage);
+        //当前stage
+        boolean runOver = runStage.isStageOver(robotContext);
+        if (runOver) {
+            runStage = runStage.nextStage(robotContext);
+            setCurModIdx(0);
+            runStage.initMod(robotContext);
         }
-        if (modules != null) {
-            int curModIdx = getCurModIdx();
-            int size = modules.size();
-            if (curModIdx == size){
 
-            }
-            Module module = modules.get(curModIdx);
-            //根据当前阶段,获得当前执行的mod
+        boolean modOver = runStage.isModOver(robotContext);
+        if (modOver) {
+            setCurModIdx(getCurModIdx() + 1);
+            runStage.initMod(robotContext);
         }
-        return null;
+
+        return runStage.getEvent(robotContext);
     }
-
 
 
     public void connect() throws Exception {

@@ -128,18 +128,6 @@ public class RobotManager implements Observable {
         }
     }
 
-    public void robotInitModules(Robot robot){
-        ModuleManager moduleManager = getModuleManager();
-        List<Module> randomModule = moduleManager.getRandomModule();
-
-        robot.setCurStage(Module.PRE);
-        robot.setCurModIdx(0);
-        robot.setCurEventIdx(0);
-        List<Module> modules = Lists.newArrayList(randomModule);
-        Collections.shuffle(modules);
-        robot.setRandomModules(modules);
-    }
-
     public void initModules() {
         this.moduleManager.init();
     }
