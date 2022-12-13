@@ -1,6 +1,7 @@
 package cn.rookiex.module;
 
 import cn.rookiex.event.ReqGameEvent;
+import cn.rookiex.robot.RobotContext;
 import com.alibaba.fastjson.JSONObject;
 
 /**
@@ -31,7 +32,11 @@ public interface Module {
 
     void incrRunTimes();
 
-    ReqGameEvent getNextEvent();
-
     void init(JSONObject config, ModuleManager moduleManager);
+
+    ReqGameEvent getNextEvent(RobotContext context);
+
+    void initRunEvent(RobotContext context);
+
+    boolean isRunOut(RobotContext context);
 }

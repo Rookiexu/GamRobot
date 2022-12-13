@@ -28,16 +28,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class Robot {
 
     /**
-     * 服务器连接
-     */
-    private Channel channel;
-
-    /**
-     * 响应事件队列
-     */
-    private Queue<Message> respQueue = new LinkedBlockingQueue<Message>();
-
-    /**
      * 机器人id
      */
     private long id;
@@ -53,6 +43,16 @@ public class Robot {
     private String fullName;
 
     /**
+     * 服务器连接
+     */
+    private Channel channel;
+
+    /**
+     * 响应事件队列
+     */
+    private Queue<Message> respQueue = new LinkedBlockingQueue<Message>();
+
+    /**
      * 线程池id
      */
     private int executorId;
@@ -62,24 +62,34 @@ public class Robot {
      */
     private RobotContext robotContext;
 
-    private Module currentMod;
-
     /**
      * 1 : pre
      * 2 : order
      * 3 : disorder
      */
-    private int curStage;
+    private int curModStage;
 
+    /**
+     * 当前mod
+     */
     private int curModIdx;
 
-    private int waitRespId;
+    /**
+     * mod执行次数,0的时候子mod需要
+     */
+    private int modRunTimes;
 
-    private int runTimes;
+    /**
+     * 等待响应消息
+     */
+    private int waitRespId;
 
     private List<Module> randomModules;
 
     private int curEventIdx;
+
+    private List<ReqGameEvent> curEventList;
+
 
     public void setId(long id) {
         this.id = id;
@@ -176,7 +186,7 @@ public class Robot {
     }
 
     private ReqGameEvent getExecuteEvent() {
-        int currentStage = getCurStage();
+        int currentStage = getCurModStage();
 
         List<Module> modules = null;
         switch (currentStage) {
@@ -199,9 +209,6 @@ public class Robot {
             }
             Module module = modules.get(curModIdx);
             //根据当前阶段,获得当前执行的mod
-            Module currentMod = getCurrentMod();
-            ReqGameEvent nextEvent = currentMod.getNextEvent();
-            return nextEvent;
         }
         return null;
     }
@@ -232,11 +239,19 @@ public class Robot {
         return randomModules;
     }
 
+    public int getCurEventIdx() {
+        return curEventIdx;
+    }
+
     public void setCurEventIdx(int curEventIdx) {
         this.curEventIdx = curEventIdx;
     }
 
-    public int getCurEventIdx() {
-        return curEventIdx;
+    public void setCurEventList(List<ReqGameEvent> curEventList) {
+        this.curEventList = curEventList;
+    }
+
+    public List<ReqGameEvent> getCurEventList() {
+        return curEventList;
     }
 }
