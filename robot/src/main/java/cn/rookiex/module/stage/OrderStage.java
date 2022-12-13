@@ -23,11 +23,11 @@ public class OrderStage implements ModuleStage {
     public boolean isStageOver(RobotContext robotContext) {
         Robot robot = robotContext.getRobot();
 
-        ModuleManager moduleManager = robot.getModuleManager();
         if (robot.getCurModStage() == Module.ORDER) {
             int curModIdx = robot.getCurModIdx();
-            if (moduleManager.getPreModule().size() == curModIdx + 1) {
-                Module module = moduleManager.getPreModule().get(curModIdx);
+            List<Module> allOrderModules = robot.getAllOrderModules();
+            if (allOrderModules.size() == curModIdx + 1) {
+                Module module = allOrderModules.get(curModIdx);
                 return module.isRunOut(robotContext);
             }
         }
@@ -38,13 +38,10 @@ public class OrderStage implements ModuleStage {
     public boolean isModOver(RobotContext robotContext) {
         Robot robot = robotContext.getRobot();
 
-        ModuleManager moduleManager = robot.getModuleManager();
         int curModIdx = robot.getCurModIdx();
-        List<Module> orderModule = moduleManager.getOrderModule();
-        List<Module> randomModules = robot.getRandomModules();
-
-        if (moduleManager.getPreModule().size() > curModIdx) {
-            Module module = moduleManager.getPreModule().get(curModIdx);
+        List<Module> allOrderModules = robot.getAllOrderModules();
+        if (allOrderModules.size() > curModIdx) {
+            Module module = allOrderModules.get(curModIdx);
             return module.isRunOut(robotContext);
         }
         return false;
@@ -55,10 +52,9 @@ public class OrderStage implements ModuleStage {
         Robot robot = robotContext.getRobot();
         robot.setCurModStage(Module.ORDER);
 
-        ModuleManager moduleManager = robot.getModuleManager();
         int curModIdx = robot.getCurModIdx();
-        if (moduleManager.getPreModule().size() > curModIdx) {
-            Module module = moduleManager.getPreModule().get(curModIdx);
+        if (robot.getAllOrderModules().size() > curModIdx) {
+            Module module = robot.getAllOrderModules().get(curModIdx);
             module.initRunEvent(robotContext);
         }
     }
@@ -72,11 +68,10 @@ public class OrderStage implements ModuleStage {
     public ReqGameEvent getEvent(RobotContext robotContext) {
         Robot robot = robotContext.getRobot();
         int curModIdx = robot.getCurModIdx();
-        ModuleManager moduleManager = robot.getModuleManager();
-        if (moduleManager.getPreModule().size() <= curModIdx) {
+        if (robot.getAllOrderModules().size() <= curModIdx) {
             return null;
         }
-        Module module = moduleManager.getPreModule().get(curModIdx);
+        Module module = robot.getAllOrderModules().get(curModIdx);
         return module.getNextEvent(robotContext);
     }
 }
