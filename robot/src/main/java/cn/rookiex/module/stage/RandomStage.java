@@ -24,6 +24,9 @@ public class RandomStage implements ModuleStage {
 
         if (robot.getCurModStage() == Module.RANDOM) {
             List<Module> randomModules = robot.getRandomModules();
+            if (randomModules.size() == 0){
+                return true;
+            }
             int curModIdx = robot.getCurModIdx();
             if (randomModules.size() == curModIdx + 1) {
                 Module module = randomModules.get(curModIdx);

@@ -1,5 +1,6 @@
 {
   "order" : 1,
+  "type" : 3,
   "preEvents" : ["ReqLogin","ReqSetName"],
   "inorderEvents" : ["ReqSkipMain","ReqSetName"],
   "disorderEvents" : ["ReqSetName","ReqSetName"]

@@ -1,6 +1,9 @@
 package cn.rookiex.event.login;
 
+import cn.rookiex.coon.SimpleMessage;
 import cn.rookiex.event.ReqGameEvent;
+import cn.rookiex.event.RespBase;
+import cn.rookiex.robot.Robot;
 import cn.rookiex.robot.RobotContext;
 
 /**
@@ -12,16 +15,20 @@ public class ReqLogin implements ReqGameEvent {
 
     @Override
     public int eventId() {
-        return 0;
+        return RespBase.ReqLogin;
     }
 
     @Override
     public void dealReq(RobotContext robotContext) {
+        Robot robot = robotContext.getRobot();
+        robot.getChannel().writeAndFlush("ReqLogin");
 
+        SimpleMessage simpleMessage = new SimpleMessage(eventId(), "i am login !!!!");
+        robot.getChannel().writeAndFlush(simpleMessage);
     }
 
     @Override
     public int waitId() {
-        return 0;
+        return RespBase.RespLogin;
     }
 }

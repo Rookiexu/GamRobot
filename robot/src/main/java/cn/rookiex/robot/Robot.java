@@ -14,6 +14,8 @@ import cn.rookiex.observer.ObservedEvents;
 import cn.rookiex.observer.ObservedParams;
 import com.google.common.collect.Maps;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelInitializer;
+import io.netty.util.AttributeKey;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 
@@ -28,6 +30,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 @Data
 @Log4j2
 public class Robot {
+
+
+    public static final AttributeKey<Long> CHANNEL_ATTR_ID = AttributeKey.valueOf("robotId");
 
     /**
      * 机器人id
@@ -97,6 +102,7 @@ public class Robot {
 
     private List<ReqGameEvent> curEventList;
     private long reqSendTime;
+    private ChannelInitializer channelInitializer;
 
 
     public void setId(long id) {
@@ -139,7 +145,7 @@ public class Robot {
         Message poll = respQueue.poll();
 
         if (poll != null) {
-            int id = poll.messageId();
+            int id = poll.getMsgId();
             RespGameEvent respEvent = getRespEvent(id);
             if (respEvent == null) {
                 log.error("消息号 : " + id + " ,不存在对应相应handler");
@@ -148,7 +154,7 @@ public class Robot {
                 notify(ObservedEvents.INCR_RESP_DEAL, Maps.newHashMap());
             }
 
-            if (waitRespId != 0 && poll.messageId() == waitRespId) {
+            if (waitRespId != 0 && poll.getMsgId() == waitRespId) {
                 waitRespId = 0;
             }
         }
@@ -185,7 +191,7 @@ public class Robot {
         //check 是否到处理时间
 
         long l = System.currentTimeMillis();
-        if (l - getRobotConfig().getReqIntervalTime() > getReqSendTime()){
+        if (getReqSendTime() > l - getRobotConfig().getReqIntervalTime()){
             return true;
         }
 
@@ -212,6 +218,8 @@ public class Robot {
             this.waitRespId = executeEvent.waitId();
         }
         eventMap.put(ObservedParams.WAIT_RESP_ID, waitRespId);
+        eventMap.put(ObservedParams.REQ_MSG_ID, executeEvent.eventId());
+        eventMap.put(ObservedParams.REQ_MSG_NAME, executeEvent.getClass().getSimpleName());
         eventMap.put(ObservedParams.IS_SKIP_RESP, skip);
         notify(ObservedEvents.INCR_SEND, eventMap);
     }
@@ -239,7 +247,8 @@ public class Robot {
         String serverIp = config.getServerIp();
         int serverPort = config.getServerPort();
 
-        this.channel = Client.newChannel(serverIp, serverPort);
+        this.channel = Client.newChannel(serverIp, serverPort, getChannelInitializer());
+        channel.attr(CHANNEL_ATTR_ID).set(this.id);
     }
 
     private RobotConfig getRobotConfig() {
@@ -280,5 +289,13 @@ public class Robot {
 
     public void setReqSendTime(long reqSendTime) {
         this.reqSendTime = reqSendTime;
+    }
+
+    public void setChannelInitializer(ChannelInitializer channelInitializer) {
+        this.channelInitializer = channelInitializer;
+    }
+
+    public ChannelInitializer getChannelInitializer() {
+        return channelInitializer;
     }
 }

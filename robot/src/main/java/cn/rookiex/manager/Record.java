@@ -32,6 +32,7 @@ public class Record implements Observer {
     @Override
     public void update(String message, Map<String, Object> info) {
         Integer id = (Integer) info.get(ObservedParams.PROCESSOR_ID);
+        log.info("message : " + message + " :: info : " + info.toString());
         switch (message){
             case ObservedEvents.INCR_COON:
                 incrProcessorInt(id, ProcessorRecord::getTotalCoon);

@@ -32,6 +32,10 @@ public class RobotServer {
         robotManager.initRobot(new DefaultRobotFactory());
     }
 
+    public RobotManager getRobotManager() {
+        return robotManager;
+    }
+
     public void start(){
         Map<Integer, RobotProcessor> processorMap = this.robotManager.getProcessorMap();
         for (RobotProcessor value : processorMap.values()) {

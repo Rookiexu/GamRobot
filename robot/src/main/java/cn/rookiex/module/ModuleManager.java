@@ -88,13 +88,13 @@ public class ModuleManager {
         preModule.sort(Comparator.comparing(Module::getOrder));
         orderModule.sort(Comparator.comparing(Module::getOrder));
 
-        log.info("加载压测模块顺序,前置模块数量 : " + preModule.size() + " , : " + preModule);
-        log.info("加载压测模块顺序,顺序模块数量 : " + orderModule.size() + " , : " + orderModule);
-        log.info("加载压测模块顺序,随机模块数量 : " + randomModule.size() + " , : " + randomModule);
+        log.info("加载压测模块顺序,前置模块数量 : " + preModule.size() + " , : " + preModule.toString());
+        log.info("加载压测模块顺序,顺序模块数量 : " + orderModule.size() + " , : " + orderModule.toString());
+        log.info("加载压测模块顺序,随机模块数量 : " + randomModule.size() + " , : " + randomModule.toString());
     }
 
     private void loadModules() {
-        log.info("加载压测模块开始,当前模块数量 : " + moduleMap.size());
+        log.info("加载压测模块开始");
 
         File modules = new File("modules");
         if (modules.isDirectory() && !FileUtil.isEmpty(modules)) {
@@ -122,7 +122,7 @@ public class ModuleManager {
     }
 
     public void initEvents() {
-        log.info("加载压测事件开始,当前请求事件数量 : " + reqEventMap.size() + " ,当前响应事件数量 : " + respEventMap.size());
+        log.info("加载压测事件开始");
         Set<Class<?>> clazzs = PackageScanner.getClasses("cn.rookiex.event");
         Iterator<Class<?>> it = clazzs.iterator();
         Class<?> clazz = null;

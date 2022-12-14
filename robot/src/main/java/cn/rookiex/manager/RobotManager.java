@@ -112,6 +112,7 @@ public class RobotManager implements Observable {
                 robot.setSimpleName(config.getRobotName());
                 int processorId = i % threadCount;
                 robot.setExecutorId(processorId);
+                robot.setChannelInitializer(robotFactory.getChannelInitializer(this));
                 RobotProcessor robotProcessor = processorMap.get(processorId);
                 robotProcessor.getRobotList().add(robot);
 

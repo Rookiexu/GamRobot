@@ -13,6 +13,18 @@ public interface ObservedParams {
      * 等待消息id
      */
     String WAIT_RESP_ID = "WAIT_RESP_ID";
+
+    /**
+     * REQ消息id
+     */
+    String REQ_MSG_ID = "REQ_MSG_ID";
+
+
+    /**
+     * REQ消息id
+     */
+    String REQ_MSG_NAME = "REQ_MSG_NAME";
+
     /**
      * 是否跳过响应等待
      */

@@ -1,6 +1,7 @@
 package cn.rookiex.event.login;
 
 import cn.rookiex.core.Message;
+import cn.rookiex.event.RespBase;
 import cn.rookiex.event.RespGameEvent;
 import cn.rookiex.robot.Robot;
 import cn.rookiex.robot.RobotContext;
@@ -16,6 +17,6 @@ public class RespSkipMain implements RespGameEvent {
 
     @Override
     public void dealResp(Message message, RobotContext robotContext) {
-        Robot robot = robotContext.getRobot();
+        RespBase.dealResp0(message, robotContext);
     }
 }

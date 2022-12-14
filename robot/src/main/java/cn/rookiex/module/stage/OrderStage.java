@@ -29,6 +29,9 @@ public class OrderStage implements ModuleStage {
             ModuleManager moduleManager = robot.getModuleManager();
             List<Module> orderModule = moduleManager.getOrderModule();
             int curModIdx = robot.getCurModIdx();
+            if (orderModule.size() == 0){
+                return true;
+            }
             if (orderModule.size() == curModIdx + 1) {
                 Module module = orderModule.get(curModIdx);
                 return module.isRunOut(robotContext);
@@ -49,7 +52,7 @@ public class OrderStage implements ModuleStage {
             Module module = orderModule.get(curModIdx);
             return module.isRunOut(robotContext);
         }
-        return false;
+        return true;
     }
 
     @Override

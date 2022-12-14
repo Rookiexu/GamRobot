@@ -141,7 +141,7 @@ public class DefaultOrderModule implements Module, PreModule, OrderModule{
         Robot robot = context.getRobot();
         int eventIdx = robot.getCurEventIdx();
         List<ReqGameEvent> curEventList = robot.getCurEventList();
-        return curEventList.size() <= eventIdx;
+        return curEventList == null || curEventList.size() <= eventIdx;
     }
 
     @Override
