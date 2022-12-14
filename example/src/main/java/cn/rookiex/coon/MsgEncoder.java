@@ -1,0 +1,21 @@
+package cn.rookiex.coon;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.MessageToByteEncoder;
+
+/**
+ * @author rookieX 2022/12/14
+ */
+public class MsgEncoder extends MessageToByteEncoder<SimpleMessage> {
+    @Override
+    protected void encode(ChannelHandlerContext ctx, SimpleMessage msg, ByteBuf out) throws Exception {
+        int msgId = msg.getMsgId();
+        String data = msg.getData();
+        byte[] bytes = data.getBytes();
+        int length = (bytes.length + 4);
+        out.writeInt(length);
+        out.writeInt(msgId);
+        out.writeBytes(bytes);
+    }
+}

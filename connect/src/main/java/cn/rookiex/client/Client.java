@@ -31,4 +31,17 @@ public class Client {
         // Start the client.
         return b.connect(ip, port).sync().channel();
     }
+
+    public static Channel newChannel(String ip, int port, ChannelInitializer initializer) throws Exception {
+        // Configure the client.
+        EventLoopGroup group = new NioEventLoopGroup();
+        Bootstrap b = new Bootstrap();
+        b.group(group)
+                .channel(NioSocketChannel.class)
+                .option(ChannelOption.TCP_NODELAY, true)
+                .handler(initializer);
+
+        // Start the client.
+        return b.connect(ip, port).sync().channel();
+    }
 }
