@@ -49,19 +49,32 @@ public class PreStage implements ModuleStage {
     @Override
     public void initMod(RobotContext robotContext) {
         Robot robot = robotContext.getRobot();
-        robot.setCurModStage(Module.PRE);
+        robot.setCurEventIdx(0);
 
         ModuleManager moduleManager = robot.getModuleManager();
         int curModIdx = robot.getCurModIdx();
-        if (moduleManager.getPreModule().size() > curModIdx) {
-            Module module = moduleManager.getPreModule().get(curModIdx);
-            module.initRunEvent(robotContext);
-        }
+        Module module = moduleManager.getPreModule().get(curModIdx);
+        module.initRunEvent(robotContext);
+    }
+
+    @Override
+    public void initStage(RobotContext robotContext) {
+        Robot robot = robotContext.getRobot();
+
+        robot.setCurModStage(Module.PRE);
+        robot.setCurModIdx(0);
+        initMod(robotContext);
     }
 
     @Override
     public ModuleStage nextStage(RobotContext robotContext) {
         return orderStage;
+    }
+
+    @Override
+    public void toNextMod(RobotContext robotContext) {
+        Robot robot = robotContext.getRobot();
+        robot.setCurModIdx(robot.getCurModIdx() + 1);
     }
 
     @Override

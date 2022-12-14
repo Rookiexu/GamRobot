@@ -197,13 +197,12 @@ public class Robot {
         boolean runOver = runStage.isStageOver(robotContext);
         if (runOver) {
             runStage = runStage.nextStage(robotContext);
-            setCurModIdx(0);
-            runStage.initMod(robotContext);
+            runStage.initStage(robotContext);
         }
 
         boolean modOver = runStage.isModOver(robotContext);
         if (modOver) {
-            setCurModIdx(getCurModIdx() + 1);
+            runStage.toNextMod(robotContext);
             runStage.initMod(robotContext);
         }
 
@@ -243,7 +242,7 @@ public class Robot {
         this.curEventIdx = curEventIdx;
     }
 
-    public void setCurEventList(List<ReqGameEvent> curEventList) {
+    public void setModEventList(List<ReqGameEvent> curEventList) {
         this.curEventList = curEventList;
     }
 

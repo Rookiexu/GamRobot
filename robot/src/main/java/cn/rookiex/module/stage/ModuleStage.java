@@ -16,7 +16,11 @@ public interface ModuleStage {
 
     void initMod(RobotContext robotContext);
 
+    void initStage(RobotContext robotContext);
+
     ModuleStage nextStage(RobotContext robotContext);
+
+    void toNextMod(RobotContext robotContext);
 
     ReqGameEvent getEvent(RobotContext robotContext);
 }
