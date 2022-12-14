@@ -66,6 +66,7 @@ public class RobotManager implements Observable {
             robotProcessor.setExecutorService(singleThreadExecutor);
             robotProcessor.setRobotManager(this);
             robotProcessor.register(record);
+            record.getProcessorRecordMap().put(i, new ProcessorRecord());
             processorMap.put(i, robotProcessor);
         }
 

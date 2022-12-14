@@ -34,6 +34,12 @@ public class RobotConfig {
      */
     private int runTimes = 100;
 
+
+    /**
+     * 请求间隔
+     */
+    private int reqIntervalTime = 1000;
+
     /**
      * robotName
      */
@@ -72,6 +78,12 @@ public class RobotConfig {
             if (checkNull("robotName", robotName)){
                 this.robotName = robotName;
             }
+
+            String intervalTime = properties.getProperty("intervalTime");
+            if (checkNull("intervalTime", intervalTime)){
+                this.reqIntervalTime = Integer.parseInt(intervalTime);
+            }
+
 
         } catch (IOException e) {
             log.error(e, e);
