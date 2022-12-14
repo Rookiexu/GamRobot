@@ -109,7 +109,7 @@ public class DefaultOrderModule implements Module, PreModule, OrderModule{
         List<ReqGameEvent> curEventList = robot.getCurEventList();
         if (curEventList.size() > eventIdx){
             ReqGameEvent reqGameEvent = curEventList.get(eventIdx);
-            robot.setCurModIdx(eventIdx + 1);
+            robot.setCurEventIdx(eventIdx + 1);
             return reqGameEvent;
         }else {
             log.error("模组 "+ getName() + " ,已完成event执行,需要执行下个模组");

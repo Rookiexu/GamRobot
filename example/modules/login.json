@@ -3,5 +3,5 @@
   "type" : 3,
   "preEvents" : ["ReqLogin","ReqSetName"],
   "inorderEvents" : ["ReqSkipMain","ReqSetName"],
-  "disorderEvents" : ["ReqSetName","ReqSetName"]
+  "disorderEvents" : ["ReqSetName"]
 }

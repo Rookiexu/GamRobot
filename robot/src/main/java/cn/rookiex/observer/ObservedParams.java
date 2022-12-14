@@ -7,26 +7,26 @@ public interface ObservedParams {
     /**
      * 执行线程id
      */
-    String PROCESSOR_ID = "processorId";
+    String PROCESSOR_ID = "processId";
 
     /**
      * 等待消息id
      */
-    String WAIT_RESP_ID = "WAIT_RESP_ID";
+    String WAIT_RESP_ID = "respId";
 
     /**
      * REQ消息id
      */
-    String REQ_MSG_ID = "REQ_MSG_ID";
+    String REQ_MSG_ID = "reqId";
 
 
     /**
      * REQ消息id
      */
-    String REQ_MSG_NAME = "REQ_MSG_NAME";
+    String REQ_MSG_NAME = "reqName";
 
     /**
      * 是否跳过响应等待
      */
-    String IS_SKIP_RESP = "SKIP_RESP";
+    String IS_SKIP_RESP = "skip";
 }

@@ -249,6 +249,7 @@ public class Robot {
 
         this.channel = Client.newChannel(serverIp, serverPort, getChannelInitializer());
         channel.attr(CHANNEL_ATTR_ID).set(this.id);
+        runStage.initStage(robotContext);
     }
 
     private RobotConfig getRobotConfig() {
