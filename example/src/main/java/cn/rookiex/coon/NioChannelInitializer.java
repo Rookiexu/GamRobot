@@ -12,9 +12,9 @@ public class NioChannelInitializer extends ChannelInitializer {
     @Override
     protected void initChannel(Channel ch) throws Exception {
         ChannelPipeline p = ch.pipeline();
-        p.addLast(new MsgDecoder());
         p.addLast(new LengthFieldBasedFrameDecoder(1024 * 512, 0, 4, 0, 4));
-        p.addLast(new MsgEncoder());
+        p.addLast(new MsgDecoder());
         p.addLast(new ClientHandler());
+        p.addLast(new MsgEncoder());
     }
 }
