@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class RandomStage implements ModuleStage {
 
-    ModuleStage stage = new OrderStage();
+    private static final ModuleStage stage = new OrderStage();
 
     @Override
     public void setStage(ModuleStage stage) {

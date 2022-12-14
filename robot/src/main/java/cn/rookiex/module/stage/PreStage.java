@@ -12,7 +12,7 @@ import cn.rookiex.robot.RobotContext;
  */
 public class PreStage implements ModuleStage {
 
-    ModuleStage orderStage = new OrderStage();
+    private static final ModuleStage orderStage = new OrderStage();
 
     @Override
     public void setStage(ModuleStage stage) {

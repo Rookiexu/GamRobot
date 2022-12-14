@@ -96,6 +96,7 @@ public class Robot {
     private int curEventIdx;
 
     private List<ReqGameEvent> curEventList;
+    private long reqSendTime;
 
 
     public void setId(long id) {
@@ -170,26 +171,49 @@ public class Robot {
     }
 
     public void dealSendEvent() {
-        //TODO check 是否到处理时间
-        //TODO check 是否需要等返回消息
-        //TODO check 是否已经获得返回消息
+        if (needWait()) {
+            return;
+        }
 
         ReqGameEvent executeEvent = getExecuteEvent();
         if (executeEvent != null) {
-            Map<String, Object> eventMap = Maps.newHashMap();
-            executeEvent.dealReq(this.robotContext);
-
-            boolean skip = this.robotContext.isSkip();
-            if (skip) {
-                this.waitRespId = 0;
-                this.robotContext.resetSkip();
-            } else {
-                this.waitRespId = executeEvent.waitId();
-            }
-            eventMap.put(ObservedParams.WAIT_RESP_ID, waitRespId);
-            eventMap.put(ObservedParams.IS_SKIP_RESP, skip);
-            notify(ObservedEvents.INCR_SEND, eventMap);
+            dealReq0(executeEvent);
         }
+    }
+
+    private boolean needWait() {
+        //check 是否到处理时间
+
+        long l = System.currentTimeMillis();
+        if (l - getRobotConfig().getReqIntervalTime() > getReqSendTime()){
+            return true;
+        }
+
+        //check 是否需要等返回消息
+        //check 是否已经获得返回消息
+        if (robotContext.isSkip()) {
+            robotContext.resetSkip();
+        } else {
+            return waitRespId != 0;
+        }
+        return false;
+    }
+
+    private void dealReq0(ReqGameEvent executeEvent) {
+        Map<String, Object> eventMap = Maps.newHashMap();
+        executeEvent.dealReq(this.robotContext);
+        setReqSendTime(System.currentTimeMillis());
+
+        boolean skip = this.robotContext.isSkip();
+        if (skip) {
+            this.waitRespId = 0;
+            this.robotContext.resetSkip();
+        } else {
+            this.waitRespId = executeEvent.waitId();
+        }
+        eventMap.put(ObservedParams.WAIT_RESP_ID, waitRespId);
+        eventMap.put(ObservedParams.IS_SKIP_RESP, skip);
+        notify(ObservedEvents.INCR_SEND, eventMap);
     }
 
     private ReqGameEvent getExecuteEvent() {
@@ -248,5 +272,13 @@ public class Robot {
 
     public List<ReqGameEvent> getCurEventList() {
         return curEventList;
+    }
+
+    public long getReqSendTime() {
+        return reqSendTime;
+    }
+
+    public void setReqSendTime(long reqSendTime) {
+        this.reqSendTime = reqSendTime;
     }
 }

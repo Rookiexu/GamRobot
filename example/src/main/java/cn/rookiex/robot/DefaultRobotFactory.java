@@ -14,6 +14,6 @@ public class DefaultRobotFactory implements RobotFactory {
     @Override
     public RobotContext newRobotContext(RobotManager manager) {
 
-        return null;
+        return new DefaultRobotContext();
     }
 }

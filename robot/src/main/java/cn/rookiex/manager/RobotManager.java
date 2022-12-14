@@ -51,7 +51,7 @@ public class RobotManager implements Observable {
     /**
      * 机器人执行驱动tick长度10ms => 每秒100次
      */
-    private long tickStep = 100;
+    private long tickStep = 10;
 
 
     public void initProcessor() {

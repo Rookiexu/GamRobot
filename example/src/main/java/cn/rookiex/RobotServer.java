@@ -28,8 +28,8 @@ public class RobotServer {
     public void init(){
         this.robotManager = new RobotManager();
         robotManager.initProcessor();
-        robotManager.initRobot(new DefaultRobotFactory());
         robotManager.initModules();
+        robotManager.initRobot(new DefaultRobotFactory());
     }
 
     public void start(){

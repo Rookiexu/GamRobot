@@ -15,7 +15,7 @@ import java.util.List;
 @Log4j2
 public class OrderStage implements ModuleStage {
 
-    ModuleStage stage = new RandomStage();
+    private static final ModuleStage stage = new RandomStage();
 
     @Override
     public void setStage(ModuleStage stage) {
