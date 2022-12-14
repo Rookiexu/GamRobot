@@ -60,9 +60,9 @@ public class PreStage implements ModuleStage {
     @Override
     public void initStage(RobotContext robotContext) {
         Robot robot = robotContext.getRobot();
-
         robot.setCurModStage(Module.PRE);
         robot.setCurModIdx(0);
+
         initMod(robotContext);
     }
 

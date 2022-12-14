@@ -50,20 +50,32 @@ public class RandomStage implements ModuleStage {
     @Override
     public void initMod(RobotContext robotContext) {
         Robot robot = robotContext.getRobot();
-        robot.setCurModStage(Module.ORDER);
+        robot.setCurEventIdx(0);
 
         List<Module> randomModules = robot.getRandomModules();
-
         int curModIdx = robot.getCurModIdx();
-        if (randomModules.size() > curModIdx) {
-            Module module = randomModules.get(curModIdx);
-            module.initRunEvent(robotContext);
-        }
+        Module module = randomModules.get(curModIdx);
+        module.initRunEvent(robotContext);
+    }
+
+    @Override
+    public void initStage(RobotContext robotContext) {
+        Robot robot = robotContext.getRobot();
+        robot.setCurModStage(Module.RANDOM);
+        robot.setCurModIdx(0);
+
+        initMod(robotContext);
     }
 
     @Override
     public ModuleStage nextStage(RobotContext robotContext) {
         return stage;
+    }
+
+    @Override
+    public void toNextMod(RobotContext robotContext) {
+        Robot robot = robotContext.getRobot();
+        robot.setCurModIdx(robot.getCurModIdx() + 1);
     }
 
     @Override

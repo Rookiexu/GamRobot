@@ -6,7 +6,7 @@ import cn.rookiex.robot.RobotContext;
 /**
  * @author rookieX 2022/12/12
  */
-public class RunModule implements ModuleStage{
+public class RunModule implements ModuleStage {
 
     private ModuleStage stage = new PreStage();
 
@@ -31,8 +31,18 @@ public class RunModule implements ModuleStage{
     }
 
     @Override
+    public void initStage(RobotContext robotContext) {
+        stage.initStage(robotContext);
+    }
+
+    @Override
     public ModuleStage nextStage(RobotContext robotContext) {
         return stage.nextStage(robotContext);
+    }
+
+    @Override
+    public void toNextMod(RobotContext robotContext) {
+        stage.toNextMod(robotContext);
     }
 
     @Override

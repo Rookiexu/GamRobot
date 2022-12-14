@@ -55,9 +55,9 @@ public class OrderStage implements ModuleStage {
     @Override
     public void initMod(RobotContext robotContext) {
         Robot robot = robotContext.getRobot();
+        robot.setCurEventIdx(0);
 
         ModuleManager moduleManager = robot.getModuleManager();
-
         List<Module> orderModule = moduleManager.getOrderModule();
         int curModIdx = robot.getCurModIdx();
         Module module = orderModule.get(curModIdx);
@@ -68,8 +68,8 @@ public class OrderStage implements ModuleStage {
     public void initStage(RobotContext robotContext) {
         Robot robot = robotContext.getRobot();
         robot.setCurModStage(Module.ORDER);
-
         robot.setCurModIdx(0);
+
         initMod(robotContext);
     }
 
