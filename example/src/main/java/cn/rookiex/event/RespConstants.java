@@ -10,7 +10,7 @@ import lombok.extern.log4j.Log4j2;
  * @author rookieX 2022/12/14
  */
 @Log4j2
-public class RespBase implements RespGameEvent{
+public class RespConstants implements RespGameEvent{
 
     public static final int ReqLogin = 1,ReqSetName = 2,ReqSkipMain = 3,ReqItem = 4;
 

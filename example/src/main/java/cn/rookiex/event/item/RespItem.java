@@ -1,7 +1,7 @@
 package cn.rookiex.event.item;
 
 import cn.rookiex.core.Message;
-import cn.rookiex.event.RespBase;
+import cn.rookiex.event.RespConstants;
 import cn.rookiex.event.RespGameEvent;
 import cn.rookiex.robot.RobotContext;
 
@@ -11,11 +11,11 @@ import cn.rookiex.robot.RobotContext;
 public class RespItem implements RespGameEvent {
     @Override
     public int eventId() {
-        return 0;
+        return RespConstants.RespItem;
     }
 
     @Override
     public void dealResp(Message message, RobotContext robotContext) {
-        RespBase.dealResp0(message, robotContext);
+        RespConstants.dealResp0(message, robotContext);
     }
 }

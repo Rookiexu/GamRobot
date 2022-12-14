@@ -2,7 +2,7 @@ package cn.rookiex.event.login;
 
 import cn.rookiex.coon.SimpleMessage;
 import cn.rookiex.event.ReqGameEvent;
-import cn.rookiex.event.RespBase;
+import cn.rookiex.event.RespConstants;
 import cn.rookiex.robot.Robot;
 import cn.rookiex.robot.RobotContext;
 
@@ -15,7 +15,7 @@ public class ReqLogin implements ReqGameEvent {
 
     @Override
     public int eventId() {
-        return RespBase.ReqLogin;
+        return RespConstants.ReqLogin;
     }
 
     @Override
@@ -29,6 +29,6 @@ public class ReqLogin implements ReqGameEvent {
 
     @Override
     public int waitId() {
-        return RespBase.RespLogin;
+        return RespConstants.RespLogin;
     }
 }
