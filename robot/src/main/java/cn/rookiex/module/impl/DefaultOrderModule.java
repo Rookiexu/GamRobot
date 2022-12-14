@@ -133,8 +133,7 @@ public class DefaultOrderModule implements Module, PreModule, OrderModule{
         Collections.shuffle(randomList);
         modEvents.addAll(randomList);
 
-        robot.setCurEventList(modEvents);
-        robot.setCurEventIdx(0);
+        robot.setModEventList(modEvents);
     }
 
     @Override
