@@ -1,5 +1,6 @@
 package cn.rookiex.server;
 
+import cn.hutool.core.util.RandomUtil;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -17,6 +18,11 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
+        try {
+            Thread.sleep(RandomUtil.randomInt(5));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         ctx.flush();
     }
 
