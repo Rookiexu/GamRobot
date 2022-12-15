@@ -62,7 +62,8 @@ public class Record implements Observer {
 
     private void dealTick(Map<String, Object> info) {
         long cur = (long) info.get(ObservedParams.CUR_MS);
-        if (cur - logTime > 10000) {
+        if (cur - logTime > 5000) {
+            log.info("压测执行进度 -----------------------------");
             for (Integer id : processorRecordMap.keySet()) {
                 ProcessorRecord processorRecord = processorRecordMap.get(id);
                 String s = processorRecord.toString();

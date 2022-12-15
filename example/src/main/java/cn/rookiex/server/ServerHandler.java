@@ -24,7 +24,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         SimpleMessage message = (SimpleMessage) msg;
-        Thread.sleep(RandomUtil.randomInt(5));
+        Thread.sleep(RandomUtil.randomInt(2));
         ctx.channel().writeAndFlush(message);
     }
 

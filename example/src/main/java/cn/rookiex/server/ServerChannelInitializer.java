@@ -17,7 +17,7 @@ public class ServerChannelInitializer extends ChannelInitializer {
     @Override
     protected void initChannel(Channel ch) throws Exception {
         ChannelPipeline p = ch.pipeline();
-        p.addLast(new LoggingHandler(LogLevel.INFO));
+//        p.addLast(new LoggingHandler(LogLevel.INFO));
         p.addLast(new LengthFieldBasedFrameDecoder(1024 * 512, 0, 4, 0, 4));
         p.addLast(new MsgDecoder());
         p.addLast(new ServerHandler());

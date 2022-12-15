@@ -84,7 +84,6 @@ public class RobotConfig {
                 this.reqIntervalTime = Integer.parseInt(intervalTime);
             }
 
-
         } catch (IOException e) {
             log.error(e, e);
         }

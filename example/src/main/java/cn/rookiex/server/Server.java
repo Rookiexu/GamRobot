@@ -23,7 +23,7 @@ public class Server {
             ServerBootstrap b = new ServerBootstrap();
             b.group(workerGroup)
                     .channel(NioServerSocketChannel.class)
-                    .handler(new LoggingHandler(LogLevel.INFO))
+//                    .handler(new LoggingHandler(LogLevel.INFO))
                     .childHandler(new ServerChannelInitializer());
 
             ChannelFuture f = b.bind(8090).sync();
