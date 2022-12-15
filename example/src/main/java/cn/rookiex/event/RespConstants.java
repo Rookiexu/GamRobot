@@ -24,7 +24,7 @@ public class RespConstants implements RespGameEvent{
 
         int msgId = simpleMessage.getMsgId();
         String data = simpleMessage.getData();
-        log.info(robot.getFullName() + " deal msg : " + msgId + " , data : " + data);
+//        log.info(robot.getFullName() + " deal msg : " + msgId + " , data : " + data);
     }
 
     @Override

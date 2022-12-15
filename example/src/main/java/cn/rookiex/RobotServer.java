@@ -1,5 +1,6 @@
 package cn.rookiex;
 
+import cn.hutool.cron.CronUtil;
 import cn.rookiex.manager.RobotConfig;
 import cn.rookiex.manager.RobotManager;
 import cn.rookiex.robot.*;
@@ -37,10 +38,13 @@ public class RobotServer {
     }
 
     public void start(){
+        CronUtil.start();
         Map<Integer, RobotProcessor> processorMap = this.robotManager.getProcessorMap();
         for (RobotProcessor value : processorMap.values()) {
             value.start();
         }
+
+        this.robotManager.getRecordProcessor().start();
     }
 
     public static void main(String[] args) {

@@ -44,9 +44,6 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         RobotManager robotManager = RobotServer.getInstance().getRobotManager();
         String aLong = channel.attr(Robot.CHANNEL_ATTR_ID).get();
         Robot robot = robotManager.getRobotMap().get(aLong);
-        if (robot == null){
-
-        }
         robot.getRespQueue().add(message);
     }
 
