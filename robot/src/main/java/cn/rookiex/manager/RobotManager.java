@@ -6,6 +6,9 @@ import cn.rookiex.observer.Observable;
 import cn.rookiex.observer.ObservedEvents;
 import cn.rookiex.observer.ObservedParams;
 import cn.rookiex.observer.Observer;
+import cn.rookiex.record.ProcessorRecord;
+import cn.rookiex.record.Record;
+import cn.rookiex.record.RecordProcessor;
 import cn.rookiex.robot.Robot;
 import cn.rookiex.robot.RobotContext;
 import cn.rookiex.robot.RobotFactory;
@@ -40,6 +43,8 @@ public class RobotManager implements Observable {
 
     private final Map<Integer, RobotProcessor> processorMap = Maps.newHashMap();
 
+    private RecordProcessor recordProcessor;
+
     private AtomicLong idCounter;
 
     private final Map<String, Robot> robotMap = Maps.newHashMap();
@@ -72,6 +77,8 @@ public class RobotManager implements Observable {
 
         log.info("加载压测机器人完成,当前执行数 : " + processorMap.size());
 
+        this.recordProcessor = new RecordProcessor();
+        recordProcessor.register(record);
 
         log.info(this.config);
     }

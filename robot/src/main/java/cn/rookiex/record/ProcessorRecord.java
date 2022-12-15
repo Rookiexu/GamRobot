@@ -1,7 +1,8 @@
-package cn.rookiex.manager;
+package cn.rookiex.record;
 
 import com.google.common.collect.Maps;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -11,6 +12,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @author rookieX 2022/12/12
  */
 @Getter
+@ToString
 public class ProcessorRecord {
     private final AtomicInteger totalCoon = new AtomicInteger();
 

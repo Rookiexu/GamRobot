@@ -1,4 +1,4 @@
-package cn.rookiex.manager;
+package cn.rookiex.record;
 
 import cn.rookiex.observer.ObservedEvents;
 import cn.rookiex.observer.ObservedParams;
@@ -19,6 +19,8 @@ import java.util.function.Function;
 @Log4j2
 public class Record implements Observer {
 
+    private long logTime;
+
     private Map<Integer,ProcessorRecord> processorRecordMap = Maps.newHashMap();
 
     public ProcessorRecord getProcessorRecord(int id){
@@ -31,33 +33,46 @@ public class Record implements Observer {
 
     @Override
     public void update(String message, Map<String, Object> info) {
-        Integer id = (Integer) info.get(ObservedParams.PROCESSOR_ID);
         switch (message){
             case ObservedEvents.INCR_COON:
-                incrProcessorInt(id, ProcessorRecord::getTotalCoon);
-                break;
-            case ObservedEvents.INCR_LOGIN:
-                incrProcessorInt(id, ProcessorRecord::getTotalLogin);
+                incrProcessorInt(ProcessorRecord::getTotalCoon, (Integer) info.get(ObservedParams.PROCESSOR_ID));
                 break;
             case ObservedEvents.INCR_SEND:
-                log.info("message : " + message + " :: info : " + info.toString());
-                dealSend(id, info);
+                dealSend((Integer) info.get(ObservedParams.PROCESSOR_ID), info);
+                dealSpecialMsg(info);
                 break;
             case ObservedEvents.INCR_RESP:
-                log.info("message : " + message + " :: info : " + info.toString());
-                incrProcessorLong(id, ProcessorRecord::getTotalResp);
+                incrProcessorLong(ProcessorRecord::getTotalResp, (Integer) info.get(ObservedParams.PROCESSOR_ID));
                 break;
             case ObservedEvents.INCR_RESP_DEAL:
-                incrProcessorLong(id, ProcessorRecord::getTotalRespDeal);
+                incrProcessorLong(ProcessorRecord::getTotalRespDeal, (Integer) info.get(ObservedParams.PROCESSOR_ID));
                 break;
             case ObservedEvents.INCR_ROBOT:
-                incrProcessorInt(id, ProcessorRecord::getTotalRobot);
+                incrProcessorInt(ProcessorRecord::getTotalRobot, (Integer) info.get(ObservedParams.PROCESSOR_ID));
+                break;
+            case ObservedEvents.TICK_TIME:
+                dealTick(info);
                 break;
         }
     }
 
+    private void dealSpecialMsg(Map<String, Object> info) {
+        //todo 扩展对特殊消息的处理,比如登录等
+    }
+
+    private void dealTick(Map<String, Object> info) {
+        long cur = (long) info.get(ObservedParams.CUR_MS);
+        if (cur - logTime > 10000) {
+            for (Integer id : processorRecordMap.keySet()) {
+                ProcessorRecord processorRecord = processorRecordMap.get(id);
+                String s = processorRecord.toString();
+                log.info("执行器 : " + id + " ,执行情况 : " + s);
+            }
+        }
+    }
+
     private void dealSend(Integer id, Map<String, Object> info) {
-        incrProcessorLong(id, ProcessorRecord::getTotalSend);
+        incrProcessorLong(ProcessorRecord::getTotalSend, id);
 
         ProcessorRecord processorRecord = getProcessorRecord(id);
         boolean isSkip = (boolean) info.get(ObservedParams.IS_SKIP_RESP);
@@ -90,12 +105,12 @@ public class Record implements Observer {
     }
 
 
-    public void incrProcessorInt(int id, Function<ProcessorRecord, AtomicInteger> function){
+    public void incrProcessorInt(Function<ProcessorRecord, AtomicInteger> function, int id){
         ProcessorRecord processorRecord = getProcessorRecord(id);
         function.apply(processorRecord).incrementAndGet();
     }
 
-    public void incrProcessorLong(int id, Function<ProcessorRecord, AtomicLong> function){
+    public void incrProcessorLong(Function<ProcessorRecord, AtomicLong> function, int id){
         ProcessorRecord processorRecord = getProcessorRecord(id);
         function.apply(processorRecord).incrementAndGet();
     }

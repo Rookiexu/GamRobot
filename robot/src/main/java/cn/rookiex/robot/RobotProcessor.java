@@ -1,7 +1,7 @@
 package cn.rookiex.robot;
 
 import cn.rookiex.manager.RobotManager;
-import cn.rookiex.manager.Record;
+import cn.rookiex.record.Record;
 import cn.rookiex.observer.Observable;
 import cn.rookiex.observer.ObservedEvents;
 import cn.rookiex.observer.ObservedParams;

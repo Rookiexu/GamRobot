@@ -29,4 +29,10 @@ public interface ObservedParams {
      * 是否跳过响应等待
      */
     String IS_SKIP_RESP = "skip";
+
+
+    /**
+     * 当前毫秒时
+     */
+    String CUR_MS = "curMs";
 }

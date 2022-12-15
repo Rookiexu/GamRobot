@@ -145,6 +145,7 @@ public class Robot {
         Message poll = respQueue.poll();
 
         if (poll != null) {
+
             int id = poll.getMsgId();
             RespGameEvent respEvent = getRespEvent(id);
             if (respEvent == null) {

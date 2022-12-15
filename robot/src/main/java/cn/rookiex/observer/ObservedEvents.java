@@ -34,4 +34,9 @@ public interface ObservedEvents {
      * 新增robot
      */
     String INCR_ROBOT = "incrRobot";
+
+    /**
+     * 时间tick
+     */
+    String TICK_TIME = "tickTime";
 }
