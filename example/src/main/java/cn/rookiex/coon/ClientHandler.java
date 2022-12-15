@@ -42,8 +42,11 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
 
     protected void onMessage(Channel channel, SimpleMessage message) throws Exception {
         RobotManager robotManager = RobotServer.getInstance().getRobotManager();
-        Long aLong = channel.attr(Robot.CHANNEL_ATTR_ID).get();
+        String aLong = channel.attr(Robot.CHANNEL_ATTR_ID).get();
         Robot robot = robotManager.getRobotMap().get(aLong);
+        if (robot == null){
+
+        }
         robot.getRespQueue().add(message);
     }
 

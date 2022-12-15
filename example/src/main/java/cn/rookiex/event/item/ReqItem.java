@@ -1,6 +1,9 @@
 package cn.rookiex.event.item;
 
+import cn.rookiex.coon.SimpleMessage;
 import cn.rookiex.event.ReqGameEvent;
+import cn.rookiex.event.RespConstants;
+import cn.rookiex.robot.Robot;
 import cn.rookiex.robot.RobotContext;
 
 /**
@@ -10,16 +13,19 @@ public class ReqItem implements ReqGameEvent {
 
     @Override
     public int eventId() {
-        return 0;
+        return RespConstants.ReqItem;
     }
 
     @Override
     public void dealReq(RobotContext robotContext) {
+        Robot robot = robotContext.getRobot();
 
+        SimpleMessage simpleMessage = new SimpleMessage(eventId(), robot.getFullName() + " 获取道具");
+        robot.getChannel().writeAndFlush(simpleMessage);
     }
 
     @Override
     public int waitId() {
-        return 0;
+        return RespConstants.RespItem;
     }
 }

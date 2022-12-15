@@ -21,7 +21,6 @@ public class ReqLogin implements ReqGameEvent {
     @Override
     public void dealReq(RobotContext robotContext) {
         Robot robot = robotContext.getRobot();
-        robot.getChannel().writeAndFlush("ReqLogin");
 
         SimpleMessage simpleMessage = new SimpleMessage(eventId(), "i am login !!!!");
         robot.getChannel().writeAndFlush(simpleMessage);

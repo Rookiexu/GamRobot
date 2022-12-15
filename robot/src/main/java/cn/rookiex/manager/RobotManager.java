@@ -42,7 +42,7 @@ public class RobotManager implements Observable {
 
     private AtomicLong idCounter;
 
-    private final Map<Integer, Robot> robotMap = Maps.newHashMap();
+    private final Map<String, Robot> robotMap = Maps.newHashMap();
 
     private final Set<Observer> observers = Sets.newConcurrentHashSet();
 
@@ -108,7 +108,7 @@ public class RobotManager implements Observable {
         for (int i = 0; i < robotCount; i++) {
             try {
                 Robot robot = robotFactory.newRobot(this);
-                robot.setId(idCounter.addAndGet(1L));
+                robot.setId(idCounter.addAndGet(1L) + "");
                 robot.setSimpleName(config.getRobotName());
                 int processorId = i % threadCount;
                 robot.setExecutorId(processorId);
@@ -121,6 +121,7 @@ public class RobotManager implements Observable {
                 robotContext.setRobot(robot);
                 robot.setRobotContext(robotContext);
                 robotInitModules(robot);
+                robotMap.put(robot.getId(), robot);
 
                 event.put(ObservedParams.PROCESSOR_ID, processorId);
                 notify(ObservedEvents.INCR_ROBOT, event);

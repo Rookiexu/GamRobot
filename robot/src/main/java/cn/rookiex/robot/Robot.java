@@ -32,12 +32,12 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class Robot {
 
 
-    public static final AttributeKey<Long> CHANNEL_ATTR_ID = AttributeKey.valueOf("robotId");
+    public static final AttributeKey<String> CHANNEL_ATTR_ID = AttributeKey.valueOf("robotId");
 
     /**
      * 机器人id
      */
-    private long id;
+    private String id;
 
     /**
      * 机器人名字
@@ -105,7 +105,7 @@ public class Robot {
     private ChannelInitializer channelInitializer;
 
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
         this.fullName = simpleName + "_" + id;
     }
