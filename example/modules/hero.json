@@ -1,0 +1,6 @@
+{
+  "order" : 3,
+  "type" : 3,
+  "preEvents" : ["ReqGem","ReqHero"],
+  "inorderEvents" : ["ReqHeroLevelUp","ReqHeroEquipGem"]
+}

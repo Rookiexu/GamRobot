@@ -12,10 +12,25 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class RespConstants implements RespGameEvent{
 
-    public static final int ReqLogin = 1,ReqSetName = 2,ReqSkipMain = 3,ReqItem = 4;
+    public static final int ReqLogin = 1
+            ,ReqSetName = 2
+            ,ReqSkipMain = 3
+            ,ReqItem = 4
+            ,ReqHeroLevelUp = 5
+            ,ReqHeroEquipGem = 6
+            ;
 
 
-    public static final int RespLogin = 1,RespSetName = 2,RespSkipMain = 3,RespItem = 4;
+    public static final int
+            RespLogin = 1
+            , RespSetName = 2
+            , RespSkipMain = 3
+            , RespItem = 4
+            , RespHeroLevelUp = 5
+            , RespHeroEquipGem = 6
+
+
+                    ;
 
 
     public static void dealResp0(Message message, RobotContext robotContext) {

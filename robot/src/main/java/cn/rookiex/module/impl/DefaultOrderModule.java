@@ -6,6 +6,7 @@ import cn.rookiex.robot.Robot;
 import cn.rookiex.robot.RobotContext;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
+import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.Collections;
@@ -32,7 +33,12 @@ public class DefaultOrderModule implements Module, PreModule, OrderModule{
 
     private final OrderModule orderModule = new OrderModuleImpl();
 
-//    @Override
+    @Override
+    public String toString() {
+        return getName();
+    }
+
+    //    @Override
 //    public void initAIConfig(JSONObject config, ModuleManager moduleManager) {
 //        aiTreeModule.initAIConfig(config, moduleManager);
 //    }

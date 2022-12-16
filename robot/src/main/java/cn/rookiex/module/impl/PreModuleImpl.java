@@ -40,4 +40,19 @@ public class PreModuleImpl implements PreModule {
     public List<ReqGameEvent> getPreEvents() {
         return preEvents;
     }
+
+    @Override
+    public String toString() {
+
+        StringBuilder builder = new StringBuilder();
+        builder.append("[");
+        for (ReqGameEvent preEvent : preEvents) {
+            builder.append(preEvent.getClass().getSimpleName()).append(",");
+        }
+        builder.append("]");
+
+        return "PreModuleImpl{" +
+                "preEvents=" + builder +
+                '}';
+    }
 }

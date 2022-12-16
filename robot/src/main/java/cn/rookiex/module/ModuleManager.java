@@ -88,7 +88,7 @@ public class ModuleManager {
         preModule.sort(Comparator.comparing(Module::getOrder));
         orderModule.sort(Comparator.comparing(Module::getOrder));
 
-        log.info("加载压测模块顺序,前置模块数量 : " + preModule.size() + " , : " + preModule.toString());
+        log.info("加载压测模块顺序,前置模块数量 : " + preModule.size() + " , : " + preModule);
         log.info("加载压测模块顺序,顺序模块数量 : " + orderModule.size() + " , : " + orderModule.toString());
         log.info("加载压测模块顺序,随机模块数量 : " + randomModule.size() + " , : " + randomModule.toString());
     }

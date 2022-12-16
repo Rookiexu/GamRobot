@@ -1,6 +1,0 @@
-{
-  "order" : 2,
-  "type" : 2,
-  "inorderEvents" : ["ReqSkipMain","ReqSetName"],
-  "disorderEvents" : ["ReqSetName","ReqSetName"]
-}
