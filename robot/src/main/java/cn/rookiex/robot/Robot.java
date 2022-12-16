@@ -19,6 +19,7 @@ import io.netty.util.AttributeKey;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -152,7 +153,9 @@ public class Robot {
                 log.error("消息号 : " + id + " ,不存在对应相应handler");
             } else {
                 respEvent.dealResp(poll, this.robotContext);
-                notify(ObservedEvents.INCR_RESP_DEAL, Maps.newHashMap());
+                Map<String, Object> eventMap = Maps.newHashMap();
+                eventMap.put(ObservedParams.WAIT_RESP_ID, respEvent.eventId());
+                notify(ObservedEvents.INCR_RESP_DEAL, eventMap);
             }
 
             if (waitRespId != 0 && poll.getMsgId() == waitRespId) {

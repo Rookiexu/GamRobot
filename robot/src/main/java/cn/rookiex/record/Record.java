@@ -45,7 +45,7 @@ public class Record implements Observer {
                 incrProcessorLong(ProcessorRecord::getTotalResp, (Integer) info.get(ObservedParams.PROCESSOR_ID));
                 break;
             case ObservedEvents.INCR_RESP_DEAL:
-                incrProcessorLong(ProcessorRecord::getTotalRespDeal, (Integer) info.get(ObservedParams.PROCESSOR_ID));
+                dealRespDeal((Integer) info.get(ObservedParams.PROCESSOR_ID), info);
                 break;
             case ObservedEvents.INCR_ROBOT:
                 incrProcessorInt(ProcessorRecord::getTotalRobot, (Integer) info.get(ObservedParams.PROCESSOR_ID));
@@ -53,6 +53,17 @@ public class Record implements Observer {
             case ObservedEvents.TICK_TIME:
                 dealTick(info);
                 break;
+        }
+    }
+
+    private void dealRespDeal(Integer id, Map<String, Object> info) {
+        incrProcessorLong(ProcessorRecord::getTotalRespDeal, id);
+
+        ProcessorRecord processorRecord = getProcessorRecord(id);
+        int waitId = (int) info.get(ObservedParams.WAIT_RESP_ID);
+        AtomicInteger old = processorRecord.getWaitMsg().get(waitId);
+        if (old != null){
+            old.decrementAndGet();
         }
     }
 
@@ -79,11 +90,16 @@ public class Record implements Observer {
         boolean isSkip = (boolean) info.get(ObservedParams.IS_SKIP_RESP);
         if (!isSkip){
             int waitId = (int) info.get(ObservedParams.WAIT_RESP_ID);
-            AtomicInteger old = processorRecord.getWaitMsg().putIfAbsent(waitId, new AtomicInteger());
-            if (old == null){
-                old = processorRecord.getWaitMsg().get(waitId);
+            AtomicInteger wait = processorRecord.getWaitMsg().putIfAbsent(waitId, new AtomicInteger());
+            if (wait == null){
+                wait = processorRecord.getWaitMsg().get(waitId);
             }
-            old.incrementAndGet();
+            AtomicInteger send = processorRecord.getSendMsg().putIfAbsent(waitId, new AtomicInteger());
+            if (send == null){
+                send = processorRecord.getSendMsg().get(waitId);
+            }
+            wait.incrementAndGet();
+            send.incrementAndGet();
         }
     }
 

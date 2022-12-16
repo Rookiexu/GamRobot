@@ -27,4 +27,6 @@ public class ProcessorRecord {
     private final AtomicLong totalRespDeal = new AtomicLong();
 
     private final Map<Integer, AtomicInteger> waitMsg = Maps.newConcurrentMap();
+
+    private final Map<Integer, AtomicInteger> sendMsg = Maps.newConcurrentMap();
 }
