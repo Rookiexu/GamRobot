@@ -1,6 +1,6 @@
 package cn.rookiex.robot;
 
-import cn.rookiex.coon.NioChannelInitializer;
+import cn.rookiex.coon.client.NioChannelInitializer;
 import cn.rookiex.manager.RobotManager;
 import io.netty.channel.ChannelInitializer;
 

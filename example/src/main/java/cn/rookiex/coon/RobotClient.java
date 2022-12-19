@@ -1,6 +1,7 @@
 package cn.rookiex.coon;
 
 import cn.rookiex.client.Client;
+import cn.rookiex.coon.client.NioChannelInitializer;
 import io.netty.channel.Channel;
 
 /**

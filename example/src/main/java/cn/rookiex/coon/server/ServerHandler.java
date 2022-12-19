@@ -1,4 +1,4 @@
-package cn.rookiex.server;
+package cn.rookiex.coon.server;
 
 import cn.hutool.core.util.RandomUtil;
 import cn.rookiex.RobotServer;

@@ -1,6 +1,7 @@
-package cn.rookiex.coon;
+package cn.rookiex.coon.client;
 
 import cn.rookiex.RobotServer;
+import cn.rookiex.coon.SimpleMessage;
 import cn.rookiex.manager.RobotManager;
 import cn.rookiex.robot.Robot;
 import io.netty.channel.Channel;
