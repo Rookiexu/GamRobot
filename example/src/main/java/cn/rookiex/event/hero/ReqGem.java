@@ -21,7 +21,7 @@ public class ReqGem implements ReqGameEvent {
         Robot robot = robotContext.getRobot();
 
         SimpleMessage simpleMessage = new SimpleMessage(eventId(), robot.getFullName() + " 获取道具 Gem");
-        robot.getChannel().writeAndFlush(simpleMessage);
+        robot.getChannel().writeAndFlush(simpleMessage) ;
     }
 
     @Override

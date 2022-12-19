@@ -1,6 +1,7 @@
 package cn.rookiex.codec;
 
 import com.google.protobuf.GeneratedMessageV3;
+import lombok.SneakyThrows;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -14,8 +15,9 @@ public class Proto3Codec implements DataCodec {
         return ((GeneratedMessageV3) data).toByteArray();
     }
 
+    @SneakyThrows
     @Override
-    public <T> T decode(byte[] data, Class<T> dataClass) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public <T> T decode(byte[] data, Class<T> dataClass){
         Object invoke = dataClass.getMethod("parseFrom", byte[].class).invoke(null, (Object) data);
         return (T) invoke;
     }

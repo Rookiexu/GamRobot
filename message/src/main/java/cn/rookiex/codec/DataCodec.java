@@ -23,7 +23,7 @@ public interface DataCodec {
      * @param <T> t
      * @return 解码对象
      */
-    <T> T decode(byte[] data, Class<T> dataClass) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException;
+    <T> T decode(byte[] data, Class<T> dataClass);
 
     String getName();
 }

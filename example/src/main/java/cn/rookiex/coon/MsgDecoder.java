@@ -17,8 +17,9 @@ public class MsgDecoder extends ByteToMessageDecoder {
         byte[] body = new byte[totalLength - 4]; //获取body的内容
         in.readBytes(body);
 
-        String s = new String(body);
-        SimpleMessage message = new SimpleMessage(msgId, s);
+        SimpleMessage message = new SimpleMessage();
+        message.setMsgId(msgId);
+        message.setData(body);
         out.add(message);
     }
 }
