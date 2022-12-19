@@ -1,18 +1,12 @@
 package cn.rookiex.record;
 
-import cn.hutool.Hutool;
 import cn.hutool.cron.CronUtil;
-import cn.rookiex.observer.Observable;
-import cn.rookiex.observer.ObservedEvents;
-import cn.rookiex.observer.ObservedParams;
-import cn.rookiex.observer.Observer;
+import cn.rookiex.observer.*;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author rookieX 2022/12/8
@@ -21,15 +15,15 @@ import java.util.Map;
 @Log4j2
 public class RecordProcessor implements Runnable, Observable {
 
-    private List<Observer> observers = Lists.newCopyOnWriteArrayList();
+    private final List<Observer> observers = Lists.newCopyOnWriteArrayList();
 
-    private Map<String, Object> infoMap = Maps.newHashMap();
+    private final UpdateEvent event = new UpdateEventImpl(ObservedEvents.TICK_TIME);
 
     @Override
     public void run() {
         long cur = System.currentTimeMillis();
-        infoMap.put(ObservedParams.CUR_MS, cur);
-        notify(ObservedEvents.TICK_TIME, infoMap);
+        event.put(ObservedParams.CUR_MS, cur);
+        notify(event);
     }
 
     @Override
@@ -43,10 +37,10 @@ public class RecordProcessor implements Runnable, Observable {
     }
 
     @Override
-    public void notify(String message, Map<String, Object> infoMap) {
+    public void notify(UpdateEvent message) {
         for (Observer observer : observers) {
             try{
-                observer.update(message, infoMap);
+                observer.update(message);
             }catch (Exception e){
                 log.error(e,e);
             }

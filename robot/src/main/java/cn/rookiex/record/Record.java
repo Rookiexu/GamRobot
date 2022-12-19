@@ -3,6 +3,7 @@ package cn.rookiex.record;
 import cn.rookiex.observer.ObservedEvents;
 import cn.rookiex.observer.ObservedParams;
 import cn.rookiex.observer.Observer;
+import cn.rookiex.observer.UpdateEvent;
 import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
@@ -52,6 +53,33 @@ public class Record implements Observer {
                 break;
             case ObservedEvents.TICK_TIME:
                 dealTick(info);
+                break;
+        }
+
+        // todo 添加对自定义事件的监听处理,by观察者
+    }
+
+    @Override
+    public void update(UpdateEvent message) {
+        switch (message.getMessage()){
+            case ObservedEvents.INCR_COON:
+                incrProcessorInt(ProcessorRecord::getTotalCoon, (Integer) message.get(ObservedParams.PROCESSOR_ID));
+                break;
+            case ObservedEvents.INCR_SEND:
+                dealSend((Integer) message.get(ObservedParams.PROCESSOR_ID), message);
+                dealSpecialMsg(message);
+                break;
+            case ObservedEvents.INCR_RESP:
+                incrProcessorLong(ProcessorRecord::getTotalResp, (Integer) message.get(ObservedParams.PROCESSOR_ID));
+                break;
+            case ObservedEvents.INCR_RESP_DEAL:
+                dealRespDeal((Integer) message.get(ObservedParams.PROCESSOR_ID), message);
+                break;
+            case ObservedEvents.INCR_ROBOT:
+                incrProcessorInt(ProcessorRecord::getTotalRobot, (Integer) message.get(ObservedParams.PROCESSOR_ID));
+                break;
+            case ObservedEvents.TICK_TIME:
+                dealTick(message);
                 break;
         }
     }

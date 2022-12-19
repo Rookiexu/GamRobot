@@ -1,6 +1,7 @@
 package cn.rookiex.observer;
 
 import com.google.common.collect.Maps;
+import lombok.AllArgsConstructor;
 
 import java.util.Collection;
 import java.util.Map;
@@ -14,6 +15,10 @@ public class UpdateEventImpl implements UpdateEvent {
     private String message;
 
     private final Map<String, Object> map = Maps.newHashMap();
+
+    public UpdateEventImpl(String message){
+        this.message = message;
+    }
 
     @Override
     public String getMessage() {

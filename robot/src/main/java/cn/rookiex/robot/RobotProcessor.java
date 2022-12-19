@@ -1,18 +1,13 @@
 package cn.rookiex.robot;
 
 import cn.rookiex.manager.RobotManager;
+import cn.rookiex.observer.*;
 import cn.rookiex.record.Record;
-import cn.rookiex.observer.Observable;
-import cn.rookiex.observer.ObservedEvents;
-import cn.rookiex.observer.ObservedParams;
-import cn.rookiex.observer.Observer;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -40,6 +35,10 @@ public class RobotProcessor implements Runnable, Observable {
      */
     private Map<String, Object> baseEventMap;
 
+    private UpdateEvent incrEvent = new UpdateEventImpl(ObservedEvents.INCR_COON);
+
+    private UpdateEvent decrEvent = new UpdateEventImpl(ObservedEvents.DECR_COON);
+
     public void setId(int id) {
         this.id = id;
     }
@@ -59,7 +58,7 @@ public class RobotProcessor implements Runnable, Observable {
                 try {
                     if (!robot.isConnect()) {
                         robot.connect();
-                        notify(ObservedEvents.INCR_COON, baseEventMap);
+                        notify(incrEvent);
                     } else {
                         robot.dealRespEvent();
                         robot.dealSendEvent();
@@ -81,10 +80,8 @@ public class RobotProcessor implements Runnable, Observable {
     }
 
     private void initInfoMap() {
-        Map<String,Object> eventMap = Maps.newHashMap();
-        eventMap.put(ObservedParams.PROCESSOR_ID, getId());
-
-        baseEventMap = Collections.unmodifiableMap(eventMap);
+        incrEvent.put(ObservedParams.PROCESSOR_ID, getId());
+        decrEvent.put(ObservedParams.PROCESSOR_ID, getId());
     }
 
     public void setRobotManager(RobotManager robotManager) {
@@ -114,10 +111,10 @@ public class RobotProcessor implements Runnable, Observable {
     }
 
     @Override
-    public void notify(String message, Map<String, Object> infoMap) {
+    public void notify(UpdateEvent message) {
         for (Observer observer : observers) {
             try{
-                observer.update(message, infoMap);
+                observer.update(message);
             }catch (Exception e){
                 log.error(e,e);
             }

@@ -12,6 +12,8 @@ import cn.rookiex.module.stage.ModuleStage;
 import cn.rookiex.module.stage.RunModule;
 import cn.rookiex.observer.ObservedEvents;
 import cn.rookiex.observer.ObservedParams;
+import cn.rookiex.observer.UpdateEvent;
+import cn.rookiex.observer.UpdateEventImpl;
 import com.google.common.collect.Maps;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
@@ -153,9 +155,10 @@ public class Robot {
                 log.error("消息号 : " + id + " ,不存在对应相应handler");
             } else {
                 respEvent.dealResp(poll, this.robotContext);
-                Map<String, Object> eventMap = Maps.newHashMap();
-                eventMap.put(ObservedParams.WAIT_RESP_ID, respEvent.eventId());
-                notify(ObservedEvents.INCR_RESP_DEAL, eventMap);
+
+                UpdateEvent updateEvent = new UpdateEventImpl(ObservedEvents.INCR_RESP_DEAL);
+                updateEvent.put(ObservedParams.WAIT_RESP_ID, respEvent.eventId());
+                notify(updateEvent);
             }
 
             if (waitRespId != 0 && poll.getMsgId() == waitRespId) {
@@ -164,11 +167,11 @@ public class Robot {
         }
     }
 
-    private void notify(String eventType, Map<String, Object> info) {
+    private void notify(UpdateEvent updateEvent) {
         try {
-            info.put(ObservedParams.PROCESSOR_ID, getExecutorId());
+            updateEvent.put(ObservedParams.PROCESSOR_ID, getExecutorId());
             RobotProcessor processor = getRobotContext().getRobotManager().getProcessor(getExecutorId());
-            processor.notify(eventType, info);
+            processor.notify(updateEvent);
         } catch (Exception e) {
             log.error(e, e);
         }
@@ -210,7 +213,6 @@ public class Robot {
     }
 
     private void dealReq0(ReqGameEvent executeEvent) {
-        Map<String, Object> eventMap = Maps.newHashMap();
         executeEvent.dealReq(this.robotContext);
         setReqSendTime(System.currentTimeMillis());
 
@@ -221,11 +223,13 @@ public class Robot {
         } else {
             this.waitRespId = executeEvent.waitId();
         }
-        eventMap.put(ObservedParams.WAIT_RESP_ID, waitRespId);
-        eventMap.put(ObservedParams.REQ_MSG_ID, executeEvent.eventId());
-        eventMap.put(ObservedParams.REQ_MSG_NAME, executeEvent.getClass().getSimpleName());
-        eventMap.put(ObservedParams.IS_SKIP_RESP, skip);
-        notify(ObservedEvents.INCR_SEND, eventMap);
+
+        UpdateEvent updateEvent = new UpdateEventImpl(ObservedEvents.INCR_SEND);
+        updateEvent.put(ObservedParams.WAIT_RESP_ID, waitRespId);
+        updateEvent.put(ObservedParams.REQ_MSG_ID, executeEvent.eventId());
+        updateEvent.put(ObservedParams.REQ_MSG_NAME, executeEvent.getClass().getSimpleName());
+        updateEvent.put(ObservedParams.IS_SKIP_RESP, skip);
+        notify(updateEvent);
     }
 
     private ReqGameEvent getExecuteEvent() {

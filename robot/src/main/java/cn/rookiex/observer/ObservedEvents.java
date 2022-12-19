@@ -11,6 +11,11 @@ public interface ObservedEvents {
     String INCR_COON = "incrCoon";
 
     /**
+     * 断开连接
+     */
+    String DECR_COON = "decrCoon";
+
+    /**
      * 新增登录
      */
     String INCR_LOGIN = "incrLogin";

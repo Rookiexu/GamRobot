@@ -2,10 +2,7 @@ package cn.rookiex.manager;
 
 import cn.rookiex.module.Module;
 import cn.rookiex.module.ModuleManager;
-import cn.rookiex.observer.Observable;
-import cn.rookiex.observer.ObservedEvents;
-import cn.rookiex.observer.ObservedParams;
-import cn.rookiex.observer.Observer;
+import cn.rookiex.observer.*;
 import cn.rookiex.record.ProcessorRecord;
 import cn.rookiex.record.Record;
 import cn.rookiex.record.RecordProcessor;
@@ -111,7 +108,7 @@ public class RobotManager implements Observable {
         int threadCount = getConfig().getThreadCount();
         int robotCount = config.getRobotCount();
 
-        Map<String, Object> event = Maps.newHashMap();
+        UpdateEventImpl updateEvent = new UpdateEventImpl(ObservedEvents.INCR_ROBOT);
         for (int i = 0; i < robotCount; i++) {
             try {
                 Robot robot = robotFactory.newRobot(this);
@@ -130,8 +127,8 @@ public class RobotManager implements Observable {
                 robotInitModules(robot);
                 robotMap.put(robot.getId(), robot);
 
-                event.put(ObservedParams.PROCESSOR_ID, processorId);
-                notify(ObservedEvents.INCR_ROBOT, event);
+                updateEvent.put(ObservedParams.PROCESSOR_ID, processorId);
+                notify(updateEvent);
             } catch (Exception e) {
                 log.info(e, e);
                 System.exit(-1);
@@ -167,10 +164,10 @@ public class RobotManager implements Observable {
     }
 
     @Override
-    public void notify(String message, Map<String, Object> infoMap) {
+    public void notify(UpdateEvent message) {
         for (Observer observer : observers) {
             try{
-                observer.update(message, infoMap);
+                observer.update(message);
             }catch (Exception e){
                 log.error(e, e);
             }
