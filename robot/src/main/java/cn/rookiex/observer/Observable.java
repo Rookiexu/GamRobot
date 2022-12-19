@@ -11,5 +11,6 @@ public interface Observable {
     void remove(Observer o);
 
     void notify(String message, Map<String, Object> infoMap);
+    void notify(UpdateEvent message);
 
 }
