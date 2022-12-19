@@ -49,7 +49,7 @@ public class SimpleMessage implements Message {
     }
 
     @Override
-    public <T> T parseFrom(Class<T> dataClass) {
+    public <T> T parseData(Class<T> dataClass) {
         return dataCodec.decode(data, dataClass);
     }
 }

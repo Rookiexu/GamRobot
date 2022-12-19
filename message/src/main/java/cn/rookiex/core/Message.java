@@ -16,5 +16,5 @@ public interface Message {
 
      void setData(Object data);
 
-    <T> T parseFrom(Class<T> dataClass);
+    <T> T parseData(Class<T> dataClass);
 }
