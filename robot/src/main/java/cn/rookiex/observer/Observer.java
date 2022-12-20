@@ -1,7 +1,5 @@
 package cn.rookiex.observer;
 
-import java.util.Map;
-
 /**
  * 观察者接口
  *
