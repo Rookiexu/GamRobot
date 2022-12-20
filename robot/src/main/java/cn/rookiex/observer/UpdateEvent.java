@@ -7,7 +7,7 @@ import java.util.Map;
  */
 public interface UpdateEvent extends Map<String, Object> {
 
-    String getMessage();
+    String getKey();
 
-    void setMessage(String message);
+    void setKey(String message);
 }

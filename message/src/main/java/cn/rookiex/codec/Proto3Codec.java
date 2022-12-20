@@ -3,8 +3,6 @@ package cn.rookiex.codec;
 import com.google.protobuf.GeneratedMessageV3;
 import lombok.SneakyThrows;
 
-import java.lang.reflect.InvocationTargetException;
-
 
 /**
  * @author rookieX 2022/12/19

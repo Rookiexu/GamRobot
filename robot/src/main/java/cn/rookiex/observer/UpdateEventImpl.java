@@ -21,12 +21,12 @@ public class UpdateEventImpl implements UpdateEvent {
     }
 
     @Override
-    public String getMessage() {
+    public String getKey() {
         return message;
     }
 
     @Override
-    public void setMessage(String message) {
+    public void setKey(String message) {
         this.message = message;
     }
 

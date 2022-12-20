@@ -1,13 +1,12 @@
 package cn.rookiex.record;
 
-import cn.rookiex.observer.ObservedEvents;
-import cn.rookiex.observer.ObservedParams;
-import cn.rookiex.observer.Observer;
-import cn.rookiex.observer.UpdateEvent;
+import cn.rookiex.observer.*;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -18,11 +17,13 @@ import java.util.function.Function;
  */
 @Getter
 @Log4j2
-public class Record implements Observer {
+public class Record implements Observer, Observable {
 
     private long logTime;
 
     private Map<Integer,ProcessorRecord> processorRecordMap = Maps.newHashMap();
+
+    private List<Observer> observableList = Lists.newCopyOnWriteArrayList();
 
     public ProcessorRecord getProcessorRecord(int id){
         ProcessorRecord processorRecord = processorRecordMap.get(id);
@@ -33,35 +34,8 @@ public class Record implements Observer {
     }
 
     @Override
-    public void update(String message, Map<String, Object> info) {
-        switch (message){
-            case ObservedEvents.INCR_COON:
-                incrProcessorInt(ProcessorRecord::getTotalCoon, (Integer) info.get(ObservedParams.PROCESSOR_ID));
-                break;
-            case ObservedEvents.INCR_SEND:
-                dealSend((Integer) info.get(ObservedParams.PROCESSOR_ID), info);
-                dealSpecialMsg(info);
-                break;
-            case ObservedEvents.INCR_RESP:
-                incrProcessorLong(ProcessorRecord::getTotalResp, (Integer) info.get(ObservedParams.PROCESSOR_ID));
-                break;
-            case ObservedEvents.INCR_RESP_DEAL:
-                dealRespDeal((Integer) info.get(ObservedParams.PROCESSOR_ID), info);
-                break;
-            case ObservedEvents.INCR_ROBOT:
-                incrProcessorInt(ProcessorRecord::getTotalRobot, (Integer) info.get(ObservedParams.PROCESSOR_ID));
-                break;
-            case ObservedEvents.TICK_TIME:
-                dealTick(info);
-                break;
-        }
-
-        // todo 添加对自定义事件的监听处理,by观察者
-    }
-
-    @Override
     public void update(UpdateEvent message) {
-        switch (message.getMessage()){
+        switch (message.getKey()){
             case ObservedEvents.INCR_COON:
                 incrProcessorInt(ProcessorRecord::getTotalCoon, (Integer) message.get(ObservedParams.PROCESSOR_ID));
                 break;
@@ -82,6 +56,8 @@ public class Record implements Observer {
                 dealTick(message);
                 break;
         }
+
+        notify(message);
     }
 
     private void dealRespDeal(Integer id, Map<String, Object> info) {
@@ -102,6 +78,7 @@ public class Record implements Observer {
     private void dealTick(Map<String, Object> info) {
         long cur = (long) info.get(ObservedParams.CUR_MS);
         if (cur - logTime > 5000) {
+            logTime = cur;
             log.info("压测执行进度 -----------------------------");
             for (Integer id : processorRecordMap.keySet()) {
                 ProcessorRecord processorRecord = processorRecordMap.get(id);
@@ -158,5 +135,22 @@ public class Record implements Observer {
     public void incrProcessorLong(Function<ProcessorRecord, AtomicLong> function, int id){
         ProcessorRecord processorRecord = getProcessorRecord(id);
         function.apply(processorRecord).incrementAndGet();
+    }
+
+    @Override
+    public void register(Observer o) {
+        observableList.add(o);
+    }
+
+    @Override
+    public void remove(Observer o) {
+        observableList.remove(o);
+    }
+
+    @Override
+    public void notify(UpdateEvent message) {
+        for (Observer observer : observableList) {
+            observer.update(message);
+        }
     }
 }

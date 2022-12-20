@@ -8,7 +8,6 @@ import java.util.Map;
  * @author rookieX 2022/12/10
  */
 public interface Observer {
-    void update(String message, Map<String, Object> info);
 
     void update(UpdateEvent message);
 }

@@ -1,6 +1,5 @@
 package cn.rookiex.observer;
 
-import java.util.Map;
 
 /**
  * @author rookieX 2022/12/10
