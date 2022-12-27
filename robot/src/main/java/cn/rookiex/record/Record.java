@@ -1,6 +1,8 @@
 package cn.rookiex.record;
 
 import cn.rookiex.observer.*;
+import cn.rookiex.observer.observed.ObservedEvents;
+import cn.rookiex.observer.observed.ObservedParams;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.Getter;

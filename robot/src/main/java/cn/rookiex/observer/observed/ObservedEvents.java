@@ -1,4 +1,4 @@
-package cn.rookiex.observer;
+package cn.rookiex.observer.observed;
 
 /**
  * @author rookieX 2022/12/10

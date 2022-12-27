@@ -2,6 +2,8 @@ package cn.rookiex.record;
 
 import cn.hutool.cron.CronUtil;
 import cn.rookiex.observer.*;
+import cn.rookiex.observer.observed.ObservedEvents;
+import cn.rookiex.observer.observed.ObservedParams;
 import com.google.common.collect.Lists;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;

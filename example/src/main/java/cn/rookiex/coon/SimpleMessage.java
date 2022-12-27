@@ -4,15 +4,18 @@ package cn.rookiex.coon;
 import cn.rookiex.codec.DataCodec;
 import cn.rookiex.codec.StringCodec;
 import cn.rookiex.core.Message;
+import cn.rookiex.observer.observed.MsgInfo;
 import lombok.NoArgsConstructor;
 
 /**
  * @author rookieX 2022/12/14
  */
 @NoArgsConstructor
-public class SimpleMessage implements Message {
+public class SimpleMessage implements Message, MsgInfo {
 
     private int messageId;
+
+    private long createTime;
 
     private byte[] data;
 
@@ -21,6 +24,7 @@ public class SimpleMessage implements Message {
     public SimpleMessage(int message, String msgStr){
         this.messageId = message;
         this.data = dataCodec.encode(msgStr);
+        this.createTime = System.currentTimeMillis();
     }
 
     @Override
@@ -51,5 +55,15 @@ public class SimpleMessage implements Message {
     @Override
     public <T> T parseData(Class<T> dataClass) {
         return dataCodec.decode(data, dataClass);
+    }
+
+    @Override
+    public long getCreateTime() {
+        return this.createTime;
+    }
+
+    @Override
+    public void setCreateTime(long time) {
+        this.createTime = time;
     }
 }

@@ -2,6 +2,8 @@ package cn.rookiex.robot;
 
 import cn.rookiex.manager.RobotManager;
 import cn.rookiex.observer.*;
+import cn.rookiex.observer.observed.ObservedEvents;
+import cn.rookiex.observer.observed.ObservedParams;
 import cn.rookiex.record.Record;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;

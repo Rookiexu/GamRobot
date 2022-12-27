@@ -3,6 +3,8 @@ package cn.rookiex.manager;
 import cn.rookiex.module.Module;
 import cn.rookiex.module.ModuleManager;
 import cn.rookiex.observer.*;
+import cn.rookiex.observer.observed.ObservedEvents;
+import cn.rookiex.observer.observed.ObservedParams;
 import cn.rookiex.record.ProcessorRecord;
 import cn.rookiex.record.Record;
 import cn.rookiex.record.RecordProcessor;

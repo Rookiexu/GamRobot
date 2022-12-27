@@ -1,4 +1,4 @@
-package cn.rookiex.observer;
+package cn.rookiex.observer.observed;
 
 /**
  * @author rookieX 2022/12/10
@@ -35,4 +35,19 @@ public interface ObservedParams {
      * 当前毫秒时
      */
     String CUR_MS = "curMs";
+
+    /**
+     * 消息返回时间
+     */
+    String RESP_TIME = "respTime";
+
+    /**
+     * 消息收到消耗时间
+     */
+    String RESP_COST = "respCost";
+
+    /**
+     * 返回消息處理完成消耗时间2
+     */
+    String RESP_DEAL_COST = "respDealCost";
 }

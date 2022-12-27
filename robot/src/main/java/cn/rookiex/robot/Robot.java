@@ -10,18 +10,17 @@ import cn.rookiex.module.Module;
 import cn.rookiex.module.ModuleManager;
 import cn.rookiex.module.stage.ModuleStage;
 import cn.rookiex.module.stage.RunModule;
-import cn.rookiex.observer.ObservedEvents;
-import cn.rookiex.observer.ObservedParams;
+import cn.rookiex.observer.observed.MsgInfo;
+import cn.rookiex.observer.observed.ObservedEvents;
+import cn.rookiex.observer.observed.ObservedParams;
 import cn.rookiex.observer.UpdateEvent;
 import cn.rookiex.observer.UpdateEventImpl;
-import com.google.common.collect.Maps;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.util.AttributeKey;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -104,7 +103,9 @@ public class Robot {
     private int curEventIdx;
 
     private List<ReqGameEvent> curEventList;
+
     private long reqSendTime;
+
     private ChannelInitializer channelInitializer;
 
 
@@ -156,15 +157,29 @@ public class Robot {
             } else {
                 respEvent.dealResp(poll, this.robotContext);
 
-                UpdateEvent updateEvent = new UpdateEventImpl(ObservedEvents.INCR_RESP_DEAL);
-                updateEvent.put(ObservedParams.WAIT_RESP_ID, respEvent.eventId());
-                notify(updateEvent);
+                dealRespEvent(poll, respEvent);
             }
 
             if (waitRespId != 0 && poll.getMsgId() == waitRespId) {
-                waitRespId = 0;
+                setWaitRespId(0);
+                setReqSendTime(0);
             }
         }
+    }
+
+    private void dealRespEvent(Message poll, RespGameEvent respEvent) {
+        UpdateEvent updateEvent = new UpdateEventImpl(ObservedEvents.INCR_RESP_DEAL);
+        updateEvent.put(ObservedParams.WAIT_RESP_ID, respEvent.eventId());
+        if (poll instanceof MsgInfo){
+            long createTime = ((MsgInfo) poll).getCreateTime();
+            updateEvent.put(ObservedParams.RESP_TIME, createTime);
+            if (waitRespId != 0 && poll.getMsgId() == waitRespId) {
+                long reqSendTime = getReqSendTime();
+                updateEvent.put(ObservedParams.RESP_COST, createTime - reqSendTime);
+                updateEvent.put(ObservedParams.RESP_DEAL_COST, createTime - System.currentTimeMillis());
+            }
+        }
+        notify(updateEvent);
     }
 
     private void notify(UpdateEvent updateEvent) {
@@ -213,8 +228,8 @@ public class Robot {
     }
 
     private void dealReq0(ReqGameEvent executeEvent) {
-        executeEvent.dealReq(this.robotContext);
         setReqSendTime(System.currentTimeMillis());
+        executeEvent.dealReq(this.robotContext);
 
         boolean skip = this.robotContext.isSkip();
         if (skip) {
