@@ -65,12 +65,19 @@ public class Record implements Observer, Observable {
     private void dealRespDeal(Integer id, Map<String, Object> info) {
         incrProcessorLong(ProcessorRecord::getTotalRespDeal, id);
 
+        //处理返回消息
         ProcessorRecord processorRecord = getProcessorRecord(id);
         int waitId = (int) info.get(ObservedParams.WAIT_RESP_ID);
         AtomicInteger old = processorRecord.getWaitMsg().get(waitId);
         if (old != null){
             old.decrementAndGet();
         }
+
+        //响应耗时记录
+        long respTime = (long) info.get(ObservedParams.RESP_TIME);
+        long respCost = (long) info.get(ObservedParams.RESP_COST);
+        long respDealCost = (long) info.get(ObservedParams.RESP_DEAL_COST);
+        //todo 优化响应计时
     }
 
     private void dealSpecialMsg(Map<String, Object> info) {
