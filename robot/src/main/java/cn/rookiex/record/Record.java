@@ -5,13 +5,12 @@ import cn.rookiex.observer.observed.ObservedEvents;
 import cn.rookiex.observer.observed.ObservedParams;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.function.Function;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author rookieX 2022/12/9
@@ -20,123 +19,72 @@ import java.util.function.Function;
 @Log4j2
 public class Record implements Observer{
 
-    private long logTime;
+    private List<WindowRecord> windowList;
 
-    private Map<Integer,ProcessorRecord> processorRecordMap = Maps.newHashMap();
+    private int windowIndex;
 
-    public ProcessorRecord getProcessorRecord(int id){
-        ProcessorRecord processorRecord = processorRecordMap.get(id);
-        if (processorRecord == null){
-            log.error("压测机器人执行线程不存在 : " + id, new Throwable());
+    private int windowWide;
+
+    private int windowSize;
+
+    private long windowsTime;
+
+    private Set<Integer> processorIds =  Sets.newHashSet();
+
+    public void initWindow(int windowSize, int windowWide){
+        //60个 5秒
+        windowList = Lists.newArrayListWithCapacity(windowSize);
+        for (int i = 0; i < windowSize; i++) {
+            WindowRecord windowRecord = new WindowRecord();
+            windowRecord.init(processorIds);
+            windowList.add(windowRecord);
         }
-        return processorRecord;
+
+        this.windowWide = windowWide;
+        this.windowSize = windowSize;
     }
+
+    /**
+     * 单线程,所以不需要锁
+     * @return
+     */
+    public WindowRecord getCurWindows(){
+        long l = System.currentTimeMillis();
+        if (windowsTime == 0){
+            windowsTime = l;
+            windowIndex = 0;
+        }else {
+            while (l - windowsTime > windowWide){
+                windowIndex++;
+                windowsTime += windowWide;
+            }
+        }
+
+        return windowList.get(windowIndex % windowSize);
+    }
+
+
 
     @Override
     public void update(UpdateEvent message) {
         switch (message.getKey()){
             case ObservedEvents.INCR_COON:
-                incrProcessorInt(ProcessorRecord::getTotalCoon, (Integer) message.get(ObservedParams.PROCESSOR_ID));
+                getCurWindows().incrProcessorInt(ProcessorRecord::getTotalCoon, (Integer) message.get(ObservedParams.PROCESSOR_ID));
                 break;
             case ObservedEvents.INCR_SEND:
-                dealSend((Integer) message.get(ObservedParams.PROCESSOR_ID), message);
+                getCurWindows().dealSend((Integer) message.get(ObservedParams.PROCESSOR_ID), message);
                 break;
             case ObservedEvents.INCR_RESP:
-                incrProcessorLong(ProcessorRecord::getTotalResp, (Integer) message.get(ObservedParams.PROCESSOR_ID));
+                getCurWindows().incrProcessorLong(ProcessorRecord::getTotalResp, (Integer) message.get(ObservedParams.PROCESSOR_ID));
                 break;
             case ObservedEvents.INCR_RESP_DEAL:
-                dealRespDeal((Integer) message.get(ObservedParams.PROCESSOR_ID), message);
+                getCurWindows().dealRespDeal((Integer) message.get(ObservedParams.PROCESSOR_ID), message);
                 break;
             case ObservedEvents.INCR_ROBOT:
-                incrProcessorInt(ProcessorRecord::getTotalRobot, (Integer) message.get(ObservedParams.PROCESSOR_ID));
-                break;
-            case ObservedEvents.TICK_TIME:
-                dealTick(message);
+                getCurWindows().incrProcessorInt(ProcessorRecord::getTotalRobot, (Integer) message.get(ObservedParams.PROCESSOR_ID));
                 break;
         }
     }
 
-    private void dealRespDeal(Integer id, Map<String, Object> info) {
-        incrProcessorLong(ProcessorRecord::getTotalRespDeal, id);
 
-        //处理返回消息
-        ProcessorRecord processorRecord = getProcessorRecord(id);
-        int waitId = (int) info.get(ObservedParams.WAIT_RESP_ID);
-        AtomicInteger old = processorRecord.getWaitMsg().get(waitId);
-        if (old != null){
-            old.decrementAndGet();
-        }
-
-        //响应耗时记录
-        long respTime = (long) info.get(ObservedParams.RESP_TIME);
-        long respCost = (long) info.get(ObservedParams.RESP_COST);
-        long respDealCost = (long) info.get(ObservedParams.RESP_DEAL_COST);
-        //todo 优化响应计时
-    }
-
-    private void dealSpecialMsg(Map<String, Object> info) {
-        //todo 扩展对特殊消息的处理,比如登录等
-    }
-
-    private void dealTick(Map<String, Object> info) {
-        long cur = (long) info.get(ObservedParams.CUR_MS);
-        if (cur - logTime > 5000) {
-            logTime = cur;
-            log.info("压测执行进度 -----------------------------");
-            for (Integer id : processorRecordMap.keySet()) {
-                ProcessorRecord processorRecord = processorRecordMap.get(id);
-                String s = processorRecord.toString();
-                log.info("执行器 : " + id + " ,执行情况 : " + s);
-            }
-        }
-    }
-
-    private void dealSend(Integer id, Map<String, Object> info) {
-        incrProcessorLong(ProcessorRecord::getTotalSend, id);
-
-        ProcessorRecord processorRecord = getProcessorRecord(id);
-        boolean isSkip = (boolean) info.get(ObservedParams.IS_SKIP_RESP);
-        if (!isSkip){
-            int waitId = (int) info.get(ObservedParams.WAIT_RESP_ID);
-            AtomicInteger wait = processorRecord.getWaitMsg().putIfAbsent(waitId, new AtomicInteger());
-            if (wait == null){
-                wait = processorRecord.getWaitMsg().get(waitId);
-            }
-            AtomicInteger send = processorRecord.getSendMsg().putIfAbsent(waitId, new AtomicInteger());
-            if (send == null){
-                send = processorRecord.getSendMsg().get(waitId);
-            }
-            wait.incrementAndGet();
-            send.incrementAndGet();
-        }
-    }
-
-    public int getTotalInt(Function<ProcessorRecord, AtomicInteger> function){
-        int total = 0;
-        for (ProcessorRecord value : getProcessorRecordMap().values()) {
-            AtomicInteger apply = function.apply(value);
-            total += apply.get();
-        }
-        return total;
-    }
-
-    public long getTotalLong(Function<ProcessorRecord, AtomicLong> function){
-        long total = 0;
-        for (ProcessorRecord value : getProcessorRecordMap().values()) {
-            AtomicLong apply = function.apply(value);
-            total += apply.get();
-        }
-        return total;
-    }
-
-
-    public void incrProcessorInt(Function<ProcessorRecord, AtomicInteger> function, int id){
-        ProcessorRecord processorRecord = getProcessorRecord(id);
-        function.apply(processorRecord).incrementAndGet();
-    }
-
-    public void incrProcessorLong(Function<ProcessorRecord, AtomicLong> function, int id){
-        ProcessorRecord processorRecord = getProcessorRecord(id);
-        function.apply(processorRecord).incrementAndGet();
-    }
 }
