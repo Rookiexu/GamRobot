@@ -16,20 +16,26 @@ import java.util.function.Function;
  */
 @Log4j2
 @Getter
-public class WindowRecord{
+public class WindowRecord {
 
-    private Map<Integer,ProcessorRecord> processorRecordMap = Maps.newHashMap();
+    private Map<Integer, ProcessorRecord> processorRecordMap = Maps.newHashMap();
 
+    private Set<Integer> processorIds;
 
     public void init(Set<Integer> processorIds) {
-        for (Integer processorId : processorIds) {
+        this.processorIds = processorIds;
+        init0();
+    }
+
+    private void init0() {
+        for (Integer processorId : this.processorIds) {
             processorRecordMap.put(processorId, new ProcessorRecord());
         }
     }
 
-    public ProcessorRecord getProcessorRecord(int id){
+    public ProcessorRecord getProcessorRecord(int id) {
         ProcessorRecord processorRecord = processorRecordMap.get(id);
-        if (processorRecord == null){
+        if (processorRecord == null) {
             log.error("压测机器人执行线程不存在 : " + id, new Throwable());
         }
         return processorRecord;
@@ -42,15 +48,13 @@ public class WindowRecord{
         ProcessorRecord processorRecord = getProcessorRecord(id);
         int waitId = (int) info.get(ObservedParams.WAIT_RESP_ID);
         AtomicInteger old = processorRecord.getWaitMsg().get(waitId);
-        if (old != null){
+        if (old != null) {
             old.decrementAndGet();
         }
 
         //响应耗时记录
-        long respTime = (long) info.get(ObservedParams.RESP_TIME);
-        long respCost = (long) info.get(ObservedParams.RESP_COST);
-        long respDealCost = (long) info.get(ObservedParams.RESP_DEAL_COST);
-        //todo 优化响应计时
+        int respCost = (int) info.get(ObservedParams.RESP_COST);
+        processorRecord.getRespCost().addCost(respCost);
     }
 
     private void dealSpecialMsg(Map<String, Object> info) {
@@ -72,14 +76,14 @@ public class WindowRecord{
 
         ProcessorRecord processorRecord = getProcessorRecord(id);
         boolean isSkip = (boolean) info.get(ObservedParams.IS_SKIP_RESP);
-        if (!isSkip){
+        if (!isSkip) {
             int waitId = (int) info.get(ObservedParams.WAIT_RESP_ID);
             AtomicInteger wait = processorRecord.getWaitMsg().putIfAbsent(waitId, new AtomicInteger());
-            if (wait == null){
+            if (wait == null) {
                 wait = processorRecord.getWaitMsg().get(waitId);
             }
             AtomicInteger send = processorRecord.getSendMsg().putIfAbsent(waitId, new AtomicInteger());
-            if (send == null){
+            if (send == null) {
                 send = processorRecord.getSendMsg().get(waitId);
             }
             wait.incrementAndGet();
@@ -87,7 +91,7 @@ public class WindowRecord{
         }
     }
 
-    public int getTotalInt(Function<ProcessorRecord, AtomicInteger> function){
+    public int getTotalInt(Function<ProcessorRecord, AtomicInteger> function) {
         int total = 0;
         for (ProcessorRecord value : getProcessorRecordMap().values()) {
             AtomicInteger apply = function.apply(value);
@@ -96,7 +100,7 @@ public class WindowRecord{
         return total;
     }
 
-    public long getTotalLong(Function<ProcessorRecord, AtomicLong> function){
+    public long getTotalLong(Function<ProcessorRecord, AtomicLong> function) {
         long total = 0;
         for (ProcessorRecord value : getProcessorRecordMap().values()) {
             AtomicLong apply = function.apply(value);
@@ -106,14 +110,18 @@ public class WindowRecord{
     }
 
 
-    public void incrProcessorInt(Function<ProcessorRecord, AtomicInteger> function, int id){
+    public void incrProcessorInt(Function<ProcessorRecord, AtomicInteger> function, int id) {
         ProcessorRecord processorRecord = getProcessorRecord(id);
         function.apply(processorRecord).incrementAndGet();
     }
 
-    public void incrProcessorLong(Function<ProcessorRecord, AtomicLong> function, int id){
+    public void incrProcessorLong(Function<ProcessorRecord, AtomicLong> function, int id) {
         ProcessorRecord processorRecord = getProcessorRecord(id);
         function.apply(processorRecord).incrementAndGet();
     }
 
+    public void clear() {
+        getProcessorRecordMap().clear();
+        init0();
+    }
 }

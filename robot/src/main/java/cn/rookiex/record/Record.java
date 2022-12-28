@@ -49,18 +49,24 @@ public class Record implements Observer{
      * @return
      */
     public WindowRecord getCurWindows(){
+        boolean isChange = false;
         long l = System.currentTimeMillis();
         if (windowsTime == 0){
             windowsTime = l;
             windowIndex = 0;
+            isChange = true;
         }else {
             while (l - windowsTime > windowWide){
                 windowIndex++;
                 windowsTime += windowWide;
+                isChange = true;
             }
         }
-
-        return windowList.get(windowIndex % windowSize);
+        WindowRecord windowRecord = windowList.get(windowIndex % windowSize);
+        if (isChange){
+            windowRecord.clear();
+        }
+        return windowRecord;
     }
 
 

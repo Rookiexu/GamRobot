@@ -29,4 +29,6 @@ public class ProcessorRecord {
     private final Map<Integer, AtomicInteger> waitMsg = Maps.newConcurrentMap();
 
     private final Map<Integer, AtomicInteger> sendMsg = Maps.newConcurrentMap();
+
+    private final RespondBucket respCost = new RespondBucket();
 }
