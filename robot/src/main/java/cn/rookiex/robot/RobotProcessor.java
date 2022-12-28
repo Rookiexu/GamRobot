@@ -20,7 +20,7 @@ import java.util.concurrent.ExecutorService;
  */
 @Getter
 @Log4j2
-public class RobotProcessor implements Runnable, Observable {
+public class RobotProcessor implements Runnable{
 
     private int id;
 
@@ -29,8 +29,6 @@ public class RobotProcessor implements Runnable, Observable {
     private final List<Robot> robotList = Lists.newArrayList();
 
     private RobotManager robotManager;
-
-    private final Set<Observer> observers = Sets.newConcurrentHashSet();
 
     /**
      * 提供初始加载的基础信息,只能读,不能写
@@ -60,7 +58,7 @@ public class RobotProcessor implements Runnable, Observable {
                 try {
                     if (!robot.isConnect()) {
                         robot.connect();
-                        notify(incrEvent);
+                        robotManager.getRecordProcessor().notify(incrEvent);
                     } else {
                         robot.dealRespEvent();
                         robot.dealSendEvent();
@@ -94,32 +92,8 @@ public class RobotProcessor implements Runnable, Observable {
         return robotManager;
     }
 
-    public Record getRobotRecord(){
-        return robotManager.getRecord();
-    }
-
     public void start() {
         this.getExecutorService().submit(this);
     }
 
-    @Override
-    public void register(Observer o) {
-        observers.add(o);
-    }
-
-    @Override
-    public void remove(Observer o) {
-        observers.remove(o);
-    }
-
-    @Override
-    public void notify(UpdateEvent message) {
-        for (Observer observer : observers) {
-            try{
-                observer.update(message);
-            }catch (Exception e){
-                log.error(e,e);
-            }
-        }
-    }
 }

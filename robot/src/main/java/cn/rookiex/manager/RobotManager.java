@@ -32,11 +32,9 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 @Log4j2
 @Getter
-public class RobotManager implements Observable {
+public class RobotManager {
 
     private final RobotConfig config = new RobotConfig();
-
-    private final Record record = new Record();
 
     private final  ModuleManager moduleManager = new ModuleManager();
 
@@ -69,15 +67,12 @@ public class RobotManager implements Observable {
             robotProcessor.setId(i);
             robotProcessor.setExecutorService(singleThreadExecutor);
             robotProcessor.setRobotManager(this);
-            robotProcessor.register(record);
-            record.getProcessorRecordMap().put(i, new ProcessorRecord());
             processorMap.put(i, robotProcessor);
         }
 
         log.info("加载压测机器人完成,当前执行数 : " + processorMap.size());
-
         this.recordProcessor = new RecordProcessor();
-        recordProcessor.register(record);
+        this.recordProcessor.setRobotManager(this);
 
         log.info(this.config);
     }
@@ -130,7 +125,7 @@ public class RobotManager implements Observable {
                 robotMap.put(robot.getId(), robot);
 
                 updateEvent.put(ObservedParams.PROCESSOR_ID, processorId);
-                notify(updateEvent);
+                recordProcessor.notify(updateEvent);
             } catch (Exception e) {
                 log.info(e, e);
                 System.exit(-1);
@@ -155,24 +150,11 @@ public class RobotManager implements Observable {
         this.moduleManager.init();
     }
 
-    @Override
-    public void register(Observer o) {
-        observers.add(o);
-    }
-
-    @Override
-    public void remove(Observer o) {
-        observers.remove(o);
-    }
-
-    @Override
-    public void notify(UpdateEvent message) {
-        for (Observer observer : observers) {
-            try{
-                observer.update(message);
-            }catch (Exception e){
-                log.error(e, e);
-            }
+    public void initRecord() {
+        Record record = new Record();
+        for (Integer id : processorMap.keySet()) {
+            record.getProcessorRecordMap().put(id, new ProcessorRecord());
         }
+        this.getRecordProcessor().register(record);
     }
 }

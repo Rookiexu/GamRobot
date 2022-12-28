@@ -31,6 +31,7 @@ public class RobotServer {
         robotManager.initProcessor();
         robotManager.initModules();
         robotManager.initRobot(new DefaultRobotFactory());
+        robotManager.initRecord();
     }
 
     public RobotManager getRobotManager() {

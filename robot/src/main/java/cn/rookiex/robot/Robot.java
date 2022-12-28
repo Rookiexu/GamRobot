@@ -179,17 +179,12 @@ public class Robot {
                 updateEvent.put(ObservedParams.RESP_DEAL_COST, createTime - System.currentTimeMillis());
             }
         }
-        notify(updateEvent);
+        notify0(updateEvent);
     }
 
-    private void notify(UpdateEvent updateEvent) {
-        try {
-            updateEvent.put(ObservedParams.PROCESSOR_ID, getExecutorId());
-            RobotProcessor processor = getRobotContext().getRobotManager().getProcessor(getExecutorId());
-            processor.notify(updateEvent);
-        } catch (Exception e) {
-            log.error(e, e);
-        }
+    private void notify0(UpdateEvent updateEvent) {
+        updateEvent.put(ObservedParams.PROCESSOR_ID, getExecutorId());
+        getRobotManager().getRecordProcessor().notify(updateEvent);
     }
 
     private RespGameEvent getRespEvent(int id) {
@@ -244,7 +239,7 @@ public class Robot {
         updateEvent.put(ObservedParams.REQ_MSG_ID, executeEvent.eventId());
         updateEvent.put(ObservedParams.REQ_MSG_NAME, executeEvent.getClass().getSimpleName());
         updateEvent.put(ObservedParams.IS_SKIP_RESP, skip);
-        notify(updateEvent);
+        notify0(updateEvent);
     }
 
     private ReqGameEvent getExecuteEvent() {

@@ -8,7 +8,6 @@ import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -19,13 +18,11 @@ import java.util.function.Function;
  */
 @Getter
 @Log4j2
-public class Record implements Observer, Observable {
+public class Record implements Observer{
 
     private long logTime;
 
     private Map<Integer,ProcessorRecord> processorRecordMap = Maps.newHashMap();
-
-    private List<Observer> observableList = Lists.newCopyOnWriteArrayList();
 
     public ProcessorRecord getProcessorRecord(int id){
         ProcessorRecord processorRecord = processorRecordMap.get(id);
@@ -43,7 +40,6 @@ public class Record implements Observer, Observable {
                 break;
             case ObservedEvents.INCR_SEND:
                 dealSend((Integer) message.get(ObservedParams.PROCESSOR_ID), message);
-                dealSpecialMsg(message);
                 break;
             case ObservedEvents.INCR_RESP:
                 incrProcessorLong(ProcessorRecord::getTotalResp, (Integer) message.get(ObservedParams.PROCESSOR_ID));
@@ -58,8 +54,6 @@ public class Record implements Observer, Observable {
                 dealTick(message);
                 break;
         }
-
-        notify(message);
     }
 
     private void dealRespDeal(Integer id, Map<String, Object> info) {
@@ -144,22 +138,5 @@ public class Record implements Observer, Observable {
     public void incrProcessorLong(Function<ProcessorRecord, AtomicLong> function, int id){
         ProcessorRecord processorRecord = getProcessorRecord(id);
         function.apply(processorRecord).incrementAndGet();
-    }
-
-    @Override
-    public void register(Observer o) {
-        observableList.add(o);
-    }
-
-    @Override
-    public void remove(Observer o) {
-        observableList.remove(o);
-    }
-
-    @Override
-    public void notify(UpdateEvent message) {
-        for (Observer observer : observableList) {
-            observer.update(message);
-        }
     }
 }
