@@ -153,8 +153,8 @@ public class RobotManager {
     public void initRecord() {
         Record record = new Record();
         record.getProcessorIds().addAll(processorMap.keySet());
-        //60个窗口,5秒长度
-        record.initWindow(60, 5000);
+        //60个窗口,10秒长度
+        record.initWindow(40, 30000);
         this.getRecordProcessor().register(record);
     }
 }

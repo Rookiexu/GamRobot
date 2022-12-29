@@ -1,11 +1,8 @@
 package cn.rookiex.record;
 
-import cn.hutool.Hutool;
-import cn.hutool.cron.CronUtil;
 import cn.rookiex.manager.RobotManager;
 import cn.rookiex.observer.*;
 import cn.rookiex.observer.observed.ObservedEvents;
-import cn.rookiex.observer.observed.ObservedParams;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 import lombok.Getter;
@@ -33,20 +30,27 @@ public class RecordProcessor implements Runnable, Observable {
 
     @Override
     public void run() {
+        int i = 0;
+        log.info("记录线程开始执行");
         while (!robotManager.isStop()){
-            UpdateEvent poll = eventQue.poll();
-            if (poll != null){
-                for (Observer observer : observers) {
-                    observer.update(poll);
+            try {
+                UpdateEvent poll = eventQue.poll();
+                if (poll != null) {
+                    i++;
+                    for (Observer observer : observers) {
+                        observer.update(poll);
+                        if (observer instanceof Record) {
+                            if (i % 5000 == 0) {
+                                ((Record) observer).logInfo();
+                            }
+                        }
+                    }
                 }
-            }else {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            }catch (Exception e){
+                log.error(e,e);
             }
         }
+        log.info("记录线程执行结束退出");
     }
 
     @Override
@@ -61,7 +65,7 @@ public class RecordProcessor implements Runnable, Observable {
 
     @Override
     public void notify(UpdateEvent message) {
-        eventQue.add(message);
+        eventQue.offer(message);
     }
 
     public void start() {

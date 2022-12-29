@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 /**
  * @author rookieX 2022/12/14
  */
-@NoArgsConstructor
 public class SimpleMessage implements Message, MsgInfo {
 
     private int messageId;
@@ -24,6 +23,10 @@ public class SimpleMessage implements Message, MsgInfo {
     public SimpleMessage(int message, String msgStr){
         this.messageId = message;
         this.data = dataCodec.encode(msgStr);
+        this.createTime = System.currentTimeMillis();
+    }
+
+    public SimpleMessage(){
         this.createTime = System.currentTimeMillis();
     }
 

@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -53,23 +54,10 @@ public class WindowRecord {
         }
 
         //响应耗时记录
-        int respCost = (int) info.get(ObservedParams.RESP_COST);
-        processorRecord.getRespCost().addCost(respCost);
+        long respCost = (long) info.get(ObservedParams.RESP_COST);
+        processorRecord.getRespCost().addCost((int) respCost);
     }
 
-    private void dealSpecialMsg(Map<String, Object> info) {
-        //todo 扩展对特殊消息的处理,比如登录等
-    }
-
-    public void dealTick(Map<String, Object> info) {
-        long cur = (long) info.get(ObservedParams.CUR_MS);
-        log.info("压测执行进度 -----------------------------");
-        for (Integer id : processorRecordMap.keySet()) {
-            ProcessorRecord processorRecord = processorRecordMap.get(id);
-            String s = processorRecord.toString();
-            log.info("执行器 : " + id + " ,执行情况 : " + s);
-        }
-    }
 
     public void dealSend(Integer id, Map<String, Object> info) {
         incrProcessorLong(ProcessorRecord::getTotalSend, id);
@@ -123,5 +111,71 @@ public class WindowRecord {
     public void clear() {
         getProcessorRecordMap().clear();
         init0();
+    }
+
+    public String getLogInfo(){
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("totalRobot").append(" : ").append(getTotalInt(ProcessorRecord::getTotalRobot)).append(", ");
+        builder.append("totalResp").append(" : ").append(getTotalLong(ProcessorRecord::getTotalRespDeal)).append(", ");
+        builder.append("totalSend").append(" : ").append(getTotalLong(ProcessorRecord::getTotalSend)).append(", ");
+
+        RespondBucket respondBucket = mergeRespondBucket();
+        builder.append("avgResp").append(" : ").append(respondBucket.getAvgResp()).append(", ");
+        builder.append("9999Resp").append(" : ").append(respondBucket.getRespTime(9999)).append(", ");
+        builder.append("999Resp").append(" : ").append(respondBucket.getRespTime(9990)).append(", ");
+        builder.append("99Resp").append(" : ").append(respondBucket.getRespTime(9900)).append(", ");
+        builder.append("slowRespCount").append(" : ").append(respondBucket.getSlowRespCount());
+
+
+
+        return builder.toString();
+    }
+
+    public void sum(WindowRecord record) {
+        Map<Integer, ProcessorRecord> processorRecordMap = record.getProcessorRecordMap();
+        for (Integer id : processorRecordMap.keySet()) {
+            ProcessorRecord from = processorRecordMap.get(id);
+            ProcessorRecord to = getProcessorRecordMap().get(id);
+            if (to == null){
+                to = new ProcessorRecord();
+                getProcessorRecordMap().put(id, to);
+            }
+
+            merge(from.getSendMsg(), to.getSendMsg());
+            merge(from.getWaitMsg(), to.getWaitMsg());
+            mergeInteger(from.getRespCost().getCostBucket(), to.getRespCost().getCostBucket());
+            to.getTotalCoon().addAndGet(from.getTotalCoon().get());
+            to.getTotalLogin().addAndGet(from.getTotalLogin().get());
+            to.getTotalRobot().addAndGet(from.getTotalRobot().get());
+            to.getTotalResp().addAndGet(from.getTotalResp().get());
+            to.getTotalRespDeal().addAndGet(from.getTotalRespDeal().get());
+            to.getTotalSend().addAndGet(from.getTotalSend().get());
+        }
+    }
+
+    private void merge(Map<Integer, AtomicInteger> from, Map<Integer, AtomicInteger> to){
+        for (Integer id : from.keySet()) {
+            to.merge(id, from.get(id), (old, new0) ->{
+                old.addAndGet(new0.get());
+                return old;
+            });
+        }
+    }
+
+    private void mergeInteger(Map<Integer, Integer> from, Map<Integer, Integer> to){
+        for (Integer id : from.keySet()) {
+            to.merge(id, from.get(id), Integer::sum);
+        }
+    }
+
+
+    private RespondBucket mergeRespondBucket(){
+        RespondBucket respondBucket = new RespondBucket();
+        Collection<ProcessorRecord> values = getProcessorRecordMap().values();
+        for (ProcessorRecord value : values) {
+            mergeInteger(value.getRespCost().getCostBucket(), respondBucket.getCostBucket());
+        }
+        return respondBucket;
     }
 }

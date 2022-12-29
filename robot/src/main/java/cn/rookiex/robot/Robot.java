@@ -176,7 +176,7 @@ public class Robot {
             if (waitRespId != 0 && poll.getMsgId() == waitRespId) {
                 long reqSendTime = getReqSendTime();
                 updateEvent.put(ObservedParams.RESP_COST, createTime - reqSendTime);
-                updateEvent.put(ObservedParams.RESP_DEAL_COST, createTime - System.currentTimeMillis());
+                updateEvent.put(ObservedParams.RESP_DEAL_COST, System.currentTimeMillis() - createTime);
             }
         }
         notify0(updateEvent);

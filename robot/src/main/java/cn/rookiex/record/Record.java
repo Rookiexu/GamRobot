@@ -4,7 +4,6 @@ import cn.rookiex.observer.*;
 import cn.rookiex.observer.observed.ObservedEvents;
 import cn.rookiex.observer.observed.ObservedParams;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
@@ -93,4 +92,21 @@ public class Record implements Observer{
     }
 
 
+    public void logInfo(){
+        WindowRecord curWindows = getCurWindows();
+        StringBuilder builder = new StringBuilder();
+        builder.append("\n").append("当前时间窗口(近").append(windowWide/1000).append("秒)运行情况统计:")
+                .append(curWindows.getLogInfo());
+
+
+        WindowRecord logRecord = new WindowRecord();
+        List<WindowRecord> windowList = getWindowList();
+        for (WindowRecord record : windowList) {
+            logRecord.sum(record);
+        }
+        builder.append("\n").append("全部时间窗口(近").append(windowWide*windowSize/1000d/60d).append("分钟)运行情况统计:")
+                .append(logRecord.getLogInfo());
+
+        log.info(builder);
+    }
 }
