@@ -1,6 +1,7 @@
 package cn.rookiex.record.info;
 
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -9,6 +10,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
  * @author rookieX 2022/12/28
  */
 @Getter
+@ToString
 public class RespondBucket {
 
     private Map<Integer, Integer> costBucket = new ConcurrentSkipListMap<>();

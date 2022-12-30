@@ -30,6 +30,10 @@ public class SlowWindow implements Window {
 
     @Override
     public String getLogInfo() {
+        //todo 累计耗时最多消息
+        //todo 单次耗时最多消息
+        //todo 耗时消息总数,耗时排名
+        //todo 耗时消息单次,单次排名
         return toString();
     }
 
@@ -59,7 +63,7 @@ public class SlowWindow implements Window {
                 toBucket = new RespondBucket();
                 to.put(id, toBucket);
             }
-            mergeInteger(toBucket.getCostBucket(), fromBucket.getCostBucket());
+            mergeInteger(fromBucket.getCostBucket(), toBucket.getCostBucket());
         }
     }
 
