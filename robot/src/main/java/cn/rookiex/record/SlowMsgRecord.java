@@ -43,7 +43,7 @@ public class SlowMsgRecord implements Observer, TickLog, WindowRecord {
         builder.append("\n").append("全部时间窗口(近").append(windowRecord.getWindowWide()*windowRecord.getWindowSize()/1000d/60d).append("分钟)高延迟消息情况统计:")
                 .append(logRecord.getLogInfo());
 
-        log.info(builder);
+         log.info(builder);
     }
 
     private final WindowRecordImpl windowRecord = new WindowRecordImpl();
