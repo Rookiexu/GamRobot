@@ -10,6 +10,11 @@ public interface ObservedParams {
     String PROCESSOR_ID = "processId";
 
     /**
+     * ROBOT_ID
+     */
+    String ROBOT_ID = "robotId";
+
+    /**
      * 等待消息id
      */
     String WAIT_RESP_ID = "respId";

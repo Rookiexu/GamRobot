@@ -5,9 +5,9 @@ import cn.rookiex.module.ModuleManager;
 import cn.rookiex.observer.*;
 import cn.rookiex.observer.observed.ObservedEvents;
 import cn.rookiex.observer.observed.ObservedParams;
-import cn.rookiex.record.ProcessorRecord;
 import cn.rookiex.record.Record;
 import cn.rookiex.record.RecordProcessor;
+import cn.rookiex.record.SlowMsgRecord;
 import cn.rookiex.robot.Robot;
 import cn.rookiex.robot.RobotContext;
 import cn.rookiex.robot.RobotFactory;
@@ -105,7 +105,6 @@ public class RobotManager {
         int threadCount = getConfig().getThreadCount();
         int robotCount = config.getRobotCount();
 
-        UpdateEventImpl updateEvent = new UpdateEventImpl(ObservedEvents.INCR_ROBOT);
         for (int i = 0; i < robotCount; i++) {
             try {
                 Robot robot = robotFactory.newRobot(this);
@@ -124,7 +123,9 @@ public class RobotManager {
                 robotInitModules(robot);
                 robotMap.put(robot.getId(), robot);
 
+                UpdateEventImpl updateEvent = new UpdateEventImpl(ObservedEvents.INCR_ROBOT);
                 updateEvent.put(ObservedParams.PROCESSOR_ID, processorId);
+                updateEvent.put(ObservedParams.ROBOT_ID, robot.getFullName());
                 recordProcessor.notify(updateEvent);
             } catch (Exception e) {
                 log.info(e, e);
@@ -156,5 +157,9 @@ public class RobotManager {
         //60个窗口,10秒长度
         record.initWindow(40, 30000);
         this.getRecordProcessor().register(record);
+
+        SlowMsgRecord slowMsgRecord = new SlowMsgRecord();
+        slowMsgRecord.initWindow(60, 10000);
+        this.getRecordProcessor().register(slowMsgRecord);
     }
 }

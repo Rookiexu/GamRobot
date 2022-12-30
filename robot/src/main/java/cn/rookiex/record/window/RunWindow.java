@@ -1,6 +1,8 @@
-package cn.rookiex.record;
+package cn.rookiex.record.window;
 
 import cn.rookiex.observer.observed.ObservedParams;
+import cn.rookiex.record.info.ProcessorInfo;
+import cn.rookiex.record.info.RespondBucket;
 import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
@@ -17,108 +19,121 @@ import java.util.function.Function;
  */
 @Log4j2
 @Getter
-public class WindowRecord {
+public class RunWindow implements Window {
 
-    private Map<Integer, ProcessorRecord> processorRecordMap = Maps.newHashMap();
+    private Map<Integer, ProcessorInfo> ProcessorInfoMap = Maps.newHashMap();
 
     private Set<Integer> processorIds;
 
-    public void init(Set<Integer> processorIds) {
-        this.processorIds = processorIds;
-        init0();
-    }
-
-    private void init0() {
+    @Override
+    public void init() {
         for (Integer processorId : this.processorIds) {
-            processorRecordMap.put(processorId, new ProcessorRecord());
+            ProcessorInfoMap.put(processorId, new ProcessorInfo());
         }
     }
 
-    public ProcessorRecord getProcessorRecord(int id) {
-        ProcessorRecord processorRecord = processorRecordMap.get(id);
-        if (processorRecord == null) {
+    public ProcessorInfo getProcessorInfo(int id) {
+        ProcessorInfo ProcessorInfo = ProcessorInfoMap.get(id);
+        if (ProcessorInfo == null) {
             log.error("压测机器人执行线程不存在 : " + id, new Throwable());
         }
-        return processorRecord;
+        return ProcessorInfo;
     }
 
     public void dealRespDeal(Integer id, Map<String, Object> info) {
-        incrProcessorLong(ProcessorRecord::getTotalRespDeal, id);
+        incrProcessorLong(ProcessorInfo::getTotalRespDeal, id);
 
         //处理返回消息
-        ProcessorRecord processorRecord = getProcessorRecord(id);
+        ProcessorInfo ProcessorInfo = getProcessorInfo(id);
         int waitId = (int) info.get(ObservedParams.WAIT_RESP_ID);
-        AtomicInteger old = processorRecord.getWaitMsg().get(waitId);
+        AtomicInteger old = ProcessorInfo.getWaitMsg().get(waitId);
         if (old != null) {
             old.decrementAndGet();
         }
 
         //响应耗时记录
         long respCost = (long) info.get(ObservedParams.RESP_COST);
-        processorRecord.getRespCost().addCost((int) respCost);
+        ProcessorInfo.getRespCost().addCost((int) respCost);
     }
 
 
     public void dealSend(Integer id, Map<String, Object> info) {
-        incrProcessorLong(ProcessorRecord::getTotalSend, id);
+        incrProcessorLong(ProcessorInfo::getTotalSend, id);
 
-        ProcessorRecord processorRecord = getProcessorRecord(id);
+        ProcessorInfo ProcessorInfo = getProcessorInfo(id);
         boolean isSkip = (boolean) info.get(ObservedParams.IS_SKIP_RESP);
         if (!isSkip) {
             int waitId = (int) info.get(ObservedParams.WAIT_RESP_ID);
-            AtomicInteger wait = processorRecord.getWaitMsg().putIfAbsent(waitId, new AtomicInteger());
+            AtomicInteger wait = ProcessorInfo.getWaitMsg().putIfAbsent(waitId, new AtomicInteger());
             if (wait == null) {
-                wait = processorRecord.getWaitMsg().get(waitId);
+                wait = ProcessorInfo.getWaitMsg().get(waitId);
             }
-            AtomicInteger send = processorRecord.getSendMsg().putIfAbsent(waitId, new AtomicInteger());
+            AtomicInteger send = ProcessorInfo.getSendMsg().putIfAbsent(waitId, new AtomicInteger());
             if (send == null) {
-                send = processorRecord.getSendMsg().get(waitId);
+                send = ProcessorInfo.getSendMsg().get(waitId);
             }
             wait.incrementAndGet();
             send.incrementAndGet();
         }
     }
 
-    public int getTotalInt(Function<ProcessorRecord, AtomicInteger> function) {
+    public int getTotalRobot(){
         int total = 0;
-        for (ProcessorRecord value : getProcessorRecordMap().values()) {
+        for (ProcessorInfo value : getProcessorInfoMap().values()) {
+            int size = value.getRobotName().size();
+            total += size;
+        }
+        return total;
+    }
+
+    public int getTotalInt(Function<ProcessorInfo, AtomicInteger> function) {
+        int total = 0;
+        for (ProcessorInfo value : getProcessorInfoMap().values()) {
             AtomicInteger apply = function.apply(value);
             total += apply.get();
         }
         return total;
     }
 
-    public long getTotalLong(Function<ProcessorRecord, AtomicLong> function) {
+    public long getTotalLong(Function<ProcessorInfo, AtomicLong> function) {
         long total = 0;
-        for (ProcessorRecord value : getProcessorRecordMap().values()) {
+        for (ProcessorInfo value : getProcessorInfoMap().values()) {
             AtomicLong apply = function.apply(value);
             total += apply.get();
         }
         return total;
     }
 
-
-    public void incrProcessorInt(Function<ProcessorRecord, AtomicInteger> function, int id) {
-        ProcessorRecord processorRecord = getProcessorRecord(id);
-        function.apply(processorRecord).incrementAndGet();
+    public void addActRobot(int id, String robotName){
+        ProcessorInfo ProcessorInfo = getProcessorInfo(id);
+        ProcessorInfo.getRobotName().add(robotName);
     }
 
-    public void incrProcessorLong(Function<ProcessorRecord, AtomicLong> function, int id) {
-        ProcessorRecord processorRecord = getProcessorRecord(id);
-        function.apply(processorRecord).incrementAndGet();
+
+
+    public void incrProcessorInt(Function<ProcessorInfo, AtomicInteger> function, int id) {
+        ProcessorInfo ProcessorInfo = getProcessorInfo(id);
+        function.apply(ProcessorInfo).incrementAndGet();
     }
 
+    public void incrProcessorLong(Function<ProcessorInfo, AtomicLong> function, int id) {
+        ProcessorInfo ProcessorInfo = getProcessorInfo(id);
+        function.apply(ProcessorInfo).incrementAndGet();
+    }
+
+    @Override
     public void clear() {
-        getProcessorRecordMap().clear();
-        init0();
+        getProcessorInfoMap().clear();
+        init();
     }
 
+    @Override
     public String getLogInfo(){
         StringBuilder builder = new StringBuilder();
 
-        builder.append("总机器人").append(" : ").append(getTotalInt(ProcessorRecord::getTotalRobot)).append(", ");
-        builder.append("总发送消息").append(" : ").append(getTotalLong(ProcessorRecord::getTotalSend)).append(", ");
-        builder.append("总接收消息").append(" : ").append(getTotalLong(ProcessorRecord::getTotalRespDeal)).append(", ");
+        builder.append("总机器人").append(" : ").append(getTotalRobot()).append(", ");
+        builder.append("总发送消息").append(" : ").append(getTotalLong(ProcessorInfo::getTotalSend)).append(", ");
+        builder.append("总接收消息").append(" : ").append(getTotalLong(ProcessorInfo::getTotalRespDeal)).append(", ");
 
         RespondBucket respondBucket = mergeRespondBucket();
         builder.append("平均响应时间").append(" : ").append(respondBucket.getAvgResp()).append("ms, ");
@@ -127,19 +142,17 @@ public class WindowRecord {
         builder.append("99%响应时").append(" : ").append(respondBucket.getRespTime(9900)).append(", ");
         builder.append("200ms响应数").append(" : ").append(respondBucket.getSlowRespCount());
 
-
-
         return builder.toString();
     }
 
-    public void sum(WindowRecord record) {
-        Map<Integer, ProcessorRecord> processorRecordMap = record.getProcessorRecordMap();
-        for (Integer id : processorRecordMap.keySet()) {
-            ProcessorRecord from = processorRecordMap.get(id);
-            ProcessorRecord to = getProcessorRecordMap().get(id);
+    public void sum(RunWindow record) {
+        Map<Integer, ProcessorInfo> ProcessorInfoMap = record.getProcessorInfoMap();
+        for (Integer id : ProcessorInfoMap.keySet()) {
+            ProcessorInfo from = ProcessorInfoMap.get(id);
+            ProcessorInfo to = getProcessorInfoMap().get(id);
             if (to == null){
-                to = new ProcessorRecord();
-                getProcessorRecordMap().put(id, to);
+                to = new ProcessorInfo();
+                getProcessorInfoMap().put(id, to);
             }
 
             merge(from.getSendMsg(), to.getSendMsg());
@@ -151,6 +164,7 @@ public class WindowRecord {
             to.getTotalResp().addAndGet(from.getTotalResp().get());
             to.getTotalRespDeal().addAndGet(from.getTotalRespDeal().get());
             to.getTotalSend().addAndGet(from.getTotalSend().get());
+            to.getRobotName().addAll(from.getRobotName());
         }
     }
 
@@ -172,10 +186,14 @@ public class WindowRecord {
 
     private RespondBucket mergeRespondBucket(){
         RespondBucket respondBucket = new RespondBucket();
-        Collection<ProcessorRecord> values = getProcessorRecordMap().values();
-        for (ProcessorRecord value : values) {
+        Collection<ProcessorInfo> values = getProcessorInfoMap().values();
+        for (ProcessorInfo value : values) {
             mergeInteger(value.getRespCost().getCostBucket(), respondBucket.getCostBucket());
         }
         return respondBucket;
+    }
+
+    public void setProcessorIds(Set<Integer> processorIds) {
+        this.processorIds = processorIds;
     }
 }

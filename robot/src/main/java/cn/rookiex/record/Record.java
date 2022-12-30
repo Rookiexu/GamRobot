@@ -3,6 +3,11 @@ package cn.rookiex.record;
 import cn.rookiex.observer.*;
 import cn.rookiex.observer.observed.ObservedEvents;
 import cn.rookiex.observer.observed.ObservedParams;
+import cn.rookiex.record.info.ProcessorInfo;
+import cn.rookiex.record.window.RunWindow;
+import cn.rookiex.record.window.Window;
+import cn.rookiex.record.window.WindowRecord;
+import cn.rookiex.record.window.WindowRecordImpl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import lombok.Getter;
@@ -16,95 +21,78 @@ import java.util.Set;
  */
 @Getter
 @Log4j2
-public class Record implements Observer, TickLog{
+public class Record implements Observer, TickLog, WindowRecord {
 
-    private List<WindowRecord> windowList;
-
-    private int windowIndex;
-
-    private int windowWide;
-
-    private int windowSize;
-
-    private long windowsTime;
+    private final WindowRecordImpl windowRecord = new WindowRecordImpl();
 
     private Set<Integer> processorIds =  Sets.newHashSet();
 
+    @Override
     public void initWindow(int windowSize, int windowWide){
-        //60个 5秒
-        windowList = Lists.newArrayListWithCapacity(windowSize);
+        List<Window> windowList = Lists.newArrayListWithCapacity(windowSize);
         for (int i = 0; i < windowSize; i++) {
-            WindowRecord windowRecord = new WindowRecord();
-            windowRecord.init(processorIds);
-            windowList.add(windowRecord);
+            RunWindow runWindow = new RunWindow();
+            runWindow.setProcessorIds(processorIds);
+            runWindow.init();
+            windowList.add(runWindow);
         }
 
-        this.windowWide = windowWide;
-        this.windowSize = windowSize;
+        windowRecord.initWindow(windowSize, windowWide, windowList);
+    }
+
+    @Override
+    public void initWindow(int windowSize, int windowWide, List<Window> windowList) {
+        initWindow(windowSize, windowWide);
     }
 
     /**
      * 单线程,所以不需要锁
      * @return
      */
-    public WindowRecord getCurWindows(){
-        boolean isChange = false;
-        long l = System.currentTimeMillis();
-        if (windowsTime == 0){
-            windowsTime = l;
-            windowIndex = 0;
-            isChange = true;
-        }else {
-            while (l - windowsTime > windowWide){
-                windowIndex++;
-                windowsTime += windowWide;
-                isChange = true;
-            }
-        }
-        WindowRecord windowRecord = windowList.get(windowIndex % windowSize);
-        if (isChange){
-            windowRecord.clear();
-        }
-        return windowRecord;
+    @Override
+    public RunWindow getCurWindows(){
+        return (RunWindow) windowRecord.getCurWindows();
     }
-
-
 
     @Override
     public void update(UpdateEvent message) {
+        RunWindow curWindows = getCurWindows();
         switch (message.getKey()){
             case ObservedEvents.INCR_COON:
-                getCurWindows().incrProcessorInt(ProcessorRecord::getTotalCoon, (Integer) message.get(ObservedParams.PROCESSOR_ID));
+                curWindows.incrProcessorInt(ProcessorInfo::getTotalCoon, (Integer) message.get(ObservedParams.PROCESSOR_ID));
                 break;
             case ObservedEvents.INCR_SEND:
-                getCurWindows().dealSend((Integer) message.get(ObservedParams.PROCESSOR_ID), message);
+                curWindows.dealSend((Integer) message.get(ObservedParams.PROCESSOR_ID), message);
+                curWindows.addActRobot((Integer) message.get(ObservedParams.PROCESSOR_ID), (String) message.get(ObservedParams.ROBOT_ID));
                 break;
             case ObservedEvents.INCR_RESP:
-                getCurWindows().incrProcessorLong(ProcessorRecord::getTotalResp, (Integer) message.get(ObservedParams.PROCESSOR_ID));
+                curWindows.incrProcessorLong(ProcessorInfo::getTotalResp, (Integer) message.get(ObservedParams.PROCESSOR_ID));
+                curWindows.addActRobot((Integer) message.get(ObservedParams.PROCESSOR_ID), (String) message.get(ObservedParams.ROBOT_ID));
                 break;
             case ObservedEvents.INCR_RESP_DEAL:
-                getCurWindows().dealRespDeal((Integer) message.get(ObservedParams.PROCESSOR_ID), message);
+                curWindows.dealRespDeal((Integer) message.get(ObservedParams.PROCESSOR_ID), message);
+                curWindows.addActRobot((Integer) message.get(ObservedParams.PROCESSOR_ID), (String) message.get(ObservedParams.ROBOT_ID));
                 break;
             case ObservedEvents.INCR_ROBOT:
-                getCurWindows().incrProcessorInt(ProcessorRecord::getTotalRobot, (Integer) message.get(ObservedParams.PROCESSOR_ID));
+                curWindows.addActRobot((Integer) message.get(ObservedParams.PROCESSOR_ID), (String) message.get(ObservedParams.ROBOT_ID));
                 break;
         }
     }
 
     @Override
     public void logInfo(){
-        WindowRecord curWindows = getCurWindows();
+        RunWindow curWindows = getCurWindows();
         StringBuilder builder = new StringBuilder();
-        builder.append("\n").append("当前时间窗口(近").append(windowWide/1000).append("秒)运行情况统计:")
+        builder.append("\n").append("当前时间窗口(近").append(windowRecord.getWindowWide()/1000).append("秒)运行情况统计:")
                 .append(curWindows.getLogInfo());
 
 
-        WindowRecord logRecord = new WindowRecord();
-        List<WindowRecord> windowList = getWindowList();
-        for (WindowRecord record : windowList) {
-            logRecord.sum(record);
+        RunWindow logRecord = new RunWindow();
+        List<Window> runWindowList = windowRecord.getWindowList();
+        for (Window record : runWindowList) {
+            logRecord.sum((RunWindow) record);
         }
-        builder.append("\n").append("全部时间窗口(近").append(windowWide*windowSize/1000d/60d).append("分钟)运行情况统计:")
+        builder.append("\n").append("全部时间窗口(近").append(windowRecord.getWindowWide()*windowRecord.getWindowSize()/1000d/60d).append("分钟)运行情况统计:")
                 .append(logRecord.getLogInfo());
 
         log.info(builder);

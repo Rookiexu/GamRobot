@@ -1,4 +1,4 @@
-package cn.rookiex.record;
+package cn.rookiex.record.info;
 
 import lombok.Getter;
 
@@ -34,7 +34,7 @@ public class RespondBucket {
         } else if (duration < 10000) {
             return duration - duration % 500;
         } else {
-            return 10001;
+            return 99999;
         }
     }
 

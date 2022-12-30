@@ -169,6 +169,7 @@ public class Robot {
     private void dealRespEvent(Message poll, RespGameEvent respEvent) {
         UpdateEvent updateEvent = new UpdateEventImpl(ObservedEvents.INCR_RESP_DEAL);
         updateEvent.put(ObservedParams.WAIT_RESP_ID, respEvent.eventId());
+        updateEvent.put(ObservedParams.ROBOT_ID, getFullName());
         if (poll instanceof MsgInfo){
             long createTime = ((MsgInfo) poll).getCreateTime();
             updateEvent.put(ObservedParams.RESP_TIME, createTime);
@@ -235,6 +236,7 @@ public class Robot {
 
         UpdateEvent updateEvent = new UpdateEventImpl(ObservedEvents.INCR_SEND);
         updateEvent.put(ObservedParams.WAIT_RESP_ID, waitRespId);
+        updateEvent.put(ObservedParams.ROBOT_ID, getFullName());
         updateEvent.put(ObservedParams.REQ_MSG_ID, executeEvent.eventId());
         updateEvent.put(ObservedParams.REQ_MSG_NAME, executeEvent.getClass().getSimpleName());
         updateEvent.put(ObservedParams.IS_SKIP_RESP, skip);

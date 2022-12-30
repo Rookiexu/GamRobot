@@ -1,10 +1,12 @@
-package cn.rookiex.record;
+package cn.rookiex.record.info;
 
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import lombok.Getter;
 import lombok.ToString;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -13,10 +15,12 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 @Getter
 @ToString
-public class ProcessorRecord {
+public class ProcessorInfo {
     private final AtomicInteger totalCoon = new AtomicInteger();
 
     private final AtomicInteger totalRobot= new AtomicInteger();
+
+    private final Set<String> robotName = Sets.newConcurrentHashSet();
 
     private final AtomicInteger totalLogin = new AtomicInteger();
 
