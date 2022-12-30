@@ -116,16 +116,16 @@ public class WindowRecord {
     public String getLogInfo(){
         StringBuilder builder = new StringBuilder();
 
-        builder.append("totalRobot").append(" : ").append(getTotalInt(ProcessorRecord::getTotalRobot)).append(", ");
-        builder.append("totalResp").append(" : ").append(getTotalLong(ProcessorRecord::getTotalRespDeal)).append(", ");
-        builder.append("totalSend").append(" : ").append(getTotalLong(ProcessorRecord::getTotalSend)).append(", ");
+        builder.append("总机器人").append(" : ").append(getTotalInt(ProcessorRecord::getTotalRobot)).append(", ");
+        builder.append("总发送消息").append(" : ").append(getTotalLong(ProcessorRecord::getTotalSend)).append(", ");
+        builder.append("总接收消息").append(" : ").append(getTotalLong(ProcessorRecord::getTotalRespDeal)).append(", ");
 
         RespondBucket respondBucket = mergeRespondBucket();
-        builder.append("avgResp").append(" : ").append(respondBucket.getAvgResp()).append(", ");
-        builder.append("9999Resp").append(" : ").append(respondBucket.getRespTime(9999)).append(", ");
-        builder.append("999Resp").append(" : ").append(respondBucket.getRespTime(9990)).append(", ");
-        builder.append("99Resp").append(" : ").append(respondBucket.getRespTime(9900)).append(", ");
-        builder.append("slowRespCount").append(" : ").append(respondBucket.getSlowRespCount());
+        builder.append("平均响应时间").append(" : ").append(respondBucket.getAvgResp()).append("ms, ");
+        builder.append("99.99%响应时").append(" : ").append(respondBucket.getRespTime(9999)).append("ms, ");
+        builder.append("99.9%响应时").append(" : ").append(respondBucket.getRespTime(9990)).append("ms, ");
+        builder.append("99%响应时").append(" : ").append(respondBucket.getRespTime(9900)).append(", ");
+        builder.append("200ms响应数").append(" : ").append(respondBucket.getSlowRespCount());
 
 
 

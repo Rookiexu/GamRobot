@@ -15,12 +15,10 @@ public class Server {
     public static void main(String[] args)  throws Exception  {
 
         EventLoopGroup workerGroup = new NioEventLoopGroup();
-        final EchoServerHandler serverHandler = new EchoServerHandler();
         try {
             ServerBootstrap b = new ServerBootstrap();
             b.group(workerGroup)
                     .channel(NioServerSocketChannel.class)
-//                    .handler(new LoggingHandler(LogLevel.INFO))
                     .childHandler(new ServerChannelInitializer());
 
             ChannelFuture f = b.bind(8090).sync();

@@ -162,7 +162,6 @@ public class Robot {
 
             if (waitRespId != 0 && poll.getMsgId() == waitRespId) {
                 setWaitRespId(0);
-                setReqSendTime(0);
             }
         }
     }

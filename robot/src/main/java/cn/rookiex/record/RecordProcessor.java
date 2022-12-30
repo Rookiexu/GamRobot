@@ -1,5 +1,8 @@
 package cn.rookiex.record;
 
+import cn.hutool.Hutool;
+import cn.hutool.cron.CronUtil;
+import cn.hutool.cron.task.Task;
 import cn.rookiex.manager.RobotManager;
 import cn.rookiex.observer.*;
 import cn.rookiex.observer.observed.ObservedEvents;
@@ -39,11 +42,6 @@ public class RecordProcessor implements Runnable, Observable {
                     i++;
                     for (Observer observer : observers) {
                         observer.update(poll);
-                        if (observer instanceof Record) {
-                            if (i % 5000 == 0) {
-                                ((Record) observer).logInfo();
-                            }
-                        }
                     }
                 }
             }catch (Exception e){
@@ -51,6 +49,14 @@ public class RecordProcessor implements Runnable, Observable {
             }
         }
         log.info("记录线程执行结束退出");
+    }
+
+    public void tickLog(){
+        for (Observer observer : observers) {
+            if (observer instanceof TickLog){
+                ((TickLog) observer).logInfo();
+            }
+        }
     }
 
     @Override
@@ -71,6 +77,7 @@ public class RecordProcessor implements Runnable, Observable {
     public void start() {
         ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
         singleThreadExecutor.submit(this);
+        CronUtil.schedule("0 0/1 * * * ?", (Task) this::tickLog);
     }
 
     public void setRobotManager(RobotManager robotManager) {

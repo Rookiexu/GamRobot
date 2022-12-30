@@ -51,7 +51,7 @@ public class RespondBucket {
             total += costTime * count;
             totalCount += count;
         }
-        return (int) (total / totalCount);
+        return totalCount == 0 ? 0 : (int) (total / totalCount);
     }
 
     public int getRespTime(int rate) {

@@ -16,7 +16,7 @@ import java.util.Set;
  */
 @Getter
 @Log4j2
-public class Record implements Observer{
+public class Record implements Observer, TickLog{
 
     private List<WindowRecord> windowList;
 
@@ -91,7 +91,7 @@ public class Record implements Observer{
         }
     }
 
-
+    @Override
     public void logInfo(){
         WindowRecord curWindows = getCurWindows();
         StringBuilder builder = new StringBuilder();
