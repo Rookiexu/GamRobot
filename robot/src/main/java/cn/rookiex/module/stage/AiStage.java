@@ -1,6 +1,8 @@
 package cn.rookiex.module.stage;
 
 import cn.rookiex.event.ReqGameEvent;
+import cn.rookiex.manager.RobotManager;
+import cn.rookiex.robot.RobotAiContext;
 import cn.rookiex.robot.RobotContext;
 import cn.rookiex.tree.AIContext;
 
@@ -10,6 +12,8 @@ import cn.rookiex.tree.AIContext;
 public class AiStage implements ModuleStage {
 
     private static final ModuleStage stage = new AiStage();
+
+    private RobotAiContext robotAiContext;
 
     @Override
     public boolean isStageOver(RobotContext robotContext) {
@@ -28,7 +32,10 @@ public class AiStage implements ModuleStage {
 
     @Override
     public void initStage(RobotContext robotContext) {
-
+        RobotManager robotManager = robotContext.getRobotManager();
+        RobotAiContext robotAiContext = robotManager.getRobotFactory().newRobotAiContext(robotManager);
+        robotAiContext.setRobotContext(robotContext);
+        this.robotAiContext = robotAiContext;
     }
 
     @Override
@@ -43,6 +50,6 @@ public class AiStage implements ModuleStage {
 
     @Override
     public ReqGameEvent getEvent(RobotContext robotContext) {
-        return null;
+        return stage.getEvent(robotContext);
     }
 }

@@ -55,6 +55,8 @@ public class RobotManager {
      */
     private long tickStep = 10;
 
+    private RobotFactory robotFactory;
+
 
     public void initProcessor() {
         this.idCounter = new AtomicLong();
@@ -102,6 +104,7 @@ public class RobotManager {
     }
 
     public void initRobot(RobotFactory robotFactory) {
+        this.robotFactory = robotFactory;
         int threadCount = getConfig().getThreadCount();
         int robotCount = config.getRobotCount();
 
