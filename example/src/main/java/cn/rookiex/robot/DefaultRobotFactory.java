@@ -19,7 +19,12 @@ public class DefaultRobotFactory implements RobotFactory {
     @Override
     public RobotContext newRobotContext(RobotManager manager) {
 
-        return new DefaultRobotContext();
+        return new RobotCtx();
+    }
+
+    @Override
+    public RobotAiContext newRobotAiContext(RobotManager manager) {
+        return new RobotAiCtx();
     }
 
     @Override

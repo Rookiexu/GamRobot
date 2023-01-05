@@ -5,7 +5,6 @@ import cn.rookiex.codec.DataCodec;
 import cn.rookiex.codec.StringCodec;
 import cn.rookiex.core.Message;
 import cn.rookiex.observer.observed.MsgInfo;
-import lombok.NoArgsConstructor;
 
 /**
  * @author rookieX 2022/12/14

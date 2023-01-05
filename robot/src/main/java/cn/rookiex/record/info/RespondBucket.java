@@ -20,6 +20,7 @@ public class RespondBucket {
     //200~500ms 每20ms一个桶
     //>500ms一个桶
 
+    //todo 通过配置划分阶段
     public static int computeDuration(int duration) {
         if (duration < 1) {
             return 1;

@@ -18,10 +18,6 @@ public class OrderStage implements ModuleStage {
     private static final ModuleStage stage = new RandomStage();
 
     @Override
-    public void setStage(ModuleStage stage) {
-    }
-
-    @Override
     public boolean isStageOver(RobotContext robotContext) {
         Robot robot = robotContext.getRobot();
 

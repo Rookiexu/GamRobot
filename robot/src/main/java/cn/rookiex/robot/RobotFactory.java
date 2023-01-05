@@ -11,5 +11,7 @@ public interface RobotFactory {
 
     RobotContext newRobotContext(RobotManager manager);
 
+    RobotAiContext newRobotAiContext(RobotManager manager);
+
     ChannelInitializer getChannelInitializer(RobotManager manager);
 }

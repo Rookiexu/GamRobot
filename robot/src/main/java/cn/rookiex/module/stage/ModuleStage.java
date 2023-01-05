@@ -8,8 +8,6 @@ import cn.rookiex.robot.RobotContext;
  */
 public interface ModuleStage {
 
-    void setStage(ModuleStage stage);
-
     boolean isStageOver(RobotContext robotContext);
 
     boolean isModOver(RobotContext robotContext);

@@ -15,10 +15,6 @@ public class PreStage implements ModuleStage {
     private static final ModuleStage orderStage = new OrderStage();
 
     @Override
-    public void setStage(ModuleStage stage) {
-    }
-
-    @Override
     public boolean isStageOver(RobotContext robotContext) {
         Robot robot = robotContext.getRobot();
 
