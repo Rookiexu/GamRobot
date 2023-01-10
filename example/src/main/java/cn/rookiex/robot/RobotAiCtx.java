@@ -12,4 +12,14 @@ public class RobotAiCtx implements RobotAiContext {
     private Robot robot;
 
     private ReqGameEvent reqGameEvent;
+
+    @Override
+    public void setRobotContext(RobotContext ctx) {
+
+    }
+
+    @Override
+    public Robot getRobotContext() {
+        return null;
+    }
 }

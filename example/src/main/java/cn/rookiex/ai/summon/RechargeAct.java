@@ -4,7 +4,7 @@ import cn.rookiex.robot.RobotAiCtx;
 import cn.rookiex.robot.Robot;
 import cn.rookiex.tree.AIContext;
 import cn.rookiex.tree.TreeStates;
-import cn.rookiex.tree.node.ActNode;
+import cn.rookiex.tree.node.action.ActNode;
 
 /**
  * @author rookieX 2023/1/5

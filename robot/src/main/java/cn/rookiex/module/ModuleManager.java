@@ -2,10 +2,10 @@ package cn.rookiex.module;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileReader;
+import cn.hutool.core.util.ClassUtil;
 import cn.rookiex.event.ReqGameEvent;
 import cn.rookiex.event.RespGameEvent;
 import cn.rookiex.module.impl.DefaultOrderModule;
-import cn.rookiex.units.PackageScanner;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -123,7 +123,7 @@ public class ModuleManager {
 
     public void initEvents() {
         log.info("加载压测事件开始");
-        Set<Class<?>> clazzs = PackageScanner.getClasses("cn.rookiex.event");
+        Set<Class<?>> clazzs = ClassUtil.scanPackage("cn.rookiex.event");
         Iterator<Class<?>> it = clazzs.iterator();
         Class<?> clazz = null;
         try {

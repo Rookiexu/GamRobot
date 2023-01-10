@@ -7,6 +7,8 @@ import cn.rookiex.tree.node.DefaultNode;
 import cn.rookiex.tree.node.IsNode;
 import cn.rookiex.tree.node.Node;
 
+import java.util.List;
+
 /**
  * 按节点全部执行一遍,直到有一个节点执行了就返回
  */
@@ -15,6 +17,7 @@ public class SelectorNode extends DefaultNode {
     /** 选择节点执行逻辑 **/
     @Override
     public TreeStates execute(AIContext context) {
+        List<Node> sonNode = getSonNode();
         for (Node node : sonNode) {
             TreeStates ecResult = node.execute(context);
             // 如果子节点返回正确或者运行中,向父节点
