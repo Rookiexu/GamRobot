@@ -1,8 +1,12 @@
-package cn.rookiex.tree.node;
+package cn.rookiex.tree.node.deocrator;
 
 
 import cn.rookiex.tree.AIContext;
 import cn.rookiex.tree.TreeStates;
+import cn.rookiex.tree.node.DefaultNode;
+import cn.rookiex.tree.node.Node;
+
+import java.util.List;
 
 /**
  * 判断是否符合条件,符合条件继续执行子节点,知道返回错误或者执行
@@ -12,6 +16,7 @@ public abstract class ConditionNode extends DefaultNode {
     @Override
     public TreeStates execute(AIContext context) {
         if(isTrue(context)){
+            List<Node> sonNode = getSonNode();
             for (Node node : sonNode) {
                 TreeStates ecResult = node.execute(context);
                 //如果子节点返回错误或者运行中,向父节点返回错误或运行中

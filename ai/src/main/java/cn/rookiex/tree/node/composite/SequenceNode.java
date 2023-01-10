@@ -1,12 +1,18 @@
-package cn.rookiex.tree.node;
+package cn.rookiex.tree.node.composite;
 
 import cn.rookiex.tree.AIContext;
 import cn.rookiex.tree.TreeStates;
+import cn.rookiex.tree.node.DefaultNode;
+import cn.rookiex.tree.node.IsNode;
+import cn.rookiex.tree.node.Node;
+
+import java.util.List;
 
 @IsNode
 public class SequenceNode extends DefaultNode {
     @Override
     public TreeStates execute(AIContext context) {
+        List<Node> sonNode = getSonNode();
         for (Node node : sonNode) {
             TreeStates ecResult = node.execute(context);
             //如果子节点返回错误,向父节点返回错误,否则基础执行

@@ -1,7 +1,8 @@
-package cn.rookiex.tree.node;
+package cn.rookiex.tree.node.action;
 
 import cn.rookiex.tree.AIContext;
 import cn.rookiex.tree.TreeStates;
+import cn.rookiex.tree.node.DefaultNode;
 
 public abstract class ActNode extends DefaultNode {
     @Override
