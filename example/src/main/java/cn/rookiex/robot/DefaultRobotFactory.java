@@ -23,11 +23,6 @@ public class DefaultRobotFactory implements RobotFactory {
     }
 
     @Override
-    public RobotAiContext newRobotAiContext(RobotManager manager) {
-        return new RobotAiCtx();
-    }
-
-    @Override
     public ChannelInitializer getChannelInitializer(RobotManager manager) {
         return initializer;
     }

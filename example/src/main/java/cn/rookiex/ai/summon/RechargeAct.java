@@ -1,7 +1,7 @@
 package cn.rookiex.ai.summon;
 
-import cn.rookiex.robot.RobotAiCtx;
 import cn.rookiex.robot.Robot;
+import cn.rookiex.robot.RobotCtx;
 import cn.rookiex.tree.AIContext;
 import cn.rookiex.tree.TreeStates;
 import cn.rookiex.tree.node.action.ActNode;
@@ -12,7 +12,7 @@ import cn.rookiex.tree.node.action.ActNode;
 public class RechargeAct extends ActNode {
     @Override
     public TreeStates execute0(AIContext context) {
-        RobotAiCtx aiContext = (RobotAiCtx) context;
+        RobotCtx aiContext = (RobotCtx) context;
 
         Robot robot = aiContext.getRobot();
 

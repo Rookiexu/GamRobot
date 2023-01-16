@@ -17,6 +17,9 @@ public class AiStage implements ModuleStage {
 
     @Override
     public boolean isStageOver(RobotContext robotContext) {
+        int runTimes = robotAiContext.getRunTimes();
+        //执行次数超过x次
+        //robotAiContext 设置了结束
         return false;
     }
 
@@ -33,8 +36,6 @@ public class AiStage implements ModuleStage {
     @Override
     public void initStage(RobotContext robotContext) {
         RobotManager robotManager = robotContext.getRobotManager();
-        RobotAiContext robotAiContext = robotManager.getRobotFactory().newRobotAiContext(robotManager);
-        robotAiContext.setRobotContext(robotContext);
         this.robotAiContext = robotAiContext;
     }
 
@@ -50,6 +51,7 @@ public class AiStage implements ModuleStage {
 
     @Override
     public ReqGameEvent getEvent(RobotContext robotContext) {
+
         return stage.getEvent(robotContext);
     }
 }

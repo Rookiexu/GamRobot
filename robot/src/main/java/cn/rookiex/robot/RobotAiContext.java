@@ -7,9 +7,11 @@ import cn.rookiex.tree.AIContext;
  */
 public interface RobotAiContext extends AIContext {
 
-    void setRobotContext(RobotContext ctx);
+    boolean isOver();
 
-    Robot getRobotContext();
+    void runOver();
 
+    void incrRunTimes();
 
+    int getRunTimes();
 }

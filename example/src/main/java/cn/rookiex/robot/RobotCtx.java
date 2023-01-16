@@ -5,7 +5,7 @@ import cn.rookiex.manager.RobotManager;
 /**
  * @author rookieX 2022/12/7
  */
-public class RobotCtx implements RobotContext {
+public class RobotCtx implements RobotContext,RobotAiContext {
 
     private RobotManager robotManager;
 
@@ -46,5 +46,25 @@ public class RobotCtx implements RobotContext {
     @Override
     public void resetSkip() {
         this.skip = false;
+    }
+
+    @Override
+    public boolean isOver() {
+        return false;
+    }
+
+    @Override
+    public void runOver() {
+
+    }
+
+    @Override
+    public void incrRunTimes() {
+
+    }
+
+    @Override
+    public int getRunTimes() {
+        return 0;
     }
 }
