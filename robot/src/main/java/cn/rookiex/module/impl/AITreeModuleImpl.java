@@ -4,10 +4,14 @@ import cn.rookiex.event.ReqGameEvent;
 import cn.rookiex.module.AITreeModule;
 import cn.rookiex.module.Module;
 import cn.rookiex.module.ModuleManager;
+import cn.rookiex.robot.RobotAiContext;
 import cn.rookiex.robot.RobotContext;
 import cn.rookiex.ai.AIContext;
 import cn.rookiex.ai.node.Node;
 import com.alibaba.fastjson.JSONObject;
+import lombok.SneakyThrows;
+
+import java.util.Map;
 
 /**
  *
@@ -15,26 +19,19 @@ import com.alibaba.fastjson.JSONObject;
  */
 public class AITreeModuleImpl implements AITreeModule, Module {
 
+    private Node node;
+
     private final BaseModule baseModule = new BaseModule();
 
     @Override
-    public void initAIConfig(JSONObject config, ModuleManager moduleManager) {
-        //todo
-    }
-
-    @Override
-    public Node getNode() {
-        return null;
-    }
-
-    @Override
-    public AIContext getContext() {
-        return null;
-    }
-
-    @Override
-    public void aiTreeRun() {
-
+    public void initAIConfig(JSONObject config, ModuleManager moduleManager) throws IllegalAccessException, InstantiationException {
+        Map<String, Class<Node>> aiNodeMap = moduleManager.getAiNodeMap();
+        JSONObject aiEvent = config.getJSONObject("aiEvent");
+        String act = aiEvent.getString("act");
+        Class<Node> nodeClass = aiNodeMap.get(act);
+        Node node = nodeClass.newInstance();
+        node.init(aiEvent, aiNodeMap);
+        this.node = node;
     }
 
     @Override
@@ -57,18 +54,36 @@ public class AITreeModuleImpl implements AITreeModule, Module {
         baseModule.init(config, moduleManager);
     }
 
+    @SneakyThrows
     @Override
     public ReqGameEvent getNextEvent(RobotContext context) {
-        return null;
+        if (!(context instanceof RobotAiContext)) {
+            throw new IllegalAccessException();
+        }
+        RobotAiContext aiContext = (RobotAiContext) context;
+        node.execute(aiContext);
+        aiContext.incrRunTimes();
+        return aiContext.getReqEvent();
     }
 
+    @SneakyThrows
     @Override
     public void initRunEvent(RobotContext context) {
+        if (!(context instanceof RobotAiContext)) {
+            throw new IllegalAccessException();
+        }
 
+        RobotAiContext aiContext = (RobotAiContext) context;
+        aiContext.reset();
     }
 
+    @SneakyThrows
     @Override
     public boolean isRunOut(RobotContext context) {
-        return false;
+        if (!(context instanceof RobotAiContext)) {
+            throw new IllegalAccessException();
+        }
+
+        return ((RobotAiContext) context).isOver();
     }
 }

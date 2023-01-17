@@ -4,6 +4,7 @@ import cn.rookiex.client.Client;
 import cn.rookiex.core.Message;
 import cn.rookiex.event.ReqGameEvent;
 import cn.rookiex.event.RespGameEvent;
+import cn.rookiex.event.SkipEvent;
 import cn.rookiex.manager.RobotConfig;
 import cn.rookiex.manager.RobotManager;
 import cn.rookiex.module.Module;
@@ -108,6 +109,8 @@ public class Robot {
 
     private ChannelInitializer channelInitializer;
 
+    private GameRobot gameRobot;
+
 
     public void setId(String id) {
         this.id = id;
@@ -200,7 +203,11 @@ public class Robot {
 
         ReqGameEvent executeEvent = getExecuteEvent();
         if (executeEvent != null) {
-            dealReq0(executeEvent);
+            if (!(executeEvent instanceof SkipEvent)){
+                dealReq0(executeEvent);
+            }
+        }else {
+            log.error("阶段获取执行event为空 stage : " + runStage.toString());
         }
     }
 

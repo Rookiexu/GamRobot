@@ -1,7 +1,5 @@
 package cn.rookiex.module;
 
-import cn.rookiex.ai.AIContext;
-import cn.rookiex.ai.node.Node;
 import com.alibaba.fastjson.JSONObject;
 
 /**
@@ -11,11 +9,6 @@ import com.alibaba.fastjson.JSONObject;
  */
 public interface AITreeModule extends Module {
 
-    void initAIConfig(JSONObject config, ModuleManager moduleManager);
+    void initAIConfig(JSONObject config, ModuleManager moduleManager) throws IllegalAccessException, InstantiationException;
 
-    Node getNode();
-
-    AIContext getContext();
-
-    void aiTreeRun();
 }

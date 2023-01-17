@@ -1,7 +1,12 @@
 {
-  "order" : 1,
-  "sortType" : 2,
-  "moduleType" : "ai",
-  "preEvents" : ["ReqLogin","ReqSetName"],
-  "inorderEvents" : ["ReqSkipMain","ReqSetName"]
+  "order": 1,
+  "sortType": 2,
+  "moduleType": "ai",
+  "aiEvent": {
+    "comment": "注释:初始一个感兴趣道具,玩家随机一个兴趣值(0,100),小于70退出,大于70抽卡,单次抽卡消耗100,如果钱不够,充值648,抽卡随机概率,抽到item则退出",
+    "act": "",
+    "node": [
+
+    ]
+  }
 }
