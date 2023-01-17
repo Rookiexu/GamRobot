@@ -23,8 +23,9 @@ public class AITreeModuleImpl implements AITreeModule, Module {
 
     private final BaseModule baseModule = new BaseModule();
 
+    @SneakyThrows
     @Override
-    public void initAIConfig(JSONObject config, ModuleManager moduleManager) throws IllegalAccessException, InstantiationException {
+    public void initAIConfig(JSONObject config, ModuleManager moduleManager){
         Map<String, Class<Node>> aiNodeMap = moduleManager.getAiNodeMap();
         JSONObject aiEvent = config.getJSONObject("aiEvent");
         String act = aiEvent.getString("act");
@@ -52,6 +53,7 @@ public class AITreeModuleImpl implements AITreeModule, Module {
     @Override
     public void init(JSONObject config, ModuleManager moduleManager) {
         baseModule.init(config, moduleManager);
+        initAIConfig(config, moduleManager);
     }
 
     @SneakyThrows
