@@ -5,8 +5,8 @@ import cn.rookiex.module.AITreeModule;
 import cn.rookiex.module.Module;
 import cn.rookiex.module.ModuleManager;
 import cn.rookiex.robot.RobotContext;
-import cn.rookiex.tree.AIContext;
-import cn.rookiex.tree.node.Node;
+import cn.rookiex.ai.AIContext;
+import cn.rookiex.ai.node.Node;
 import com.alibaba.fastjson.JSONObject;
 
 /**

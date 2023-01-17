@@ -2,16 +2,9 @@ package cn.rookiex.module.impl;
 
 import cn.rookiex.event.ReqGameEvent;
 import cn.rookiex.module.*;
-import cn.rookiex.robot.Robot;
 import cn.rookiex.robot.RobotContext;
-import cn.rookiex.tree.AIContext;
-import cn.rookiex.tree.node.Node;
 import com.alibaba.fastjson.JSONObject;
-import com.google.common.collect.Lists;
 import lombok.extern.log4j.Log4j2;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * 实现全部模块功能的基本module,

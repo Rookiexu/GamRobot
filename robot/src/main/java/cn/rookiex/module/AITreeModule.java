@@ -1,7 +1,7 @@
 package cn.rookiex.module;
 
-import cn.rookiex.tree.AIContext;
-import cn.rookiex.tree.node.Node;
+import cn.rookiex.ai.AIContext;
+import cn.rookiex.ai.node.Node;
 import com.alibaba.fastjson.JSONObject;
 
 /**

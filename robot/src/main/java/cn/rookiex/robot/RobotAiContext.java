@@ -1,6 +1,6 @@
 package cn.rookiex.robot;
 
-import cn.rookiex.tree.AIContext;
+import cn.rookiex.ai.AIContext;
 
 /**
  * @author rookieX 2023/1/5
