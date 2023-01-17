@@ -16,6 +16,8 @@ public class RechargeAct extends ActNode {
 
         Robot robot = aiContext.getRobot();
 
+        //
+
         return TreeStates.IS_RUN;
     }
 }
