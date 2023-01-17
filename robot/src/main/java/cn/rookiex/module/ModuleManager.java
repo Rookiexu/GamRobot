@@ -3,6 +3,8 @@ package cn.rookiex.module;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.ClassUtil;
+import cn.rookiex.ai.node.IsNode;
+import cn.rookiex.ai.node.Node;
 import cn.rookiex.event.ReqGameEvent;
 import cn.rookiex.event.RespGameEvent;
 import cn.rookiex.module.impl.DefaultModule;
@@ -34,6 +36,12 @@ public class ModuleManager {
      */
     private final Map<String, ReqGameEvent> reqEventMap = Maps.newHashMap();
 
+
+    /**
+     * ai模块
+     */
+    private final Map<String, Class<Node>> aiNodeMap = Maps.newHashMap();
+
     /**
      * 响应事件map
      */
@@ -57,6 +65,26 @@ public class ModuleManager {
     public void init() {
         initEvents();
         initModules();
+        initAINodes();
+    }
+
+    private void initAINodes() {
+        Set<Class<?>> classes = ClassUtil.scanPackage("cn.rookiex.ai");
+        Iterator<Class<?>> it = classes.iterator();
+        Class<?> clazz;
+        try {
+            while (it.hasNext()) {
+                clazz = it.next();
+                IsNode isEventClazz = clazz.getAnnotation(IsNode.class);
+                if (isEventClazz != null){
+                    aiNodeMap.put(clazz.getSimpleName(), (Class<Node>) clazz);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        log.info("加载ai模块完成,当前模块数量 : " + aiNodeMap.size() + " : " + aiNodeMap);
     }
 
     public void initModules() {
@@ -149,9 +177,7 @@ public class ModuleManager {
                     }
                 }
             }
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
 

@@ -1,4 +1,4 @@
-package cn.rookiex.tree;
+package cn.rookiex.ai;
 
 public interface AIContext {
     //

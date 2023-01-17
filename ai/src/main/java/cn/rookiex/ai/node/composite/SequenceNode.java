@@ -1,10 +1,10 @@
-package cn.rookiex.tree.node.composite;
+package cn.rookiex.ai.node.composite;
 
-import cn.rookiex.tree.AIContext;
-import cn.rookiex.tree.TreeStates;
-import cn.rookiex.tree.node.DefaultNode;
-import cn.rookiex.tree.node.IsNode;
-import cn.rookiex.tree.node.Node;
+import cn.rookiex.ai.AIContext;
+import cn.rookiex.ai.TreeStates;
+import cn.rookiex.ai.node.DefaultNode;
+import cn.rookiex.ai.node.IsNode;
+import cn.rookiex.ai.node.Node;
 
 import java.util.List;
 

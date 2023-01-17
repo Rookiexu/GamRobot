@@ -1,14 +1,16 @@
 package cn.rookiex.ai.summon;
 
+import cn.rookiex.ai.node.IsNode;
 import cn.rookiex.robot.Robot;
 import cn.rookiex.robot.RobotCtx;
-import cn.rookiex.tree.AIContext;
-import cn.rookiex.tree.TreeStates;
-import cn.rookiex.tree.node.action.ActNode;
+import cn.rookiex.ai.AIContext;
+import cn.rookiex.ai.TreeStates;
+import cn.rookiex.ai.node.action.ActNode;
 
 /**
  * @author rookieX 2023/1/5
  */
+@IsNode
 public class RechargeAct extends ActNode {
     @Override
     public TreeStates execute0(AIContext context) {
@@ -16,7 +18,6 @@ public class RechargeAct extends ActNode {
 
         Robot robot = aiContext.getRobot();
 
-        //
 
         return TreeStates.IS_RUN;
     }

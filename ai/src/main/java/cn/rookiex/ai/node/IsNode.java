@@ -1,4 +1,4 @@
-package cn.rookiex.tree.node;
+package cn.rookiex.ai.node;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

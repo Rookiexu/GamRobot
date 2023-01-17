@@ -1,4 +1,4 @@
-package cn.rookiex.tree.node;
+package cn.rookiex.ai.node;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;

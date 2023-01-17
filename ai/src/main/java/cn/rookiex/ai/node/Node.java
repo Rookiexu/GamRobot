@@ -1,8 +1,8 @@
-package cn.rookiex.tree.node;
+package cn.rookiex.ai.node;
 
 
-import cn.rookiex.tree.AIContext;
-import cn.rookiex.tree.TreeStates;
+import cn.rookiex.ai.AIContext;
+import cn.rookiex.ai.TreeStates;
 import com.alibaba.fastjson.JSONObject;
 
 import java.util.List;
