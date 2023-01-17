@@ -78,8 +78,8 @@ public class OrderModuleImpl implements OrderModule {
     }
 
     @Override
-    public int getModuleType() {
-        return baseModule.getModuleType();
+    public int getSortType() {
+        return baseModule.getSortType();
     }
 
     @Override

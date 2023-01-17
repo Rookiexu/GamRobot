@@ -1,5 +1,6 @@
 {
   "order" : 2,
-  "type" : 2,
+  "sortType" : 2,
+  "moduleType" : "order",
   "disorderEvents" : ["ReqItem"]
 }

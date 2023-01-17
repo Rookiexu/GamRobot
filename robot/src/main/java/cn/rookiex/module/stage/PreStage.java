@@ -19,15 +19,13 @@ public class PreStage implements ModuleStage {
         Robot robot = robotContext.getRobot();
 
         ModuleManager moduleManager = robot.getModuleManager();
-        if (robot.getCurModStage() == Module.PRE) {
-            int curModIdx = robot.getCurModIdx();
-            if (moduleManager.getPreModule().size() == 0){
-                return true;
-            }
-            if (moduleManager.getPreModule().size() == curModIdx + 1) {
-                Module module = moduleManager.getPreModule().get(curModIdx);
-                return module.isRunOut(robotContext);
-            }
+        int curModIdx = robot.getCurModIdx();
+        if (moduleManager.getPreModule().size() == 0){
+            return true;
+        }
+        if (moduleManager.getPreModule().size() == curModIdx + 1) {
+            Module module = moduleManager.getPreModule().get(curModIdx);
+            return module.isRunOut(robotContext);
         }
         return false;
     }

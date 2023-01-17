@@ -1,6 +1,7 @@
 {
   "order" : 3,
-  "type" : 3,
+  "sortType" : 3,
+  "moduleType" : "order",
   "preEvents" : ["ReqGem","ReqHero"],
   "inorderEvents" : ["ReqHeroLevelUp","ReqHeroEquipGem"]
 }

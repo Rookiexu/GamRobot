@@ -1,7 +1,7 @@
 {
   "order" : 1,
-  "sortType" : 1,
-  "moduleType" : "pre",
+  "sortType" : 2,
+  "moduleType" : "ai",
   "preEvents" : ["ReqLogin","ReqSetName"],
   "inorderEvents" : ["ReqSkipMain","ReqSetName"]
 }

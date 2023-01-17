@@ -1,7 +1,6 @@
 package cn.rookiex.module.impl;
 
 import cn.rookiex.event.ReqGameEvent;
-import cn.rookiex.module.Module;
 import cn.rookiex.module.ModuleManager;
 import cn.rookiex.module.PreModule;
 import cn.rookiex.robot.Robot;
@@ -67,8 +66,8 @@ public class PreModuleImpl implements PreModule {
     }
 
     @Override
-    public int getModuleType() {
-        return baseModule.getModuleType();
+    public int getSortType() {
+        return baseModule.getSortType();
     }
 
     @Override

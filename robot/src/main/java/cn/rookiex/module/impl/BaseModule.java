@@ -16,7 +16,7 @@ public class BaseModule implements Module {
 
     private int order;
 
-    private Integer moduleType;
+    private Integer sortType;
 
     @Override
     public String getName() {
@@ -24,8 +24,8 @@ public class BaseModule implements Module {
     }
 
     @Override
-    public int getModuleType() {
-        return moduleType;
+    public int getSortType() {
+        return sortType;
     }
 
     @Override
@@ -42,11 +42,14 @@ public class BaseModule implements Module {
         } else {
             this.order = order;
         }
-        Integer type = config.getInteger("type");
+        Integer type = config.getInteger("sortType");
+        String moduleType = config.getString("moduleType");
         if (type == null) {
-            throw new IllegalArgumentException("type is null");
+            throw new IllegalArgumentException("sortType is null");
+        } else if (moduleType == null){
+            throw new IllegalArgumentException("moduleType is null");
         } else {
-            this.moduleType = type;
+            this.sortType = type;
         }
     }
 

@@ -76,15 +76,20 @@ public class ModuleManager {
             while (it.hasNext()) {
                 clazz = it.next();
                 IsNode isEventClazz = clazz.getAnnotation(IsNode.class);
-                if (isEventClazz != null){
-                    aiNodeMap.put(clazz.getSimpleName(), (Class<Node>) clazz);
+                if (isEventClazz != null) {
+                    if (aiNodeMap.containsKey(clazz.getSimpleName())) {
+                        log.error("存在同名ai模块,加载失败 : " + clazz.getSimpleName());
+                        throw new IllegalArgumentException();
+                    } else {
+                        aiNodeMap.put(clazz.getSimpleName(), (Class<Node>) clazz);
+                    }
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        log.info("加载ai模块完成,当前模块数量 : " + aiNodeMap.size() + " : " + aiNodeMap);
+        log.info("加载ai模块完成,当前模块数量 : " + aiNodeMap.size());
     }
 
     public void initModules() {
@@ -98,7 +103,7 @@ public class ModuleManager {
         this.orderModule = Lists.newArrayList();
         this.randomModule = Lists.newArrayList();
         for (Module value : moduleMap.values()) {
-            int type = value.getModuleType();
+            int type = value.getSortType();
             switch (type) {
                 case Module.RANDOM:
                     randomModule.add(value);

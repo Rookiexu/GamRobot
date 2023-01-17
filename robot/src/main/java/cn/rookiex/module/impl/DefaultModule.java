@@ -30,8 +30,8 @@ public class DefaultModule implements Module{
     }
 
     @Override
-    public int getModuleType() {
-        return baseModule.getModuleType();
+    public int getSortType() {
+        return baseModule.getSortType();
     }
 
     @Override
@@ -57,20 +57,19 @@ public class DefaultModule implements Module{
     @Override
     public void init(JSONObject config, ModuleManager moduleManager) {
         baseModule.init(config, moduleManager);
-        Integer type = config.getInteger("type");
+        String type = config.getString("moduleType");
         switch (type) {
-            case Module.PRE:
+            case Module.PRE_MOD:
                 this.runModule = new PreModuleImpl();
                 break;
-            case Module.RANDOM:
-            case Module.ORDER:
+            case Module.ORDER_MOD:
                 this.runModule = new OrderModuleImpl();
                 break;
-            case Module.AI:
+            case Module.AI_MOD:
                 this.runModule = new AITreeModuleImpl();
                 break;
             default:
-                throw new IllegalArgumentException("type is err : " + type);
+                throw new IllegalArgumentException("moduleType is err : " + type);
         }
         this.runModule.init(config, moduleManager);
     }
