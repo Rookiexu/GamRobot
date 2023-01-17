@@ -5,7 +5,7 @@ import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.ClassUtil;
 import cn.rookiex.event.ReqGameEvent;
 import cn.rookiex.event.RespGameEvent;
-import cn.rookiex.module.impl.DefaultOrderModule;
+import cn.rookiex.module.impl.DefaultModule;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -70,7 +70,7 @@ public class ModuleManager {
         this.orderModule = Lists.newArrayList();
         this.randomModule = Lists.newArrayList();
         for (Module value : moduleMap.values()) {
-            int type = value.getType();
+            int type = value.getModuleType();
             switch (type) {
                 case Module.RANDOM:
                     randomModule.add(value);
@@ -106,13 +106,13 @@ public class ModuleManager {
                     JSONObject jsonObject = JSONObject.parseObject(s);
                     //todo 后续可以优化为可扩展选择module实现类的方式
                     jsonObject.put("name", file1.getName().replace(".json", ""));
-                    DefaultOrderModule defaultOrderModule = new DefaultOrderModule();
-                    defaultOrderModule.init(jsonObject, this);
+                    DefaultModule defaultModule = new DefaultModule();
+                    defaultModule.init(jsonObject, this);
 
-                    if (moduleMap.containsKey(defaultOrderModule.getName())) {
-                        log.error("加载压测模块异常,存在多个同名module : " + defaultOrderModule.getName());
+                    if (moduleMap.containsKey(defaultModule.getName())) {
+                        log.error("加载压测模块异常,存在多个同名module : " + defaultModule.getName());
                     }
-                    moduleMap.put(defaultOrderModule.getName(), defaultOrderModule);
+                    moduleMap.put(defaultModule.getName(), defaultModule);
                 }
             }
         } else {

@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author rookieX 2022/12/6
  */
-public interface PreModule {
+public interface PreModule extends Module {
 
     void initPreConfig(JSONObject config, ModuleManager moduleManager);
 

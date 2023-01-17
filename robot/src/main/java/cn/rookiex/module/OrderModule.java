@@ -10,19 +10,19 @@ import java.util.List;
  *
  * @author rookieX 2022/12/6
  */
-public interface OrderModule {
+public interface OrderModule extends Module {
 
     void initOrderConfig(JSONObject config, ModuleManager moduleManager);
 
     /**
      * 有序事件,先于乱序事件完成,参与模块循环
      */
-     List<ReqGameEvent> getInorderEvents();
+    List<ReqGameEvent> getInorderEvents();
 
     /**
      * 乱序事件
      */
-     List<ReqGameEvent> getDisorderEvents();
+    List<ReqGameEvent> getDisorderEvents();
 
 
 }

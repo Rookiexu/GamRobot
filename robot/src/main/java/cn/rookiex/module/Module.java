@@ -13,7 +13,7 @@ public interface Module {
     /**
      * 前置模块,顺序执行模块,随机执行模块
      */
-    int PRE = 1, ORDER = 2,  RANDOM = 3;
+    int PRE = 1, ORDER = 2,  RANDOM = 3 ,AI = 4;
 
     String getName();
 
@@ -21,16 +21,12 @@ public interface Module {
      * 0:random 1:order 2:pre
      * @return 模块类型
      */
-    int getType();
+    int getModuleType();
 
     /**
      * @return 执行顺序
      */
     int getOrder();
-
-    int getRunTimes();
-
-    void incrRunTimes();
 
     void init(JSONObject config, ModuleManager moduleManager);
 

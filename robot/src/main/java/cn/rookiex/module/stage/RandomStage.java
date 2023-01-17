@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class RandomStage implements ModuleStage {
 
-    private static final ModuleStage stage = new AiStage();
+    private static final ModuleStage stage = new OrderStage();
 
     @Override
     public boolean isStageOver(RobotContext robotContext) {
