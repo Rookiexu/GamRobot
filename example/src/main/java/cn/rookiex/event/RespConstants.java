@@ -18,6 +18,7 @@ public class RespConstants implements RespGameEvent{
             ,ReqItem = 4
             ,ReqHeroLevelUp = 5
             ,ReqHeroEquipGem = 6
+            ,ReqRecharge = 7
             ;
 
 
@@ -28,7 +29,7 @@ public class RespConstants implements RespGameEvent{
             , RespItem = 4
             , RespHeroLevelUp = 5
             , RespHeroEquipGem = 6
-
+            , RespRecharge = 7
 
                     ;
 
