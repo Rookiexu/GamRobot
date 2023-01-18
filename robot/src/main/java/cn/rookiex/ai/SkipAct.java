@@ -1,7 +1,5 @@
-package cn.rookiex.ai.logic;
+package cn.rookiex.ai;
 
-import cn.rookiex.ai.AIContext;
-import cn.rookiex.ai.TreeStates;
 import cn.rookiex.ai.node.IsNode;
 import cn.rookiex.ai.node.action.ActNode;
 import cn.rookiex.robot.Robot;
@@ -19,7 +17,6 @@ public class SkipAct extends ActNode {
         RobotCtx aiContext = (RobotCtx) context;
 
         Robot robot = aiContext.getRobot();
-
 
         return TreeStates.IS_RUN;
     }

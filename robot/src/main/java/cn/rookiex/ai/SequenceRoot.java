@@ -1,7 +1,5 @@
-package cn.rookiex.ai.logic;
+package cn.rookiex.ai;
 
-import cn.rookiex.ai.AIContext;
-import cn.rookiex.ai.TreeStates;
 import cn.rookiex.ai.node.DefaultNode;
 import cn.rookiex.ai.node.IsNode;
 import cn.rookiex.ai.node.Node;
@@ -12,7 +10,7 @@ import java.util.List;
  * 执行全部不满足时会执行一次跳过
  */
 @IsNode
-public class SequenceRoot extends DefaultNode implements RootNode{
+public class SequenceRoot extends DefaultNode implements RootNode {
     @Override
     public TreeStates execute(AIContext context) {
         List<Node> sonNode = getSonNode();

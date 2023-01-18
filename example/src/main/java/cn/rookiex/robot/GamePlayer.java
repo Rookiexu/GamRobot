@@ -1,24 +1,42 @@
 package cn.rookiex.robot;
 
+import cn.rookiex.robot.manager.BagManager;
+import cn.rookiex.robot.manager.SummonManager;
+import com.google.common.collect.Maps;
+import lombok.Data;
+import lombok.SneakyThrows;
+
+import java.lang.reflect.Field;
 import java.util.Map;
 
 /**
  * @author rookieX 2023/1/16
  */
-public class GamePlayer implements GameRobot{
+@Data
+public class GamePlayer implements GameRobot {
 
     private String name;
 
-    public void setName(String name) {
-        this.name = name;
+    private SummonManager summonManager = new SummonManager();
+
+    private BagManager bagManager = new BagManager();
+
+    private Map<String, PlayerManager> managerMap = Maps.newHashMap();
+
+    @SneakyThrows
+    public GamePlayer(){
+        Field[] fields = this.getClass().getFields();
+        for (Field field : fields) {
+            Class<?> type = field.getType();
+            if (type.isAssignableFrom(PlayerManager.class)){
+                managerMap.put(type.getSimpleName(), (PlayerManager) field.get(this));
+            }
+        }
     }
 
-    public String getName() {
-        return name;
-    }
 
     @Override
-    public boolean isEnough(Map<Integer, Integer> need) {
-        return false;
+    public <T extends PlayerManager> T getManager(Class<T> dataClass) {
+        return (T) managerMap.get(dataClass.getSimpleName());
     }
 }

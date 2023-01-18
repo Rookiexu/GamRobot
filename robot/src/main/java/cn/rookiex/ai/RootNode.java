@@ -1,4 +1,4 @@
-package cn.rookiex.ai.logic;
+package cn.rookiex.ai;
 
 /**
  * @author rookieX 2023/1/18

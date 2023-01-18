@@ -1,12 +1,12 @@
 package cn.rookiex.module.impl;
 
+import cn.rookiex.ai.RootNode;
 import cn.rookiex.event.ReqGameEvent;
 import cn.rookiex.module.AITreeModule;
 import cn.rookiex.module.Module;
 import cn.rookiex.module.ModuleManager;
 import cn.rookiex.robot.RobotAiContext;
 import cn.rookiex.robot.RobotContext;
-import cn.rookiex.ai.AIContext;
 import cn.rookiex.ai.node.Node;
 import com.alibaba.fastjson.JSONObject;
 import lombok.SneakyThrows;
@@ -30,8 +30,12 @@ public class AITreeModuleImpl implements AITreeModule, Module {
         String act = aiEvent.getString("act");
         Class<Node> nodeClass = aiNodeMap.get(act);
         Node node = nodeClass.newInstance();
-        node.init(aiEvent, aiNodeMap);
-        this.node = node;
+        if (node instanceof RootNode) {
+            node.init(aiEvent, aiNodeMap);
+            this.node = node;
+        }else {
+            throw new IllegalAccessException("只能使用根节点作为起始节点");
+        }
     }
 
     @Override
