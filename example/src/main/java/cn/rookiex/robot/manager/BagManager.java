@@ -1,5 +1,6 @@
 package cn.rookiex.robot.manager;
 
+import cn.rookiex.robot.Manager;
 import cn.rookiex.robot.PlayerManager;
 import com.google.common.collect.Maps;
 
@@ -8,6 +9,7 @@ import java.util.Map;
 /**
  * @author rookieX 2023/1/18
  */
+@Manager
 public class BagManager implements PlayerManager {
 
     private Map<Integer, Integer> itemMap = Maps.newConcurrentMap();

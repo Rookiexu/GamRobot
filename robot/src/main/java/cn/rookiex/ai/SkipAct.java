@@ -2,7 +2,7 @@ package cn.rookiex.ai;
 
 import cn.rookiex.ai.node.IsNode;
 import cn.rookiex.ai.node.action.ActNode;
-import cn.rookiex.robot.Robot;
+import cn.rookiex.event.ReqSkip;
 import cn.rookiex.robot.ctx.RobotCtx;
 
 /**
@@ -15,9 +15,8 @@ public class SkipAct extends ActNode {
     @Override
     public TreeStates execute0(AIContext context) {
         RobotCtx aiContext = (RobotCtx) context;
-
-        Robot robot = aiContext.getRobot();
-
+        aiContext.setReqEvent(ReqSkip.EVENT);
+        aiContext.incrSkipTimes();
         return TreeStates.IS_RUN;
     }
 }

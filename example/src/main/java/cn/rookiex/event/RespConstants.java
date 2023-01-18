@@ -19,6 +19,7 @@ public class RespConstants implements RespGameEvent{
             ,ReqHeroLevelUp = 5
             ,ReqHeroEquipGem = 6
             ,ReqRecharge = 7
+            , ReqSummon = 8
             ;
 
 
@@ -30,6 +31,7 @@ public class RespConstants implements RespGameEvent{
             , RespHeroLevelUp = 5
             , RespHeroEquipGem = 6
             , RespRecharge = 7
+            , RespSummon = 8
 
                     ;
 
@@ -40,7 +42,7 @@ public class RespConstants implements RespGameEvent{
 
         int msgId = simpleMessage.getMsgId();
         String data = simpleMessage.parseData(String.class);
-//        log.info(robot.getFullName() + " deal msg : " + msgId + " , data : " + data);
+        log.info(robot.getFullName() + " deal msg : " + msgId + " , data : " + data);
     }
 
     @Override

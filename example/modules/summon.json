@@ -3,7 +3,7 @@
   "sortType": 2,
   "moduleType": "ai",
   "aiEvent": {
-    "comment": "注释:初始一个感兴趣道具,玩家随机一个兴趣值(0,100),小于兴趣要求退出,大于抽卡,单次抽卡消耗100,如果钱不够,充值648,抽卡随机概率,抽完item则退出",
+    "comment": "注释:初始检测感兴趣道具,玩家随机一个兴趣值(0,100),小于兴趣要求退出,大于抽卡获得,单次抽卡消耗100,如果钱不够,充值648,抽卡随机概率,抽完item则退出",
     "act": "SequenceRoot",
     "node": [
       {
@@ -28,7 +28,7 @@
           "act": "SummonAct"
         },
         "planB": {
-          "act:": "RechargeAct"
+          "act": "RechargeAct"
         }
       }
     ]

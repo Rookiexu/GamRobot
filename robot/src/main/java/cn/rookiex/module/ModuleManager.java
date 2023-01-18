@@ -64,8 +64,8 @@ public class ModuleManager {
 
     public void init() {
         initEvents();
-        initModules();
         initAINodes();
+        initModules();
     }
 
     private void initAINodes() {

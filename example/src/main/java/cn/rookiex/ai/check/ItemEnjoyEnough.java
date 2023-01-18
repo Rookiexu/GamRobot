@@ -66,7 +66,7 @@ public class ItemEnjoyEnough extends ConditionNode {
 
     @Override
     public Node init(JSONObject jsonObject, Map<String, Class<Node>> stringClassMap) {
-        JSONObject need = jsonObject.getJSONObject("need");
+        JSONObject need = jsonObject.getJSONObject("enjoyItem");
         if (jsonObject.containsKey("maxRandom")){
             this.maxRandom = jsonObject.getIntValue("maxRandom");
         }
@@ -74,7 +74,7 @@ public class ItemEnjoyEnough extends ConditionNode {
         Set<String> strings = need.keySet();
         for (String string : strings) {
             int id = Integer.parseInt(string);
-            int value = jsonObject.getIntValue(string);
+            int value = need.getIntValue(string);
             this.enjoyItem.put(id, value);
         }
         return this;

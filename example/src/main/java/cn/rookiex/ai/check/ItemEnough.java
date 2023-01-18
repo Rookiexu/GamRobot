@@ -34,7 +34,7 @@ public class ItemEnough extends ConditionNode {
         Set<String> strings = need.keySet();
         for (String string : strings) {
             int id = Integer.parseInt(string);
-            int value = jsonObject.getIntValue(string);
+            int value = need.getIntValue(string);
             this.need.put(id, value);
         }
         return this;

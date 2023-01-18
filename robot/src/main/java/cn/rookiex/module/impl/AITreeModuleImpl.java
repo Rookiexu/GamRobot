@@ -68,7 +68,7 @@ public class AITreeModuleImpl implements AITreeModule, Module {
 
         RobotAiContext aiContext = (RobotAiContext) context;
         node.execute(aiContext);
-        aiContext.incrRunTimes();
+        aiContext.incrSkipTimes();
         return aiContext.getReqEvent();
     }
 
@@ -80,7 +80,7 @@ public class AITreeModuleImpl implements AITreeModule, Module {
         }
 
         RobotAiContext aiContext = (RobotAiContext) context;
-        aiContext.reset();
+        aiContext.aiReset();
     }
 
     @SneakyThrows

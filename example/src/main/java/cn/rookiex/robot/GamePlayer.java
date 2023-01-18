@@ -25,10 +25,17 @@ public class GamePlayer implements GameRobot {
 
     @SneakyThrows
     public GamePlayer(){
-        Field[] fields = this.getClass().getFields();
+        Field[] fields = this.getClass().getDeclaredFields();
         for (Field field : fields) {
             Class<?> type = field.getType();
-            if (type.isAssignableFrom(PlayerManager.class)){
+            if (type.isAnnotationPresent(Manager.class)){
+                managerMap.put(type.getSimpleName(), (PlayerManager) field.get(this));
+            }
+        }
+        fields = this.getClass().getFields();
+        for (Field field : fields) {
+            Class<?> type = field.getType();
+            if (type.isAnnotationPresent(Manager.class)){
                 managerMap.put(type.getSimpleName(), (PlayerManager) field.get(this));
             }
         }

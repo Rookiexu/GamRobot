@@ -7,7 +7,7 @@ import cn.rookiex.robot.RobotContext;
  */
 public class ReqSkip implements ReqGameEvent,SkipEvent {
 
-    public static final ReqSkip event = new ReqSkip();
+    public static final ReqSkip EVENT = new ReqSkip();
 
     @Override
     public void dealReq(RobotContext robotContext) {

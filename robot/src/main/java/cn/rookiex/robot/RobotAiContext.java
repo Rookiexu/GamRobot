@@ -12,7 +12,7 @@ public interface RobotAiContext extends AIContext {
 
     void runOver();
 
-    void incrRunTimes();
+    void incrSkipTimes();
 
     int getRunTimes();
 
@@ -20,5 +20,5 @@ public interface RobotAiContext extends AIContext {
 
     void setReqEvent(ReqGameEvent event);
 
-    void reset();
+    void aiReset();
 }

@@ -17,6 +17,10 @@ public class RobotCtx implements RobotContext, RobotAiContext {
 
     private boolean skip = false;
 
+    private ReqGameEvent aiEvent;
+
+    private int aiSkip;
+
     @Override
     public void setRobotManager(RobotManager robotManager) {
         this.robotManager = robotManager;
@@ -54,17 +58,16 @@ public class RobotCtx implements RobotContext, RobotAiContext {
 
     @Override
     public boolean isOver() {
-        return false;
+        return aiSkip > 100;
     }
 
     @Override
     public void runOver() {
-
     }
 
     @Override
-    public void incrRunTimes() {
-
+    public void incrSkipTimes() {
+        aiSkip++;
     }
 
     @Override
@@ -74,16 +77,17 @@ public class RobotCtx implements RobotContext, RobotAiContext {
 
     @Override
     public ReqGameEvent getReqEvent() {
-        return null;
+        return aiEvent;
     }
 
     @Override
     public void setReqEvent(ReqGameEvent event) {
-
+        aiEvent = event;
     }
 
     @Override
-    public void reset() {
-
+    public void aiReset() {
+        aiEvent = null;
+        aiSkip = 0;
     }
 }
