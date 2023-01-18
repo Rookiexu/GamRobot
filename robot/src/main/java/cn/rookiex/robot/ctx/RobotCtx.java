@@ -1,11 +1,15 @@
-package cn.rookiex.robot;
+package cn.rookiex.robot.ctx;
 
+import cn.rookiex.event.ReqGameEvent;
 import cn.rookiex.manager.RobotManager;
+import cn.rookiex.robot.Robot;
+import cn.rookiex.robot.RobotAiContext;
+import cn.rookiex.robot.RobotContext;
 
 /**
  * @author rookieX 2022/12/7
  */
-public class RobotCtx implements RobotContext,RobotAiContext {
+public class RobotCtx implements RobotContext, RobotAiContext {
 
     private RobotManager robotManager;
 
@@ -66,5 +70,20 @@ public class RobotCtx implements RobotContext,RobotAiContext {
     @Override
     public int getRunTimes() {
         return 0;
+    }
+
+    @Override
+    public ReqGameEvent getReqEvent() {
+        return null;
+    }
+
+    @Override
+    public void setReqEvent(ReqGameEvent event) {
+
+    }
+
+    @Override
+    public void reset() {
+
     }
 }

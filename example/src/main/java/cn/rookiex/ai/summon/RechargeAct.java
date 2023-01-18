@@ -2,7 +2,7 @@ package cn.rookiex.ai.summon;
 
 import cn.rookiex.ai.node.IsNode;
 import cn.rookiex.robot.Robot;
-import cn.rookiex.robot.RobotCtx;
+import cn.rookiex.robot.ctx.RobotCtx;
 import cn.rookiex.ai.AIContext;
 import cn.rookiex.ai.TreeStates;
 import cn.rookiex.ai.node.action.ActNode;

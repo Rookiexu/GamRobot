@@ -18,5 +18,7 @@ public interface RobotAiContext extends AIContext {
 
     ReqGameEvent getReqEvent();
 
+    void setReqEvent(ReqGameEvent event);
+
     void reset();
 }

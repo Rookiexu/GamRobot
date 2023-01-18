@@ -14,7 +14,6 @@ import lombok.SneakyThrows;
 import java.util.Map;
 
 /**
- *
  * @author rookieX 2022/12/6
  */
 public class AITreeModuleImpl implements AITreeModule, Module {
@@ -25,7 +24,7 @@ public class AITreeModuleImpl implements AITreeModule, Module {
 
     @SneakyThrows
     @Override
-    public void initAIConfig(JSONObject config, ModuleManager moduleManager){
+    public void initAIConfig(JSONObject config, ModuleManager moduleManager) {
         Map<String, Class<Node>> aiNodeMap = moduleManager.getAiNodeMap();
         JSONObject aiEvent = config.getJSONObject("aiEvent");
         String act = aiEvent.getString("act");
@@ -62,6 +61,7 @@ public class AITreeModuleImpl implements AITreeModule, Module {
         if (!(context instanceof RobotAiContext)) {
             throw new IllegalAccessException();
         }
+
         RobotAiContext aiContext = (RobotAiContext) context;
         node.execute(aiContext);
         aiContext.incrRunTimes();
