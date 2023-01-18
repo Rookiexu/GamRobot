@@ -202,6 +202,7 @@ public class Robot {
         }
 
         ReqGameEvent executeEvent = getExecuteEvent();
+        setReqSendTime(System.currentTimeMillis());
         if (executeEvent != null) {
             if (!(executeEvent instanceof SkipEvent)){
                 dealReq0(executeEvent);
@@ -230,7 +231,6 @@ public class Robot {
     }
 
     private void dealReq0(ReqGameEvent executeEvent) {
-        setReqSendTime(System.currentTimeMillis());
         executeEvent.dealReq(this.robotContext);
 
         boolean skip = this.robotContext.isSkip();
