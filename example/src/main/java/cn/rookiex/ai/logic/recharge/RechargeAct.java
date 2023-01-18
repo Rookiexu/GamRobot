@@ -1,4 +1,4 @@
-package cn.rookiex.ai.summon;
+package cn.rookiex.ai.logic.recharge;
 
 import cn.rookiex.ai.node.IsNode;
 import cn.rookiex.robot.Robot;
@@ -17,7 +17,6 @@ public class RechargeAct extends ActNode {
         RobotCtx aiContext = (RobotCtx) context;
 
         Robot robot = aiContext.getRobot();
-
 
 
         return TreeStates.IS_RUN;
