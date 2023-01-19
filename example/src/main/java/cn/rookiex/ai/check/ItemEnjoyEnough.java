@@ -8,8 +8,8 @@ import cn.rookiex.ai.node.Node;
 import cn.rookiex.ai.node.deocrator.ConditionNode;
 import cn.rookiex.robot.GameRobot;
 import cn.rookiex.robot.ctx.RobotCtx;
-import cn.rookiex.robot.manager.BagManager;
-import cn.rookiex.robot.manager.SummonManager;
+import cn.rookiex.robot.playermanager.BagManager;
+import cn.rookiex.robot.playermanager.SummonManager;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
 

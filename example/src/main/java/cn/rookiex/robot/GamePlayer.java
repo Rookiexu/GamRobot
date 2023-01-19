@@ -1,7 +1,7 @@
 package cn.rookiex.robot;
 
-import cn.rookiex.robot.manager.BagManager;
-import cn.rookiex.robot.manager.SummonManager;
+import cn.rookiex.robot.playermanager.BagManager;
+import cn.rookiex.robot.playermanager.SummonManager;
 import com.google.common.collect.Maps;
 import lombok.Data;
 import lombok.SneakyThrows;
