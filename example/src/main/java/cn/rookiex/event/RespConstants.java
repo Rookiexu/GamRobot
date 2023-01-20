@@ -1,7 +1,7 @@
 package cn.rookiex.event;
 
 import cn.rookiex.coon.SimpleMessage;
-import cn.rookiex.core.Message;
+import cn.rookiex.message.Message;
 import cn.rookiex.robot.Robot;
 import cn.rookiex.robot.RobotContext;
 import lombok.extern.log4j.Log4j2;

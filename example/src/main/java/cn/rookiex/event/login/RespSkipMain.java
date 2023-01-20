@@ -1,6 +1,6 @@
 package cn.rookiex.event.login;
 
-import cn.rookiex.core.Message;
+import cn.rookiex.message.Message;
 import cn.rookiex.event.RespConstants;
 import cn.rookiex.event.RespGameEvent;
 import cn.rookiex.robot.RobotContext;

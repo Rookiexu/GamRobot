@@ -1,7 +1,7 @@
 package cn.rookiex.event.recharge;
 
 import cn.hutool.core.util.RandomUtil;
-import cn.rookiex.core.Message;
+import cn.rookiex.message.Message;
 import cn.rookiex.event.RespConstants;
 import cn.rookiex.event.RespGameEvent;
 import cn.rookiex.robot.GameRobot;

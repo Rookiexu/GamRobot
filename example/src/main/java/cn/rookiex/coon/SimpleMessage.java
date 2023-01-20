@@ -1,9 +1,9 @@
 package cn.rookiex.coon;
 
 
-import cn.rookiex.codec.DataCodec;
-import cn.rookiex.codec.StringCodec;
-import cn.rookiex.core.Message;
+import cn.rookiex.message.codec.DataCodec;
+import cn.rookiex.message.codec.StringCodec;
+import cn.rookiex.message.Message;
 import cn.rookiex.observer.observed.MsgInfo;
 
 /**
