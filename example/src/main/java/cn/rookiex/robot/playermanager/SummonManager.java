@@ -1,4 +1,4 @@
-package cn.rookiex.robot.manager;
+package cn.rookiex.robot.playermanager;
 
 import cn.rookiex.robot.Manager;
 import cn.rookiex.robot.PlayerManager;
