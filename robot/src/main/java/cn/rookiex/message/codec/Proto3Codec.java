@@ -1,4 +1,4 @@
-package cn.rookiex.codec;
+package cn.rookiex.message.codec;
 
 import com.google.protobuf.GeneratedMessageV3;
 import lombok.SneakyThrows;

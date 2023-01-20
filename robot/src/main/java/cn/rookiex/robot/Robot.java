@@ -1,7 +1,7 @@
 package cn.rookiex.robot;
 
 import cn.rookiex.client.Client;
-import cn.rookiex.core.Message;
+import cn.rookiex.message.Message;
 import cn.rookiex.event.ReqGameEvent;
 import cn.rookiex.event.RespGameEvent;
 import cn.rookiex.event.SkipEvent;

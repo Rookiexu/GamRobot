@@ -1,6 +1,6 @@
 package cn.rookiex.event;
 
-import cn.rookiex.core.Message;
+import cn.rookiex.message.Message;
 import cn.rookiex.robot.RobotContext;
 
 /**

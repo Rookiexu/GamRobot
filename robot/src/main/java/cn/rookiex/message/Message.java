@@ -1,4 +1,4 @@
-package cn.rookiex.core;
+package cn.rookiex.message;
 
 
 /**

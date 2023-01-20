@@ -1,6 +1,4 @@
-package cn.rookiex.codec;
-
-import java.lang.reflect.InvocationTargetException;
+package cn.rookiex.message.codec;
 
 /**
  * 消息编解码
