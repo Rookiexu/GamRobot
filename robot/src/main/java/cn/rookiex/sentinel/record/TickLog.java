@@ -1,4 +1,4 @@
-package cn.rookiex.record;
+package cn.rookiex.sentinel.record;
 
 /**
  * @author rookieX 2022/12/30

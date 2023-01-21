@@ -1,4 +1,4 @@
-package cn.rookiex.record.info;
+package cn.rookiex.sentinel.record.info;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;

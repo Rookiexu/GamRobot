@@ -1,4 +1,4 @@
-package cn.rookiex.record.info;
+package cn.rookiex.sentinel.record.info;
 
 import lombok.Getter;
 import lombok.ToString;

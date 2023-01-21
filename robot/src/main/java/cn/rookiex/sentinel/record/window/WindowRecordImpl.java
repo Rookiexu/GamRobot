@@ -1,4 +1,4 @@
-package cn.rookiex.record.window;
+package cn.rookiex.sentinel.record.window;
 
 import lombok.Getter;
 

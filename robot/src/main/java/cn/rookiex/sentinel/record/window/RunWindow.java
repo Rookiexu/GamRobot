@@ -1,8 +1,8 @@
-package cn.rookiex.record.window;
+package cn.rookiex.sentinel.record.window;
 
-import cn.rookiex.observer.observed.ObservedParams;
-import cn.rookiex.record.info.ProcessorInfo;
-import cn.rookiex.record.info.RespondBucket;
+import cn.rookiex.sentinel.observer.observed.ObservedParams;
+import cn.rookiex.sentinel.record.info.ProcessorInfo;
+import cn.rookiex.sentinel.record.info.RespondBucket;
 import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;

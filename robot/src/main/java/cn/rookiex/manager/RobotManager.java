@@ -2,12 +2,12 @@ package cn.rookiex.manager;
 
 import cn.rookiex.module.Module;
 import cn.rookiex.module.ModuleManager;
-import cn.rookiex.observer.*;
-import cn.rookiex.observer.observed.ObservedEvents;
-import cn.rookiex.observer.observed.ObservedParams;
-import cn.rookiex.record.Record;
-import cn.rookiex.record.RecordProcessor;
-import cn.rookiex.record.SlowMsgRecord;
+import cn.rookiex.sentinel.observer.*;
+import cn.rookiex.sentinel.observer.observed.ObservedEvents;
+import cn.rookiex.sentinel.observer.observed.ObservedParams;
+import cn.rookiex.sentinel.record.Record;
+import cn.rookiex.sentinel.record.RecordProcessor;
+import cn.rookiex.sentinel.record.SlowMsgRecord;
 import cn.rookiex.robot.Robot;
 import cn.rookiex.robot.RobotContext;
 import cn.rookiex.robot.RobotFactory;

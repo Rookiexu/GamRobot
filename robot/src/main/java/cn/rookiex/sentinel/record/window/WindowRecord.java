@@ -1,6 +1,4 @@
-package cn.rookiex.record.window;
-
-import cn.rookiex.record.window.Window;
+package cn.rookiex.sentinel.record.window;
 
 import java.util.List;
 

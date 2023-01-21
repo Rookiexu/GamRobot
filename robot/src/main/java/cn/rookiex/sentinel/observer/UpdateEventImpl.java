@@ -1,7 +1,6 @@
-package cn.rookiex.observer;
+package cn.rookiex.sentinel.observer;
 
 import com.google.common.collect.Maps;
-import lombok.AllArgsConstructor;
 
 import java.util.Collection;
 import java.util.Map;

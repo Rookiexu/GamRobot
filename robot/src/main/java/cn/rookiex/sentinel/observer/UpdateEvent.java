@@ -1,4 +1,4 @@
-package cn.rookiex.observer;
+package cn.rookiex.sentinel.observer;
 
 import java.util.Map;
 

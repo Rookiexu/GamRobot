@@ -1,4 +1,4 @@
-package cn.rookiex.record.info;
+package cn.rookiex.sentinel.record.info;
 
 /**
  * @author rookieX 2022/12/30

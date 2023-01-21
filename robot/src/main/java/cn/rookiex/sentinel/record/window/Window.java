@@ -1,4 +1,4 @@
-package cn.rookiex.record.window;
+package cn.rookiex.sentinel.record.window;
 
 /**
  * @author rookieX 2022/12/30
