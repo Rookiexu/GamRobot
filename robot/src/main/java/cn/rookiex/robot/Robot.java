@@ -1,6 +1,5 @@
 package cn.rookiex.robot;
 
-import cn.rookiex.client.Client;
 import cn.rookiex.message.Message;
 import cn.rookiex.event.ReqGameEvent;
 import cn.rookiex.event.RespGameEvent;
@@ -16,8 +15,13 @@ import cn.rookiex.sentinel.observer.observed.ObservedEvents;
 import cn.rookiex.sentinel.observer.observed.ObservedParams;
 import cn.rookiex.sentinel.observer.UpdateEvent;
 import cn.rookiex.sentinel.observer.UpdateEventImpl;
+import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.AttributeKey;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
@@ -273,9 +277,22 @@ public class Robot {
         String serverIp = config.getServerIp();
         int serverPort = config.getServerPort();
 
-        this.channel = Client.newChannel(serverIp, serverPort, getChannelInitializer());
+        this.channel = newChannel(serverIp, serverPort);
         channel.attr(CHANNEL_ATTR_ID).set(this.id);
         runStage.initStage(robotContext);
+    }
+
+    private Channel newChannel(String serverIp, int serverPort) throws InterruptedException {
+        // Configure the client.
+        EventLoopGroup group = new NioEventLoopGroup();
+        Bootstrap b = new Bootstrap();
+        b.group(group)
+                .channel(NioSocketChannel.class)
+                .option(ChannelOption.TCP_NODELAY, true)
+                .handler(getChannelInitializer());
+
+        // Start the client.
+        return b.connect(serverIp, serverPort).sync().channel();
     }
 
     private RobotConfig getRobotConfig() {
