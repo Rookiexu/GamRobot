@@ -1,5 +1,6 @@
-package cn.rookiex.coon.server;
+package cn.rookiex;
 
+import cn.rookiex.coon.server.ServerChannelInitializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;
