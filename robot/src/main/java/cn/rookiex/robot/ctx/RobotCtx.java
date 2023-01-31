@@ -3,8 +3,6 @@ package cn.rookiex.robot.ctx;
 import cn.rookiex.event.ReqGameEvent;
 import cn.rookiex.manager.RobotManager;
 import cn.rookiex.robot.Robot;
-import cn.rookiex.robot.RobotAiContext;
-import cn.rookiex.robot.RobotContext;
 
 /**
  * @author rookieX 2022/12/7

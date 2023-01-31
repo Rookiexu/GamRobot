@@ -1,7 +1,4 @@
-package cn.rookiex.robot.playermanager;
-
-import cn.rookiex.robot.Manager;
-import cn.rookiex.robot.PlayerManager;
+package cn.rookiex.robot.gamemanager;
 
 /**
  * @author rookieX 2023/1/18

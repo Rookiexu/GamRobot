@@ -1,7 +1,5 @@
-package cn.rookiex.robot.playermanager;
+package cn.rookiex.robot.gamemanager;
 
-import cn.rookiex.robot.Manager;
-import cn.rookiex.robot.PlayerManager;
 import com.google.common.collect.Maps;
 
 import java.util.Map;

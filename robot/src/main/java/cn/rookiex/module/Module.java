@@ -1,7 +1,7 @@
 package cn.rookiex.module;
 
 import cn.rookiex.event.ReqGameEvent;
-import cn.rookiex.robot.RobotContext;
+import cn.rookiex.robot.ctx.RobotContext;
 import com.alibaba.fastjson.JSONObject;
 
 /**

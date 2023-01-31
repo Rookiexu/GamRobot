@@ -1,6 +1,6 @@
 package cn.rookiex.event;
 
-import cn.rookiex.robot.RobotContext;
+import cn.rookiex.robot.ctx.RobotContext;
 
 /**
  * @author rookieX 2022/12/5

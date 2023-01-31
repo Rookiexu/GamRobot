@@ -2,6 +2,7 @@ package cn.rookiex.robot;
 
 import cn.rookiex.coon.client.NioChannelInitializer;
 import cn.rookiex.manager.RobotManager;
+import cn.rookiex.robot.ctx.RobotContext;
 import cn.rookiex.robot.ctx.RobotCtx;
 import io.netty.channel.ChannelInitializer;
 

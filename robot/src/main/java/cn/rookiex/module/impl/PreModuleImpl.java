@@ -4,7 +4,7 @@ import cn.rookiex.event.ReqGameEvent;
 import cn.rookiex.module.ModuleManager;
 import cn.rookiex.module.PreModule;
 import cn.rookiex.robot.Robot;
-import cn.rookiex.robot.RobotContext;
+import cn.rookiex.robot.ctx.RobotContext;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;

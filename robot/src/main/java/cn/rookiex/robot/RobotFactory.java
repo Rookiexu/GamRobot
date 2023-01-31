@@ -1,6 +1,7 @@
 package cn.rookiex.robot;
 
 import cn.rookiex.manager.RobotManager;
+import cn.rookiex.robot.ctx.RobotContext;
 import io.netty.channel.ChannelInitializer;
 
 /**

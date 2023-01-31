@@ -1,4 +1,4 @@
-package cn.rookiex.robot;
+package cn.rookiex.robot.gamemanager;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

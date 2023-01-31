@@ -1,4 +1,4 @@
-package cn.rookiex.robot;
+package cn.rookiex.robot.gamemanager;
 
 /**
  * @author rookieX 2023/1/18

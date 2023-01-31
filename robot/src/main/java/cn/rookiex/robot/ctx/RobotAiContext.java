@@ -1,4 +1,4 @@
-package cn.rookiex.robot;
+package cn.rookiex.robot.ctx;
 
 import cn.rookiex.ai.AIContext;
 import cn.rookiex.event.ReqGameEvent;

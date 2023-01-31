@@ -1,6 +1,7 @@
-package cn.rookiex.robot;
+package cn.rookiex.robot.ctx;
 
 import cn.rookiex.manager.RobotManager;
+import cn.rookiex.robot.Robot;
 
 /**
  * @author rookieX 2022/12/7

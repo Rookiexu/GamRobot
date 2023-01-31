@@ -3,7 +3,7 @@ package cn.rookiex.event.login;
 import cn.rookiex.message.Message;
 import cn.rookiex.event.RespConstants;
 import cn.rookiex.event.RespGameEvent;
-import cn.rookiex.robot.RobotContext;
+import cn.rookiex.robot.ctx.RobotContext;
 
 /**
  * @author rookieX 2022/12/6

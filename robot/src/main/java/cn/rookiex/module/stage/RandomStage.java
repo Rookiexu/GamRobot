@@ -3,7 +3,7 @@ package cn.rookiex.module.stage;
 import cn.rookiex.event.ReqGameEvent;
 import cn.rookiex.module.Module;
 import cn.rookiex.robot.Robot;
-import cn.rookiex.robot.RobotContext;
+import cn.rookiex.robot.ctx.RobotContext;
 
 import java.util.List;
 

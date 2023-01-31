@@ -2,7 +2,7 @@ package cn.rookiex.module.impl;
 
 import cn.rookiex.event.ReqGameEvent;
 import cn.rookiex.module.*;
-import cn.rookiex.robot.RobotContext;
+import cn.rookiex.robot.ctx.RobotContext;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.log4j.Log4j2;
 

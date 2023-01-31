@@ -1,7 +1,7 @@
 package cn.rookiex.module.stage;
 
 import cn.rookiex.event.ReqGameEvent;
-import cn.rookiex.robot.RobotContext;
+import cn.rookiex.robot.ctx.RobotContext;
 
 /**
  * @author rookieX 2022/12/12

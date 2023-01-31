@@ -4,7 +4,7 @@ import cn.rookiex.coon.SimpleMessage;
 import cn.rookiex.event.ReqGameEvent;
 import cn.rookiex.event.RespConstants;
 import cn.rookiex.robot.Robot;
-import cn.rookiex.robot.RobotContext;
+import cn.rookiex.robot.ctx.RobotContext;
 
 /**
  * @author rookieX 2023/1/16

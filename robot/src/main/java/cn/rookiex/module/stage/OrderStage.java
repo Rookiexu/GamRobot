@@ -4,7 +4,7 @@ import cn.rookiex.event.ReqGameEvent;
 import cn.rookiex.module.Module;
 import cn.rookiex.module.ModuleManager;
 import cn.rookiex.robot.Robot;
-import cn.rookiex.robot.RobotContext;
+import cn.rookiex.robot.ctx.RobotContext;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.List;

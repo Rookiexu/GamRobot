@@ -1,6 +1,8 @@
 package cn.rookiex.robot;
 
 
+import cn.rookiex.robot.gamemanager.PlayerManager;
+
 /**
  * @author rookieX 2023/1/16
  */

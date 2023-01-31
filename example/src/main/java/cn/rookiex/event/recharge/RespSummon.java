@@ -7,9 +7,9 @@ import cn.rookiex.event.RespGameEvent;
 import cn.rookiex.robot.GameRobot;
 import cn.rookiex.robot.ItemConstants;
 import cn.rookiex.robot.Robot;
-import cn.rookiex.robot.RobotContext;
-import cn.rookiex.robot.playermanager.BagManager;
-import cn.rookiex.robot.playermanager.SummonManager;
+import cn.rookiex.robot.ctx.RobotContext;
+import cn.rookiex.robot.gamemanager.BagManager;
+import cn.rookiex.robot.gamemanager.SummonManager;
 import lombok.extern.log4j.Log4j2;
 
 /**

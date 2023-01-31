@@ -9,7 +9,7 @@ import cn.rookiex.sentinel.record.Record;
 import cn.rookiex.sentinel.record.RecordProcessor;
 import cn.rookiex.sentinel.record.SlowMsgRecord;
 import cn.rookiex.robot.Robot;
-import cn.rookiex.robot.RobotContext;
+import cn.rookiex.robot.ctx.RobotContext;
 import cn.rookiex.robot.RobotFactory;
 import cn.rookiex.robot.RobotProcessor;
 import com.google.common.collect.Lists;

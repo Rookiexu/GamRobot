@@ -7,7 +7,7 @@ import cn.rookiex.ai.node.Node;
 import cn.rookiex.ai.node.deocrator.ConditionNode;
 import cn.rookiex.robot.GameRobot;
 import cn.rookiex.robot.ctx.RobotCtx;
-import cn.rookiex.robot.playermanager.BagManager;
+import cn.rookiex.robot.gamemanager.BagManager;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
 

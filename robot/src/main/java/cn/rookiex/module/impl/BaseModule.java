@@ -3,7 +3,7 @@ package cn.rookiex.module.impl;
 import cn.rookiex.event.ReqGameEvent;
 import cn.rookiex.module.Module;
 import cn.rookiex.module.ModuleManager;
-import cn.rookiex.robot.RobotContext;
+import cn.rookiex.robot.ctx.RobotContext;
 import com.alibaba.fastjson.JSONObject;
 import lombok.SneakyThrows;
 
