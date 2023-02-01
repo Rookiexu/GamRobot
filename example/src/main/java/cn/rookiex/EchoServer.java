@@ -13,16 +13,18 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 public class EchoServer {
     public static void main(String[] args)  throws Exception  {
 
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        EventLoopGroup bossGroup = new NioEventLoopGroup();
+        EventLoopGroup workerGroup = new NioEventLoopGroup(4);
         try {
             ServerBootstrap b = new ServerBootstrap();
-            b.group(workerGroup)
+            b.group(bossGroup,workerGroup)
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new ServerChannelInitializer());
 
             ChannelFuture f = b.bind(8090).sync();
             f.channel().closeFuture().sync();
         } finally {
+            bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }
     }

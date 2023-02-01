@@ -8,13 +8,19 @@ import cn.rookiex.robot.Robot;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.util.HashedWheelTimer;
+import io.netty.util.concurrent.CompleteFuture;
 import lombok.extern.log4j.Log4j2;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author rookieX 2022/12/14
  */
 @Log4j2
 public class ServerHandler extends ChannelInboundHandlerAdapter {
+
+    private final HashedWheelTimer timer = new HashedWheelTimer(1, TimeUnit.MILLISECONDS, 16);
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -23,9 +29,10 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        SimpleMessage message = (SimpleMessage) msg;
-        Thread.sleep(RandomUtil.randomInt(2));
-        ctx.channel().writeAndFlush(message);
+        timer.newTimeout((timeout) -> {
+            SimpleMessage message = (SimpleMessage) msg;
+            ctx.channel().writeAndFlush(message);
+        }, RandomUtil.randomInt(5), TimeUnit.MILLISECONDS);
     }
 
     @Override
