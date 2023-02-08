@@ -40,12 +40,12 @@ public class SimpleMessage implements Message, MsgInfo {
     }
 
     @Override
-    public byte[] getData() {
+    public byte[] getDataBytes() {
         return data;
     }
 
     @Override
-    public void setData(byte[] data) {
+    public void setDataBytes(byte[] data) {
         this.data = data;
     }
 

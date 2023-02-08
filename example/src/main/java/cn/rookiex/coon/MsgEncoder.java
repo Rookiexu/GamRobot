@@ -11,7 +11,7 @@ public class MsgEncoder extends MessageToByteEncoder<SimpleMessage> {
     @Override
     protected void encode(ChannelHandlerContext ctx, SimpleMessage msg, ByteBuf out) throws Exception {
         int msgId = msg.getMsgId();
-        byte[] bytes = msg.getData();
+        byte[] bytes = msg.getDataBytes();
         int length = (bytes.length + 4);
         out.writeInt(length);
         out.writeInt(msgId);

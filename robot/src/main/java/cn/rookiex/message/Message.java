@@ -10,9 +10,9 @@ public interface Message {
 
     void setMsgId(int id);
 
-     byte[] getData();
+     byte[] getDataBytes();
 
-     void setData(byte[] data);
+     void setDataBytes(byte[] data);
 
      void setData(Object data);
 

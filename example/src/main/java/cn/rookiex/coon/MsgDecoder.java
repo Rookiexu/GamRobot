@@ -19,7 +19,7 @@ public class MsgDecoder extends ByteToMessageDecoder {
 
         SimpleMessage message = new SimpleMessage();
         message.setMsgId(msgId);
-        message.setData(body);
+        message.setDataBytes(body);
         out.add(message);
     }
 }
