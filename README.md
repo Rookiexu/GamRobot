@@ -3,38 +3,17 @@
 
 gameRobot是一个主要用于游戏压测的机器人程序,理论上也可以用于其他.除了可以完成按模块的一应一答消息处理,还提供基于行为树的ai支持,让压测可以更接近玩家操作,另外也提供了对消息响应监控,以及可以自定义扩展的监控项目.
 
-## 版本说明
+## 文档说明
 
-master为和develop都是可执行版本,如果要使用就选它们:
-
-master:
-
-develop:
-
-
-doc_* 为从零实现压测机器人的文档对应版本:
-
-doc_1: 
-
-doc_2:
-
-doc_3:  
-
-doc_4:  
-
-
-## 文档
-
-1. 从0实现压测机器人
-2. 模拟游戏协议
-3. 机器人执行分析
-4. 执行流程实现
-5. 添加执行过程监控
-6. 添加行为树ai执行模块
-7. 最终效果
+1. 设计思考 :  [游戏压测分析](https://zhuanlan.zhihu.com/p/604501690)
+2. 代码设计 :  todo
+3. example :
+    1. EchoServer :  [模拟echo服务器](example/src/main/java/cn/rookiex/EchoServer.java)
+    2. RobotServer : [压测机器人启动](example/src/main/java/cn/rookiex/RobotServer.java)
 
 ## 问题反馈
 
 欢迎提交issues
 
 也欢迎联系邮箱774590465@qq.com
+
