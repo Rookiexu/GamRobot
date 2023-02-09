@@ -1,6 +1,5 @@
 package cn.rookiex;
 
-import cn.rookiex.manager.RobotConfig;
 import cn.rookiex.manager.RobotManager;
 import cn.rookiex.robot.DefaultRobotFactory;
 
@@ -18,10 +17,7 @@ public class RobotServer {
         return robotServer;
     }
 
-
     private RobotManager robotManager;
-
-    private RobotConfig robotConfig;
 
     public void init(){
         this.robotManager = new RobotManager();
