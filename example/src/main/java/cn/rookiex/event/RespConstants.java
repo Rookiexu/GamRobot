@@ -5,6 +5,7 @@ import cn.rookiex.coon.message.StrMessage;
 import cn.rookiex.message.Message;
 import cn.rookiex.robot.Robot;
 import cn.rookiex.robot.ctx.RobotContext;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.log4j.Log4j2;
 
 /**
@@ -52,7 +53,7 @@ public class RespConstants implements RespGameEvent{
             JsonMessage jsonMessage = (JsonMessage) message;
 
             int msgId = jsonMessage.getMsgId();
-            String data = jsonMessage.parseData(String.class);
+            JSONObject data = jsonMessage.parseData(JSONObject.class);
             log.info(robot.getFullName() + " deal json msg : " + msgId + " , data : " + data);
         }
     }

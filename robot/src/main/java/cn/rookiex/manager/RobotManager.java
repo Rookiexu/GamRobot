@@ -64,7 +64,11 @@ public class RobotManager {
         this.idCounter = new AtomicLong();
 
         int threadCount = config.getThreadCount();
-        for (int i = 0; i < threadCount; i++) {
+        int robotCount = config.getRobotCount();
+        if (threadCount > robotCount){
+            config.setThreadCount(robotCount);
+        }
+        for (int i = 0; i < config.getThreadCount(); i++) {
             RobotProcessor robotProcessor = new RobotProcessor();
             ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
             robotProcessor.setId(i);
@@ -73,11 +77,11 @@ public class RobotManager {
             processorMap.put(i, robotProcessor);
         }
 
-        log.info("加载压测机器人完成,当前执行数 : " + processorMap.size());
+        log.info("加载压测机器人完成,当前线程数 : " + processorMap.size());
         this.recordProcessor = new RecordProcessor();
         this.recordProcessor.setRobotManager(this);
 
-        log.info(this.config);
+//        log.info(this.config);
     }
 
     public RobotProcessor getProcessor(int id){

@@ -15,14 +15,13 @@ public class EchoServer {
     public static void main(String[] args)  throws Exception  {
         ExampleRobotFactory exampleRobotFactory = new ExampleRobotFactory();
 
-        EventLoopGroup bossGroup = new NioEventLoopGroup();
+        EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup(4);
         try {
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup,workerGroup)
                     .channel(NioServerSocketChannel.class)
                     .childHandler(exampleRobotFactory.getServerChannelInitializer());
-//                    .childHandler(new ServerStrChannelInitializer());
 
             ChannelFuture f = b.bind(8090).sync();
             f.channel().closeFuture().sync();

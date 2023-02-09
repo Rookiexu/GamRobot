@@ -12,10 +12,10 @@ import io.netty.channel.ChannelInitializer;
  */
 public class ExampleRobotFactory implements RobotFactory {
 
-    private static ChannelInitializer clientInitializer = new ClientMultiChannelInitializer();
+    private static final ChannelInitializer clientInitializer = new ClientMultiChannelInitializer();
 //    ChannelInitializer initializer = new ClientStrChannelInitializer();
 
-    private static ChannelInitializer serverInitializer = new ServerMultiChannelInitializer();
+    private static final ChannelInitializer serverInitializer = new ServerMultiChannelInitializer();
 
     @Override
     public Robot newRobot(RobotManager manager) {
