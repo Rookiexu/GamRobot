@@ -38,6 +38,11 @@ public class ErrMessage implements Message, MsgInfo {
     }
 
     @Override
+    public short msgType() {
+        return 0;
+    }
+
+    @Override
     public long getCreateTime() {
         return 0;
     }

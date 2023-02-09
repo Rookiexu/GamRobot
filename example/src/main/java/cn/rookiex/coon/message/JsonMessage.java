@@ -59,6 +59,11 @@ public class JsonMessage implements Message, MsgInfo {
     }
 
     @Override
+    public short msgType() {
+        return MessageConstants.JSON;
+    }
+
+    @Override
     public long getCreateTime() {
         return this.createTime;
     }

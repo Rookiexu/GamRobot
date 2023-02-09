@@ -60,6 +60,11 @@ public class StrMessage implements Message, MsgInfo {
     }
 
     @Override
+    public short msgType() {
+        return MessageConstants.STR;
+    }
+
+    @Override
     public long getCreateTime() {
         return this.createTime;
     }

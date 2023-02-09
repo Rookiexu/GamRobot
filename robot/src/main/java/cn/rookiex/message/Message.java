@@ -17,4 +17,6 @@ public interface Message {
      void setData(Object data);
 
     <T> T parseData(Class<T> dataClass);
+
+    short msgType();
 }
