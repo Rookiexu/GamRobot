@@ -64,12 +64,12 @@ public class ModuleManager {
     private List<Module> randomModule;
 
     public void init(RobotConfig config) {
-        initEvents();
-        initAINodes();
-        initModules();
+        initEvents(config);
+        initAINodes(config);
+        initModules(config);
     }
 
-    private void initAINodes() {
+    private void initAINodes(RobotConfig config) {
         Set<Class<?>> classes = ClassUtil.scanPackage("cn.rookiex.ai");
         Iterator<Class<?>> it = classes.iterator();
         Class<?> clazz;
@@ -93,12 +93,12 @@ public class ModuleManager {
         log.info("加载ai模块完成,当前模块数量 : " + aiNodeMap.size());
     }
 
-    public void initModules() {
-        loadModules();
-        sortModules();
+    public void initModules(RobotConfig config) {
+        loadModules(config);
+        sortModules(config);
     }
 
-    private void sortModules() {
+    private void sortModules(RobotConfig config) {
         log.info("加载压测模块顺序开始");
         this.preModule = Lists.newArrayList();
         this.orderModule = Lists.newArrayList();
@@ -127,25 +127,37 @@ public class ModuleManager {
         log.info("加载压测模块顺序,随机模块数量 : " + randomModule.size() + " , : " + randomModule.toString());
     }
 
-    private void loadModules() {
+    private void loadModules(RobotConfig config) {
         log.info("加载压测模块开始");
-        File modules = new File("modules");
+        String loadModType = config.getLoadModType();
+        String modPath = config.getLoadModPath();
+        File modules = new File(modPath);
         if (modules.isDirectory() && !FileUtil.isEmpty(modules)) {
-            for (File file1 : modules.listFiles()) {
-                String name = file1.getName();
-                if (name.endsWith(".json")) {
-                    FileReader fileReader = FileReader.create(file1);
-                    String s = fileReader.readString();
-                    JSONObject jsonObject = JSONObject.parseObject(s);
-                    //todo 后续可以优化为可扩展选择module实现类的方式
-                    jsonObject.put("name", file1.getName().replace(".json", ""));
-                    DefaultModule defaultModule = new DefaultModule();
-                    defaultModule.init(jsonObject, this);
+            List<File> files = null;
+            if (loadModType.equals("all")){
+                files = FileUtil.loopFiles(modules);
+            }else if (loadModType.equals("path")) {
+                files = FileUtil.loopFiles(modules,1,null);
+            }
+            if (files == null){
+                log.error("加载压测模块异常,配置目录 modules 不存在,当前加载类型: " + loadModType + " ,当前路径" + modules.getAbsolutePath());
+            }else {
+                for (File file1 : files) {
+                    String name = file1.getName();
+                    if (name.endsWith(".json")) {
+                        FileReader fileReader = FileReader.create(file1);
+                        String s = fileReader.readString();
+                        JSONObject jsonObject = JSONObject.parseObject(s);
+                        //todo 后续可以优化为可扩展选择module实现类的方式
+                        jsonObject.put("name", file1.getName().replace(".json", ""));
+                        DefaultModule defaultModule = new DefaultModule();
+                        defaultModule.init(jsonObject, this);
 
-                    if (moduleMap.containsKey(defaultModule.getName())) {
-                        log.error("加载压测模块异常,存在多个同名module : " + defaultModule.getName());
+                        if (moduleMap.containsKey(defaultModule.getName())) {
+                            log.error("加载压测模块异常,存在多个同名module : " + defaultModule.getName());
+                        }
+                        moduleMap.put(defaultModule.getName(), defaultModule);
                     }
-                    moduleMap.put(defaultModule.getName(), defaultModule);
                 }
             }
         } else {
@@ -154,7 +166,7 @@ public class ModuleManager {
         log.info("加载压测模块完成,当前模块数量 : " + moduleMap.size());
     }
 
-    public void initEvents() {
+    public void initEvents(RobotConfig config) {
         log.info("加载压测事件开始");
         Set<Class<?>> clazzs = ClassUtil.scanPackage("cn.rookiex.event");
         Iterator<Class<?>> it = clazzs.iterator();

@@ -47,6 +47,15 @@ public class RobotConfig {
     private String robotName = "robot";
 
 
+    /**
+     * 加载测试模块的方式,包含all和指定path
+     */
+    private String loadModType = "path";
+
+    /**
+     * 加载测试模块的path
+     */
+    private String loadModPath = "modules";
 
     /**
      * 执行线程数
@@ -62,15 +71,6 @@ public class RobotConfig {
             log.error(e, e);
         }
 
-    }
-
-    private boolean checkNull(String name, String value) {
-        if (value == null || value.isEmpty()) {
-            log.error("property : " + name + " ,is null or empty");
-            return false;
-        } else {
-            return true;
-        }
     }
 
     private void initProperties(Properties properties) throws IllegalAccessException {
