@@ -1,6 +1,6 @@
 package cn.rookiex.coon;
 
-import cn.rookiex.coon.message.SimpleMessage;
+import cn.rookiex.coon.message.StrMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
@@ -18,7 +18,7 @@ public class MsgDecoder extends ByteToMessageDecoder {
         byte[] body = new byte[totalLength - 4]; //获取body的内容
         in.readBytes(body);
 
-        SimpleMessage message = new SimpleMessage();
+        StrMessage message = new StrMessage();
         message.setMsgId(msgId);
         message.setDataBytes(body);
         out.add(message);

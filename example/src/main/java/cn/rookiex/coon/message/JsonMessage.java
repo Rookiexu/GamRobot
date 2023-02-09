@@ -1,15 +1,14 @@
 package cn.rookiex.coon.message;
 
-
-import cn.rookiex.message.codec.DataCodec;
-import cn.rookiex.message.codec.StringCodec;
 import cn.rookiex.message.Message;
+import cn.rookiex.message.codec.DataCodec;
+import cn.rookiex.message.codec.JsonCodec;
 import cn.rookiex.sentinel.observer.observed.MsgInfo;
 
 /**
- * @author rookieX 2022/12/14
+ * @author rookieX 2023/2/9
  */
-public class SimpleMessage implements Message, MsgInfo {
+public class JsonMessage implements Message, MsgInfo {
 
     private int messageId;
 
@@ -17,15 +16,15 @@ public class SimpleMessage implements Message, MsgInfo {
 
     private byte[] data;
 
-    public static DataCodec dataCodec = new StringCodec();
+    public static DataCodec dataCodec = new JsonCodec();
 
-    public SimpleMessage(int message, String msgStr){
+    public JsonMessage(int message, String msgStr){
         this.messageId = message;
         this.data = dataCodec.encode(msgStr);
         this.createTime = System.currentTimeMillis();
     }
 
-    public SimpleMessage(){
+    public JsonMessage(){
         this.createTime = System.currentTimeMillis();
     }
 

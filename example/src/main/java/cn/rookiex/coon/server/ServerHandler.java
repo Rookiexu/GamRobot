@@ -1,7 +1,7 @@
 package cn.rookiex.coon.server;
 
 import cn.hutool.core.util.RandomUtil;
-import cn.rookiex.coon.message.SimpleMessage;
+import cn.rookiex.coon.message.StrMessage;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -26,7 +26,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         timer.newTimeout((timeout) -> {
-            SimpleMessage message = (SimpleMessage) msg;
+            StrMessage message = (StrMessage) msg;
             ctx.channel().writeAndFlush(message);
         }, RandomUtil.randomInt(5), TimeUnit.MILLISECONDS);
     }
