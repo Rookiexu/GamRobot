@@ -1,0 +1,7 @@
+{
+  "order" : 1,
+  "sortType" : 1,
+  "moduleType" : "pre",
+  "preEvents" : ["ReqLogin"],
+  "inorderEvents" : ["ReqSetName"]
+}

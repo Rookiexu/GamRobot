@@ -4,6 +4,7 @@ import cn.rookiex.message.Message;
 import cn.rookiex.message.codec.DataCodec;
 import cn.rookiex.message.codec.JsonCodec;
 import cn.rookiex.sentinel.observer.observed.MsgInfo;
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * @author rookieX 2023/2/9
@@ -18,7 +19,7 @@ public class JsonMessage implements Message, MsgInfo {
 
     public static DataCodec dataCodec = new JsonCodec();
 
-    public JsonMessage(int message, String msgStr){
+    public JsonMessage(int message, JSONObject msgStr){
         this.messageId = message;
         this.data = dataCodec.encode(msgStr);
         this.createTime = System.currentTimeMillis();

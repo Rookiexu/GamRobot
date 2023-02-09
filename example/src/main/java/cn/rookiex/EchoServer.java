@@ -1,6 +1,7 @@
 package cn.rookiex;
 
-import cn.rookiex.coon.server.initializer.ServerStrChannelInitializer;
+import cn.rookiex.coon.server.initializer.ServerMultiChannelInitializer;
+import cn.rookiex.robot.ExampleRobotFactory;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;
@@ -12,6 +13,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
  */
 public class EchoServer {
     public static void main(String[] args)  throws Exception  {
+        ExampleRobotFactory exampleRobotFactory = new ExampleRobotFactory();
 
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup(4);
@@ -19,7 +21,8 @@ public class EchoServer {
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup,workerGroup)
                     .channel(NioServerSocketChannel.class)
-                    .childHandler(new ServerStrChannelInitializer());
+                    .childHandler(exampleRobotFactory.getServerChannelInitializer());
+//                    .childHandler(new ServerStrChannelInitializer());
 
             ChannelFuture f = b.bind(8090).sync();
             f.channel().closeFuture().sync();

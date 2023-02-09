@@ -257,11 +257,8 @@ public class Robot {
 
     private ReqGameEvent getExecuteEvent() {
         //当前stage
-        boolean runOver = runStage.isStageOver(robotContext);
-        if (runOver) {
-            runStage = runStage.nextStage(robotContext);
-            runStage.initStage(robotContext);
-        }
+        Integer curDeep = 0;
+        runStage = tryNextStage(runStage, curDeep, 10);
 
         boolean modOver = runStage.isModOver(robotContext);
         if (modOver) {
@@ -270,6 +267,26 @@ public class Robot {
         }
 
         return runStage.getEvent(robotContext);
+    }
+
+    private ModuleStage tryNextStage(ModuleStage stage, Integer curDeep, int maxDeep){
+        if (maxDeep < 0 || maxDeep > 999){
+            maxDeep = 999;
+        }
+
+        if (curDeep >= maxDeep){
+            return stage;
+        }else {
+            curDeep++;
+        }
+
+        if (stage.isStageOver(robotContext)){
+            stage = stage.nextStage(robotContext);
+            stage.initStage(robotContext);
+            return tryNextStage(stage, curDeep, maxDeep);
+        }
+
+        return stage;
     }
 
 

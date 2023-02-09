@@ -28,7 +28,7 @@ public class RobotConfig {
     /**
      * 并发机器人数量
      */
-    private int robotCount = 20;
+    private int robotCount = 10;
 
     /**
      * 单个机器人循环次数
@@ -60,7 +60,7 @@ public class RobotConfig {
     /**
      * 执行线程数
      */
-    private int threadCount = Runtime.getRuntime().availableProcessors() * 2;
+    private int threadCount = Runtime.getRuntime().availableProcessors() / 2;
 
     public void init() {
         Properties properties = new Properties();
@@ -75,6 +75,12 @@ public class RobotConfig {
 
     private void initProperties(Properties properties) throws IllegalAccessException {
         Field[] fields = RobotConfig.class.getFields();
+        setFieldValue(properties, fields);
+        Field[] declaredFields = RobotConfig.class.getDeclaredFields();
+        setFieldValue(properties, declaredFields);
+    }
+
+    private void setFieldValue(Properties properties, Field[] fields) throws IllegalAccessException {
         for (Field field : fields) {
             Class<?> type = field.getType();
             boolean annotationPresent = field.isAnnotationPresent(SkipLoad.class);

@@ -52,6 +52,9 @@ public class RandomStage implements ModuleStage {
         robot.setCurEventIdx(0);
 
         List<Module> randomModules = robot.getRandomModules();
+        if (randomModules.isEmpty()){
+            return;
+        }
         int curModIdx = robot.getCurModIdx();
         Module module = randomModules.get(curModIdx);
         module.initRunEvent(robotContext);

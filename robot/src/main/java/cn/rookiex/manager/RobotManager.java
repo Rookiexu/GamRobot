@@ -116,7 +116,7 @@ public class RobotManager {
                 robot.setSimpleName(config.getRobotName());
                 int processorId = i % threadCount;
                 robot.setExecutorId(processorId);
-                robot.setChannelInitializer(robotFactory.getChannelInitializer(this));
+                robot.setChannelInitializer(robotFactory.getClientChannelInitializer());
                 RobotProcessor robotProcessor = processorMap.get(processorId);
                 robotProcessor.getRobotList().add(robot);
 

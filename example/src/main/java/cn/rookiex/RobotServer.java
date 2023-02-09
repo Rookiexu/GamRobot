@@ -1,7 +1,7 @@
 package cn.rookiex;
 
 import cn.rookiex.manager.RobotManager;
-import cn.rookiex.robot.DefaultRobotFactory;
+import cn.rookiex.robot.ExampleRobotFactory;
 
 /**
  * @author rookieX 2022/12/6
@@ -21,7 +21,7 @@ public class RobotServer {
 
     public void init(){
         this.robotManager = new RobotManager();
-        this.robotManager.init(new DefaultRobotFactory());
+        this.robotManager.init(new ExampleRobotFactory());
     }
 
     public RobotManager getRobotManager() {

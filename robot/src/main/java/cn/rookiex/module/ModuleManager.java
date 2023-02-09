@@ -187,7 +187,7 @@ public class ModuleManager {
                             //响应全局只有一个,可以分发逻辑,但是不能重复
                             RespGameEvent respEvent = (RespGameEvent) clazz.newInstance();
                             if (respEventMap.containsKey(respEvent.eventId())) {
-                                log.error("加载压测事件, 响应事件存在重复处理 : " + respEvent.eventId());
+                                log.error("加载压测事件, 存在重复响应事件处理 : " + respEvent.eventId());
                             }
                             respEventMap.put(respEvent.eventId(), respEvent);
                         }

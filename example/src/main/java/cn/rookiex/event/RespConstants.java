@@ -1,5 +1,6 @@
 package cn.rookiex.event;
 
+import cn.rookiex.coon.message.JsonMessage;
 import cn.rookiex.coon.message.StrMessage;
 import cn.rookiex.message.Message;
 import cn.rookiex.robot.Robot;
@@ -38,12 +39,25 @@ public class RespConstants implements RespGameEvent{
 
     public static void dealResp0(Message message, RobotContext robotContext) {
         Robot robot = robotContext.getRobot();
-        StrMessage strMessage = (StrMessage) message;
 
-        int msgId = strMessage.getMsgId();
-        String data = strMessage.parseData(String.class);
-        log.info(robot.getFullName() + " deal msg : " + msgId + " , data : " + data);
+        if (message instanceof StrMessage) {
+            StrMessage strMessage = (StrMessage) message;
+
+            int msgId = strMessage.getMsgId();
+            String data = strMessage.parseData(String.class);
+            log.info(robot.getFullName() + " receive str msg : " + msgId + " , data : " + data);
+        }
+
+        if (message instanceof JsonMessage){
+            JsonMessage jsonMessage = (JsonMessage) message;
+
+            int msgId = jsonMessage.getMsgId();
+            String data = jsonMessage.parseData(String.class);
+            log.info(robot.getFullName() + " deal json msg : " + msgId + " , data : " + data);
+        }
     }
+
+
 
     @Override
     public void dealResp(Message message, RobotContext robotContext) {

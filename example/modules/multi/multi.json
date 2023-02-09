@@ -1,7 +1,6 @@
 {
-  "order" : 1,
-  "sortType" : 1,
-  "moduleType" : "pre",
-  "preEvents" : ["ReqLogin","ReqSetName"],
-  "inorderEvents" : ["ReqSkipMain","ReqSetName"]
+  "order" : 2,
+  "sortType" : 2,
+  "moduleType" : "order",
+  "disorderEvents" : ["ReqItem","ReqItemByJson"]
 }
