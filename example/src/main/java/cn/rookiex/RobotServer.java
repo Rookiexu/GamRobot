@@ -1,11 +1,8 @@
 package cn.rookiex;
 
-import cn.hutool.cron.CronUtil;
 import cn.rookiex.manager.RobotConfig;
 import cn.rookiex.manager.RobotManager;
-import cn.rookiex.robot.*;
-
-import java.util.Map;
+import cn.rookiex.robot.DefaultRobotFactory;
 
 /**
  * @author rookieX 2022/12/6
@@ -28,10 +25,7 @@ public class RobotServer {
 
     public void init(){
         this.robotManager = new RobotManager();
-        robotManager.initProcessor();
-        robotManager.initModules();
-        robotManager.initRobot(new DefaultRobotFactory());
-        robotManager.initRecord();
+        this.robotManager.init(new DefaultRobotFactory());
     }
 
     public RobotManager getRobotManager() {
@@ -39,13 +33,7 @@ public class RobotServer {
     }
 
     public void start(){
-        CronUtil.start();
-        Map<Integer, RobotProcessor> processorMap = this.robotManager.getProcessorMap();
-        for (RobotProcessor value : processorMap.values()) {
-            value.start();
-        }
-
-        this.robotManager.getRecordProcessor().start();
+        robotManager.start();
     }
 
     public static void main(String[] args) {

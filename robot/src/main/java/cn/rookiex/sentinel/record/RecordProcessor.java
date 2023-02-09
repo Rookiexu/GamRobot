@@ -32,13 +32,11 @@ public class RecordProcessor implements Runnable, Observable {
 
     @Override
     public void run() {
-        int i = 0;
         log.info("记录线程开始执行");
         while (!robotManager.isStop()){
             try {
                 UpdateEvent poll = eventQue.poll();
                 if (poll != null) {
-                    i++;
                     for (Observer observer : observers) {
                         observer.update(poll);
                     }

@@ -1,5 +1,6 @@
 package cn.rookiex.manager;
 
+import cn.hutool.cron.CronUtil;
 import cn.rookiex.module.Module;
 import cn.rookiex.module.ModuleManager;
 import cn.rookiex.sentinel.observer.*;
@@ -164,5 +165,22 @@ public class RobotManager {
         SlowMsgRecord slowMsgRecord = new SlowMsgRecord();
         slowMsgRecord.initWindow(60, 10000);
         this.getRecordProcessor().register(slowMsgRecord);
+    }
+
+    public void start(){
+        Map<Integer, RobotProcessor> processorMap = getProcessorMap();
+        for (RobotProcessor value : processorMap.values()) {
+            value.start();
+        }
+        CronUtil.setMatchSecond(true);
+        CronUtil.start();
+        getRecordProcessor().start();
+    }
+
+    public void init(RobotFactory factory){
+        this.initProcessor();
+        this.initModules();
+        this.initRobot(factory);
+        this.initRecord();
     }
 }
