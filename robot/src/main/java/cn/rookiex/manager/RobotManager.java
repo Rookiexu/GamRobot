@@ -1,6 +1,7 @@
 package cn.rookiex.manager;
 
 import cn.hutool.cron.CronUtil;
+import cn.rookiex.config.RobotConfig;
 import cn.rookiex.module.Module;
 import cn.rookiex.module.ModuleManager;
 import cn.rookiex.sentinel.observer.*;
@@ -61,7 +62,6 @@ public class RobotManager {
 
     public void initProcessor() {
         this.idCounter = new AtomicLong();
-        this.config.init();
 
         int threadCount = config.getThreadCount();
         for (int i = 0; i < threadCount; i++) {
@@ -152,7 +152,7 @@ public class RobotManager {
     }
 
     public void initModules() {
-        this.moduleManager.init();
+        this.moduleManager.init(this.config);
     }
 
     public void initRecord() {
@@ -178,6 +178,7 @@ public class RobotManager {
     }
 
     public void init(RobotFactory factory){
+        this.config.init();
         this.initProcessor();
         this.initModules();
         this.initRobot(factory);
