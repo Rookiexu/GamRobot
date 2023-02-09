@@ -11,11 +11,11 @@ import cn.rookiex.module.ModuleManager;
 import cn.rookiex.module.stage.ModuleStage;
 import cn.rookiex.module.stage.RunModule;
 import cn.rookiex.robot.ctx.RobotContext;
-import cn.rookiex.sentinel.observer.observed.MsgInfo;
-import cn.rookiex.sentinel.observer.observed.ObservedEvents;
-import cn.rookiex.sentinel.observer.observed.ObservedParams;
-import cn.rookiex.sentinel.observer.UpdateEvent;
-import cn.rookiex.sentinel.observer.UpdateEventImpl;
+import cn.rookiex.sentinel.record.info.MsgInfo;
+import cn.rookiex.sentinel.pubsub.cons.SystemEventsKeys;
+import cn.rookiex.sentinel.pubsub.cons.SystemEventParams;
+import cn.rookiex.sentinel.pubsub.SystemEvent;
+import cn.rookiex.sentinel.pubsub.SystemEventImpl;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
@@ -175,24 +175,24 @@ public class Robot {
     }
 
     private void dealRespEvent(Message poll, RespGameEvent respEvent) {
-        UpdateEvent updateEvent = new UpdateEventImpl(ObservedEvents.INCR_RESP_DEAL);
-        updateEvent.put(ObservedParams.WAIT_RESP_ID, respEvent.eventId());
-        updateEvent.put(ObservedParams.ROBOT_ID, getFullName());
+        SystemEvent systemEvent = new SystemEventImpl(SystemEventsKeys.INCR_RESP_DEAL);
+        systemEvent.put(SystemEventParams.WAIT_RESP_ID, respEvent.eventId());
+        systemEvent.put(SystemEventParams.ROBOT_ID, getFullName());
         if (poll instanceof MsgInfo){
             long createTime = ((MsgInfo) poll).getCreateTime();
-            updateEvent.put(ObservedParams.RESP_TIME, createTime);
+            systemEvent.put(SystemEventParams.RESP_TIME, createTime);
             if (waitRespId != 0 && poll.getMsgId() == waitRespId) {
                 long reqSendTime = getReqSendTime();
-                updateEvent.put(ObservedParams.RESP_COST, createTime - reqSendTime);
-                updateEvent.put(ObservedParams.RESP_DEAL_COST, System.currentTimeMillis() - createTime);
+                systemEvent.put(SystemEventParams.RESP_COST, createTime - reqSendTime);
+                systemEvent.put(SystemEventParams.RESP_DEAL_COST, System.currentTimeMillis() - createTime);
             }
         }
-        notify0(updateEvent);
+        notify0(systemEvent);
     }
 
-    private void notify0(UpdateEvent updateEvent) {
-        updateEvent.put(ObservedParams.PROCESSOR_ID, getExecutorId());
-        getRobotManager().getRecordProcessor().notify(updateEvent);
+    private void notify0(SystemEvent systemEvent) {
+        systemEvent.put(SystemEventParams.PROCESSOR_ID, getExecutorId());
+        getRobotManager().getRecordProcessor().publish(systemEvent);
     }
 
     private RespGameEvent getRespEvent(int id) {
@@ -246,13 +246,13 @@ public class Robot {
             this.waitRespId = executeEvent.waitId();
         }
 
-        UpdateEvent updateEvent = new UpdateEventImpl(ObservedEvents.INCR_SEND);
-        updateEvent.put(ObservedParams.WAIT_RESP_ID, waitRespId);
-        updateEvent.put(ObservedParams.ROBOT_ID, getFullName());
-        updateEvent.put(ObservedParams.REQ_MSG_ID, executeEvent.eventId());
-        updateEvent.put(ObservedParams.REQ_MSG_NAME, executeEvent.getClass().getSimpleName());
-        updateEvent.put(ObservedParams.IS_SKIP_RESP, skip);
-        notify0(updateEvent);
+        SystemEvent systemEvent = new SystemEventImpl(SystemEventsKeys.INCR_SEND);
+        systemEvent.put(SystemEventParams.WAIT_RESP_ID, waitRespId);
+        systemEvent.put(SystemEventParams.ROBOT_ID, getFullName());
+        systemEvent.put(SystemEventParams.REQ_MSG_ID, executeEvent.eventId());
+        systemEvent.put(SystemEventParams.REQ_MSG_NAME, executeEvent.getClass().getSimpleName());
+        systemEvent.put(SystemEventParams.IS_SKIP_RESP, skip);
+        notify0(systemEvent);
     }
 
     private ReqGameEvent getExecuteEvent() {

@@ -3,7 +3,7 @@ package cn.rookiex.coon.message;
 import cn.rookiex.message.Message;
 import cn.rookiex.message.codec.DataCodec;
 import cn.rookiex.message.codec.JsonCodec;
-import cn.rookiex.sentinel.observer.observed.MsgInfo;
+import cn.rookiex.sentinel.record.info.MsgInfo;
 import com.alibaba.fastjson.JSONObject;
 
 /**

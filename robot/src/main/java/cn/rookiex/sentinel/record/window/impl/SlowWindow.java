@@ -1,8 +1,9 @@
-package cn.rookiex.sentinel.record.window;
+package cn.rookiex.sentinel.record.window.impl;
 
-import cn.rookiex.sentinel.observer.UpdateEvent;
-import cn.rookiex.sentinel.observer.observed.ObservedParams;
+import cn.rookiex.sentinel.pubsub.SystemEvent;
+import cn.rookiex.sentinel.pubsub.cons.SystemEventParams;
 import cn.rookiex.sentinel.record.info.RespondBucket;
+import cn.rookiex.sentinel.record.window.Window;
 import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.ToString;
@@ -37,11 +38,11 @@ public class SlowWindow implements Window {
         return toString();
     }
 
-    public void dealSlowResp(UpdateEvent message) {
+    public void dealSlowResp(SystemEvent message) {
         //处理返回消息
-        int waitId = (int) message.get(ObservedParams.WAIT_RESP_ID);
+        int waitId = (int) message.get(SystemEventParams.WAIT_RESP_ID);
         //响应耗时记录
-        long respCost = (long) message.get(ObservedParams.RESP_COST);
+        long respCost = (long) message.get(SystemEventParams.RESP_COST);
 
         RespondBucket respondBucket = new RespondBucket();
         RespondBucket before = msgBucket.putIfAbsent(waitId, respondBucket);

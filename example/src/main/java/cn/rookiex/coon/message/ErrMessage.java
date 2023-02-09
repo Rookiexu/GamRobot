@@ -1,7 +1,7 @@
 package cn.rookiex.coon.message;
 
 import cn.rookiex.message.Message;
-import cn.rookiex.sentinel.observer.observed.MsgInfo;
+import cn.rookiex.sentinel.record.info.MsgInfo;
 
 /**
  * @author rookieX 2023/2/9

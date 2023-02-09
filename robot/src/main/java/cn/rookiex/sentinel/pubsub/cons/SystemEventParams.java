@@ -1,9 +1,9 @@
-package cn.rookiex.sentinel.observer.observed;
+package cn.rookiex.sentinel.pubsub.cons;
 
 /**
  * @author rookieX 2022/12/10
  */
-public interface ObservedParams {
+public interface SystemEventParams {
     /**
      * 执行线程id
      */

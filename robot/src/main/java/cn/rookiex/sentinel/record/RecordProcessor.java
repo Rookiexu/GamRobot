@@ -3,8 +3,8 @@ package cn.rookiex.sentinel.record;
 import cn.hutool.cron.CronUtil;
 import cn.hutool.cron.task.Task;
 import cn.rookiex.manager.RobotManager;
-import cn.rookiex.sentinel.observer.*;
-import cn.rookiex.sentinel.observer.observed.ObservedEvents;
+import cn.rookiex.sentinel.pubsub.*;
+import cn.rookiex.sentinel.pubsub.cons.SystemEventsKeys;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 import lombok.Getter;
@@ -20,13 +20,13 @@ import java.util.concurrent.Executors;
  */
 @Getter
 @Log4j2
-public class RecordProcessor implements Runnable, Observable {
+public class RecordProcessor implements Runnable, EventBus {
 
-    private final List<Observer> observers = Lists.newCopyOnWriteArrayList();
+    private final List<Subscriber> subscribers = Lists.newCopyOnWriteArrayList();
 
-    private final UpdateEvent event = new UpdateEventImpl(ObservedEvents.TICK_TIME);
+    private final SystemEvent event = new SystemEventImpl(SystemEventsKeys.TICK_TIME);
 
-    private final AbstractQueue<UpdateEvent> eventQue = Queues.newConcurrentLinkedQueue();
+    private final AbstractQueue<SystemEvent> eventQue = Queues.newConcurrentLinkedQueue();
 
     private RobotManager robotManager;
 
@@ -35,10 +35,10 @@ public class RecordProcessor implements Runnable, Observable {
         log.info("记录线程开始执行");
         while (!robotManager.isStop()){
             try {
-                UpdateEvent poll = eventQue.poll();
+                SystemEvent poll = eventQue.poll();
                 if (poll != null) {
-                    for (Observer observer : observers) {
-                        observer.update(poll);
+                    for (Subscriber subscriber : subscribers) {
+                        subscriber.update(poll);
                     }
                 }
             }catch (Exception e){
@@ -49,25 +49,20 @@ public class RecordProcessor implements Runnable, Observable {
     }
 
     public void tickLog(){
-        for (Observer observer : observers) {
-            if (observer instanceof TickLog){
-                ((TickLog) observer).logInfo();
+        for (Subscriber subscriber : subscribers) {
+            if (subscriber instanceof LogSubscriber){
+                ((LogSubscriber) subscriber).logInfo();
             }
         }
     }
 
     @Override
-    public void register(Observer o) {
-        observers.add(o);
+    public void subscribe(Subscriber o) {
+        subscribers.add(o);
     }
 
     @Override
-    public void remove(Observer o) {
-        observers.remove(o);
-    }
-
-    @Override
-    public void notify(UpdateEvent message) {
+    public void publish(SystemEvent message) {
         eventQue.offer(message);
     }
 

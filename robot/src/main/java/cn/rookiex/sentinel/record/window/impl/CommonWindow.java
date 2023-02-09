@@ -1,8 +1,9 @@
-package cn.rookiex.sentinel.record.window;
+package cn.rookiex.sentinel.record.window.impl;
 
-import cn.rookiex.sentinel.observer.observed.ObservedParams;
+import cn.rookiex.sentinel.pubsub.cons.SystemEventParams;
 import cn.rookiex.sentinel.record.info.ProcessorInfo;
 import cn.rookiex.sentinel.record.info.RespondBucket;
+import cn.rookiex.sentinel.record.window.Window;
 import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
@@ -19,7 +20,7 @@ import java.util.function.Function;
  */
 @Log4j2
 @Getter
-public class RunWindow implements Window {
+public class CommonWindow implements Window {
 
     private Map<Integer, ProcessorInfo> ProcessorInfoMap = Maps.newHashMap();
 
@@ -45,14 +46,14 @@ public class RunWindow implements Window {
 
         //处理返回消息
         ProcessorInfo ProcessorInfo = getProcessorInfo(id);
-        int waitId = (int) info.get(ObservedParams.WAIT_RESP_ID);
+        int waitId = (int) info.get(SystemEventParams.WAIT_RESP_ID);
         AtomicInteger old = ProcessorInfo.getWaitMsg().get(waitId);
         if (old != null) {
             old.decrementAndGet();
         }
 
         //响应耗时记录
-        long respCost = (long) info.get(ObservedParams.RESP_COST);
+        long respCost = (long) info.get(SystemEventParams.RESP_COST);
         ProcessorInfo.getRespCost().addCost((int) respCost);
     }
 
@@ -61,9 +62,9 @@ public class RunWindow implements Window {
         incrProcessorLong(ProcessorInfo::getTotalSend, id);
 
         ProcessorInfo ProcessorInfo = getProcessorInfo(id);
-        boolean isSkip = (boolean) info.get(ObservedParams.IS_SKIP_RESP);
+        boolean isSkip = (boolean) info.get(SystemEventParams.IS_SKIP_RESP);
         if (!isSkip) {
-            int waitId = (int) info.get(ObservedParams.WAIT_RESP_ID);
+            int waitId = (int) info.get(SystemEventParams.WAIT_RESP_ID);
             AtomicInteger wait = ProcessorInfo.getWaitMsg().putIfAbsent(waitId, new AtomicInteger());
             if (wait == null) {
                 wait = ProcessorInfo.getWaitMsg().get(waitId);
@@ -145,7 +146,7 @@ public class RunWindow implements Window {
         return builder.toString();
     }
 
-    public void sum(RunWindow record) {
+    public void sum(CommonWindow record) {
         Map<Integer, ProcessorInfo> ProcessorInfoMap = record.getProcessorInfoMap();
         for (Integer id : ProcessorInfoMap.keySet()) {
             ProcessorInfo from = ProcessorInfoMap.get(id);

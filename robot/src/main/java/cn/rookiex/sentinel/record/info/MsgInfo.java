@@ -1,8 +1,17 @@
 package cn.rookiex.sentinel.record.info;
 
 /**
- * @author rookieX 2022/12/30
+ * @author rookieX 2022/12/27
  */
-public class MsgInfo {
-    private final RespondBucket respCost = new RespondBucket();
+public interface MsgInfo {
+
+    /**
+     * @return 收到消息时间
+     */
+    long getCreateTime();
+
+    /**
+     * @param time 收到消息时间
+     */
+    void setCreateTime(long time);
 }

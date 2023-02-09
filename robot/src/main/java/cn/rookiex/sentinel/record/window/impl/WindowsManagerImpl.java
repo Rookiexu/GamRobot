@@ -1,5 +1,7 @@
-package cn.rookiex.sentinel.record.window;
+package cn.rookiex.sentinel.record.window.impl;
 
+import cn.rookiex.sentinel.record.window.Window;
+import cn.rookiex.sentinel.record.window.WindowsManager;
 import lombok.Getter;
 
 import java.util.List;
@@ -8,7 +10,7 @@ import java.util.List;
  * @author rookieX 2022/12/30
  */
 @Getter
-public class WindowRecordImpl implements WindowRecord {
+public class WindowsManagerImpl implements WindowsManager {
 
     private List<Window> windowList;
 

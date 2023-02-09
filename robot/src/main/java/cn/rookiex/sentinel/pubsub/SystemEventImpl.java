@@ -1,4 +1,4 @@
-package cn.rookiex.sentinel.observer;
+package cn.rookiex.sentinel.pubsub;
 
 import com.google.common.collect.Maps;
 
@@ -9,13 +9,13 @@ import java.util.Set;
 /**
  * @author rookieX 2022/12/19
  */
-public class UpdateEventImpl implements UpdateEvent {
+public class SystemEventImpl implements SystemEvent {
 
     private String message;
 
     private final Map<String, Object> map = Maps.newHashMap();
 
-    public UpdateEventImpl(String message){
+    public SystemEventImpl(String message){
         this.message = message;
     }
 

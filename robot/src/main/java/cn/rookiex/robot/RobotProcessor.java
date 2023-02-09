@@ -1,9 +1,9 @@
 package cn.rookiex.robot;
 
 import cn.rookiex.manager.RobotManager;
-import cn.rookiex.sentinel.observer.*;
-import cn.rookiex.sentinel.observer.observed.ObservedEvents;
-import cn.rookiex.sentinel.observer.observed.ObservedParams;
+import cn.rookiex.sentinel.pubsub.*;
+import cn.rookiex.sentinel.pubsub.cons.SystemEventsKeys;
+import cn.rookiex.sentinel.pubsub.cons.SystemEventParams;
 import com.google.common.collect.Lists;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
@@ -32,9 +32,9 @@ public class RobotProcessor implements Runnable{
      */
     private Map<String, Object> baseEventMap;
 
-    private UpdateEvent incrEvent = new UpdateEventImpl(ObservedEvents.INCR_COON);
+    private SystemEvent incrEvent = new SystemEventImpl(SystemEventsKeys.INCR_COON);
 
-    private UpdateEvent decrEvent = new UpdateEventImpl(ObservedEvents.DECR_COON);
+    private SystemEvent decrEvent = new SystemEventImpl(SystemEventsKeys.DECR_COON);
 
     public void setId(int id) {
         this.id = id;
@@ -55,7 +55,7 @@ public class RobotProcessor implements Runnable{
                 try {
                     if (!robot.isConnect()) {
                         robot.connect();
-                        robotManager.getRecordProcessor().notify(incrEvent);
+                        robotManager.getRecordProcessor().publish(incrEvent);
                     } else {
                         robot.dealRespEvent();
                         robot.dealSendEvent();
@@ -77,8 +77,8 @@ public class RobotProcessor implements Runnable{
     }
 
     private void initInfoMap() {
-        incrEvent.put(ObservedParams.PROCESSOR_ID, getId());
-        decrEvent.put(ObservedParams.PROCESSOR_ID, getId());
+        incrEvent.put(SystemEventParams.PROCESSOR_ID, getId());
+        decrEvent.put(SystemEventParams.PROCESSOR_ID, getId());
     }
 
     public void setRobotManager(RobotManager robotManager) {

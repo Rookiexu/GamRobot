@@ -4,10 +4,10 @@ import cn.hutool.cron.CronUtil;
 import cn.rookiex.config.RobotConfig;
 import cn.rookiex.module.Module;
 import cn.rookiex.module.ModuleManager;
-import cn.rookiex.sentinel.observer.*;
-import cn.rookiex.sentinel.observer.observed.ObservedEvents;
-import cn.rookiex.sentinel.observer.observed.ObservedParams;
-import cn.rookiex.sentinel.record.Record;
+import cn.rookiex.sentinel.pubsub.*;
+import cn.rookiex.sentinel.pubsub.cons.SystemEventsKeys;
+import cn.rookiex.sentinel.pubsub.cons.SystemEventParams;
+import cn.rookiex.sentinel.record.CommonRecord;
 import cn.rookiex.sentinel.record.RecordProcessor;
 import cn.rookiex.sentinel.record.SlowMsgRecord;
 import cn.rookiex.robot.Robot;
@@ -48,7 +48,7 @@ public class RobotManager {
 
     private final Map<String, Robot> robotMap = Maps.newHashMap();
 
-    private final Set<Observer> observers = Sets.newConcurrentHashSet();
+    private final Set<Subscriber> subscribers = Sets.newConcurrentHashSet();
 
     private boolean stop;
 
@@ -131,10 +131,10 @@ public class RobotManager {
                 robotInitModules(robot);
                 robotMap.put(robot.getId(), robot);
 
-                UpdateEventImpl updateEvent = new UpdateEventImpl(ObservedEvents.INCR_ROBOT);
-                updateEvent.put(ObservedParams.PROCESSOR_ID, processorId);
-                updateEvent.put(ObservedParams.ROBOT_ID, robot.getFullName());
-                recordProcessor.notify(updateEvent);
+                SystemEventImpl updateEvent = new SystemEventImpl(SystemEventsKeys.INCR_ROBOT);
+                updateEvent.put(SystemEventParams.PROCESSOR_ID, processorId);
+                updateEvent.put(SystemEventParams.ROBOT_ID, robot.getFullName());
+                recordProcessor.publish(updateEvent);
             } catch (Exception e) {
                 log.info(e, e);
                 System.exit(-1);
@@ -160,15 +160,15 @@ public class RobotManager {
     }
 
     public void initRecord() {
-        Record record = new Record();
-        record.getProcessorIds().addAll(processorMap.keySet());
+        CommonRecord commonRecord = new CommonRecord();
+        commonRecord.getProcessorIds().addAll(processorMap.keySet());
         //60个窗口,10秒长度
-        record.initWindow(40, 30000);
-        this.getRecordProcessor().register(record);
+        commonRecord.initWindow(40, 30000);
+        this.getRecordProcessor().subscribe(commonRecord);
 
         SlowMsgRecord slowMsgRecord = new SlowMsgRecord();
         slowMsgRecord.initWindow(60, 10000);
-        this.getRecordProcessor().register(slowMsgRecord);
+        this.getRecordProcessor().subscribe(slowMsgRecord);
     }
 
     public void start(){

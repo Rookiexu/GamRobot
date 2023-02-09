@@ -4,7 +4,7 @@ package cn.rookiex.coon.message;
 import cn.rookiex.message.codec.DataCodec;
 import cn.rookiex.message.codec.StringCodec;
 import cn.rookiex.message.Message;
-import cn.rookiex.sentinel.observer.observed.MsgInfo;
+import cn.rookiex.sentinel.record.info.MsgInfo;
 
 /**
  * @author rookieX 2022/12/14
