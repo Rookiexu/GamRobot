@@ -1,6 +1,6 @@
 package cn.rookiex.robot;
 
-import cn.rookiex.coon.client.NioChannelInitializer;
+import cn.rookiex.coon.client.initializer.ClientStrChannelInitializer;
 import cn.rookiex.manager.RobotManager;
 import cn.rookiex.robot.ctx.RobotContext;
 import cn.rookiex.robot.ctx.RobotCtx;
@@ -11,7 +11,7 @@ import io.netty.channel.ChannelInitializer;
  */
 public class DefaultRobotFactory implements RobotFactory {
 
-    NioChannelInitializer initializer = new NioChannelInitializer();
+    ClientStrChannelInitializer initializer = new ClientStrChannelInitializer();
 
     @Override
     public Robot newRobot(RobotManager manager) {

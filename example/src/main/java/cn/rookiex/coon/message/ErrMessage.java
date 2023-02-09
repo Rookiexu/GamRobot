@@ -7,14 +7,17 @@ import cn.rookiex.sentinel.observer.observed.MsgInfo;
  * @author rookieX 2023/2/9
  */
 public class ErrMessage implements Message, MsgInfo {
+
+    private int messageId;
+
     @Override
     public int getMsgId() {
-        return 0;
+        return messageId;
     }
 
     @Override
     public void setMsgId(int id) {
-
+        this.messageId = id;
     }
 
     @Override
