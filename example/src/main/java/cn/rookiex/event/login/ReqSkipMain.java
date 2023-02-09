@@ -1,6 +1,6 @@
 package cn.rookiex.event.login;
 
-import cn.rookiex.coon.message.SimpleMessage;
+import cn.rookiex.coon.message.StrMessage;
 import cn.rookiex.event.ReqGameEvent;
 import cn.rookiex.event.RespConstants;
 import cn.rookiex.robot.Robot;
@@ -22,8 +22,8 @@ public class ReqSkipMain implements ReqGameEvent {
     public void dealReq(RobotContext robotContext) {
         Robot robot = robotContext.getRobot();
 
-        SimpleMessage simpleMessage = new SimpleMessage(eventId(), robot.getFullName() + " skip main");
-        robot.getChannel().writeAndFlush(simpleMessage);
+        StrMessage strMessage = new StrMessage(eventId(), robot.getFullName() + " skip main");
+        robot.getChannel().writeAndFlush(strMessage);
     }
 
     @Override

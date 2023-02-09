@@ -1,6 +1,6 @@
 package cn.rookiex.event;
 
-import cn.rookiex.coon.message.SimpleMessage;
+import cn.rookiex.coon.message.StrMessage;
 import cn.rookiex.message.Message;
 import cn.rookiex.robot.Robot;
 import cn.rookiex.robot.ctx.RobotContext;
@@ -38,10 +38,10 @@ public class RespConstants implements RespGameEvent{
 
     public static void dealResp0(Message message, RobotContext robotContext) {
         Robot robot = robotContext.getRobot();
-        SimpleMessage simpleMessage = (SimpleMessage) message;
+        StrMessage strMessage = (StrMessage) message;
 
-        int msgId = simpleMessage.getMsgId();
-        String data = simpleMessage.parseData(String.class);
+        int msgId = strMessage.getMsgId();
+        String data = strMessage.parseData(String.class);
         log.info(robot.getFullName() + " deal msg : " + msgId + " , data : " + data);
     }
 
