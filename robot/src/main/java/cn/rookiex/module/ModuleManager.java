@@ -7,6 +7,7 @@ import cn.rookiex.ai.node.IsNode;
 import cn.rookiex.ai.node.Node;
 import cn.rookiex.event.ReqGameEvent;
 import cn.rookiex.event.RespGameEvent;
+import cn.rookiex.config.RobotConfig;
 import cn.rookiex.module.impl.DefaultModule;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
@@ -62,7 +63,7 @@ public class ModuleManager {
      */
     private List<Module> randomModule;
 
-    public void init() {
+    public void init(RobotConfig config) {
         initEvents();
         initAINodes();
         initModules();
@@ -128,7 +129,6 @@ public class ModuleManager {
 
     private void loadModules() {
         log.info("加载压测模块开始");
-
         File modules = new File("modules");
         if (modules.isDirectory() && !FileUtil.isEmpty(modules)) {
             for (File file1 : modules.listFiles()) {

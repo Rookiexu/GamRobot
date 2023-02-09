@@ -4,7 +4,7 @@ import cn.rookiex.message.Message;
 import cn.rookiex.event.ReqGameEvent;
 import cn.rookiex.event.RespGameEvent;
 import cn.rookiex.event.SkipEvent;
-import cn.rookiex.manager.RobotConfig;
+import cn.rookiex.config.RobotConfig;
 import cn.rookiex.manager.RobotManager;
 import cn.rookiex.module.Module;
 import cn.rookiex.module.ModuleManager;

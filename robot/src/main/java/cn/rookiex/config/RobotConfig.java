@@ -1,6 +1,5 @@
 package cn.rookiex.config;
 
-import cn.hutool.core.io.FileUtil;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 
@@ -47,6 +46,8 @@ public class RobotConfig {
      */
     private String robotName = "robot";
 
+
+
     /**
      * 执行线程数
      */
@@ -56,7 +57,7 @@ public class RobotConfig {
         Properties properties = new Properties();
         try {
             properties.load(this.getClass().getClassLoader().getResourceAsStream("robot.properties"));
-            RobotConfig.initProperties(properties);
+            initProperties(properties);
         } catch (IOException | IllegalAccessException e) {
             log.error(e, e);
         }
@@ -72,7 +73,7 @@ public class RobotConfig {
         }
     }
 
-    private static void initProperties(Properties properties) throws IllegalAccessException {
+    private void initProperties(Properties properties) throws IllegalAccessException {
         Field[] fields = RobotConfig.class.getFields();
         for (Field field : fields) {
             Class<?> type = field.getType();
@@ -81,7 +82,7 @@ public class RobotConfig {
                 String name = field.getName();
                 String property = properties.getProperty(name);
                 if (property != null) {
-                    field.set(null, objTypeChange(property, type));
+                    field.set(this, objTypeChange(property, type));
                 }
             }
         }
