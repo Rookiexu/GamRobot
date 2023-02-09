@@ -26,12 +26,14 @@ public class RespSummon implements RespGameEvent {
         SummonManager summonManager = gameRobot.getManager(SummonManager.class);
         BagManager bagManager = gameRobot.getManager(BagManager.class);
 
-        bagManager.removeItem(ItemConstants.money, 100);
+        bagManager.removeItem(ItemConstants.money, 300);
         int enjoyItem = summonManager.getEnjoyItem();
         int i = RandomUtil.randomInt(100);
-        if (i > 80){
-            log.info(robot.getSimpleName() + " 抽到了 ： " + enjoyItem);
+        if (i > 60){
+            log.info(robot.getSimpleName() + " 随机值 : " + i + " ,抽到了 ： " + enjoyItem);
             bagManager.addItem(enjoyItem, 1);
+        }else {
+            log.info(robot.getSimpleName() + " 随机值 : " + i + " 没抽到 : " + enjoyItem + " ,余额 : " + bagManager.getCount(ItemConstants.money));
         }
     }
 

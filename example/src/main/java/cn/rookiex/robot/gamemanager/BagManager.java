@@ -41,4 +41,8 @@ public class BagManager implements PlayerManager {
     public void removeItem(int id, int count) {
         itemMap.merge(id, 0, (o, n) -> Math.max(o - count, 0));
     }
+
+    public int getCount(int id){
+        return itemMap.getOrDefault(id, 0);
+    }
 }

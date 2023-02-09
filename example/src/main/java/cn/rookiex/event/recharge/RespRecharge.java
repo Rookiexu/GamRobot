@@ -21,7 +21,9 @@ public class RespRecharge implements RespGameEvent {
         Robot robot = robotContext.getRobot();
         GameRobot gameRobot = robot.getGameRobot();
 
+
         BagManager bagManager = gameRobot.getManager(BagManager.class);
+        log.info(robot.getFullName() + " 拥有money : " + bagManager.getCount(ItemConstants.money) + " ,充值一个648");
         bagManager.addItem(ItemConstants.money, 648);
     }
 

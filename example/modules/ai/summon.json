@@ -25,7 +25,8 @@
           }
         },
         "planA": {
-          "act": "SummonAct"
+          "act": "ReqAct",
+          "req": "ReqSummon"
         },
         "planB": {
           "act": "RechargeAct"

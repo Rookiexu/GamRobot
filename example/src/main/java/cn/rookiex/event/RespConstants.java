@@ -46,7 +46,7 @@ public class RespConstants implements RespGameEvent{
 
             int msgId = strMessage.getMsgId();
             String data = strMessage.parseData(String.class);
-            log.info(robot.getFullName() + " receive str msg : " + msgId + " , data : " + data);
+//            log.info(robot.getFullName() + " receive str msg : " + msgId + " , data : " + data);
         }
 
         if (message instanceof JsonMessage){
@@ -54,7 +54,7 @@ public class RespConstants implements RespGameEvent{
 
             int msgId = jsonMessage.getMsgId();
             JSONObject data = jsonMessage.parseData(JSONObject.class);
-            log.info(robot.getFullName() + " deal json msg : " + msgId + " , data : " + data);
+//            log.info(robot.getFullName() + " receive json msg : " + msgId + " , data : " + data);
         }
     }
 

@@ -12,12 +12,14 @@ import cn.rookiex.robot.gamemanager.BagManager;
 import cn.rookiex.robot.gamemanager.SummonManager;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
+import lombok.extern.log4j.Log4j2;
 
 import java.util.Map;
 import java.util.Set;
 
 
 @IsNode
+@Log4j2
 public class ItemEnjoyEnough extends ConditionNode {
 
     /**
@@ -57,6 +59,7 @@ public class ItemEnjoyEnough extends ConditionNode {
                 int i = RandomUtil.randomInt(maxRandom);
                 if (i > rate){
                     summonManager.setEnjoyItem(id);
+                    log.info(robotCtx.getRobot().getFullName() + " 开始感兴趣道具 : " + id);
                     return true;
                 }
             }

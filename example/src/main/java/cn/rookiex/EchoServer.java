@@ -1,6 +1,5 @@
 package cn.rookiex;
 
-import cn.rookiex.coon.server.initializer.ServerMultiChannelInitializer;
 import cn.rookiex.robot.ExampleRobotFactory;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
