@@ -8,16 +8,20 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 import java.util.List;
 
 /**
- * @author rookieX 2022/12/14
+ * @author rookieX 2023/2/9
  */
-public class MsgDecoder extends ByteToMessageDecoder {
+public class MultipleMsgDecoder  extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
         int totalLength = in.readableBytes();
+        short msgType = in.readShort();
         int msgId = in.readInt();
-        byte[] body = new byte[totalLength - 4]; //获取body的内容
+        byte[] body = new byte[totalLength - 6]; //获取body的内容
         in.readBytes(body);
 
+        switch (msgType){
+            case 1:
+        }
         SimpleMessage message = new SimpleMessage();
         message.setMsgId(msgId);
         message.setDataBytes(body);

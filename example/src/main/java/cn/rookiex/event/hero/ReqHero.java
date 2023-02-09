@@ -1,6 +1,6 @@
 package cn.rookiex.event.hero;
 
-import cn.rookiex.coon.SimpleMessage;
+import cn.rookiex.coon.message.SimpleMessage;
 import cn.rookiex.event.ReqGameEvent;
 import cn.rookiex.event.RespConstants;
 import cn.rookiex.robot.Robot;

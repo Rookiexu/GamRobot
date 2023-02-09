@@ -1,4 +1,4 @@
-package cn.rookiex.coon;
+package cn.rookiex.coon.message;
 
 
 import cn.rookiex.message.codec.DataCodec;

@@ -1,15 +1,11 @@
 package cn.rookiex.coon.server;
 
 import cn.hutool.core.util.RandomUtil;
-import cn.rookiex.RobotServer;
-import cn.rookiex.coon.SimpleMessage;
-import cn.rookiex.manager.RobotManager;
-import cn.rookiex.robot.Robot;
+import cn.rookiex.coon.message.SimpleMessage;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.HashedWheelTimer;
-import io.netty.util.concurrent.CompleteFuture;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.concurrent.TimeUnit;
@@ -20,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 @Log4j2
 public class ServerHandler extends ChannelInboundHandlerAdapter {
 
-    private final HashedWheelTimer timer = new HashedWheelTimer(1, TimeUnit.MILLISECONDS, 16);
+    private final HashedWheelTimer timer = new HashedWheelTimer(1, TimeUnit.MILLISECONDS, 5);
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
