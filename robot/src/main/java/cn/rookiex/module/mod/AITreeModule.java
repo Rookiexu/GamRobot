@@ -1,5 +1,6 @@
-package cn.rookiex.module;
+package cn.rookiex.module.mod;
 
+import cn.rookiex.module.ModuleManager;
 import com.alibaba.fastjson.JSONObject;
 
 /**

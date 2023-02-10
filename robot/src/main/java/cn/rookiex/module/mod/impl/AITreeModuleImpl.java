@@ -1,10 +1,11 @@
-package cn.rookiex.module.impl;
+package cn.rookiex.module.mod.impl;
 
 import cn.rookiex.ai.RootNode;
 import cn.rookiex.event.ReqGameEvent;
-import cn.rookiex.module.AITreeModule;
-import cn.rookiex.module.Module;
 import cn.rookiex.module.ModuleManager;
+import cn.rookiex.module.mod.AITreeModule;
+import cn.rookiex.module.mod.BaseModule;
+import cn.rookiex.module.mod.Module;
 import cn.rookiex.robot.ctx.RobotAiContext;
 import cn.rookiex.robot.ctx.RobotContext;
 import cn.rookiex.ai.node.Node;

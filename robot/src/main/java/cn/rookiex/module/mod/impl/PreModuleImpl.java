@@ -1,8 +1,9 @@
-package cn.rookiex.module.impl;
+package cn.rookiex.module.mod.impl;
 
 import cn.rookiex.event.ReqGameEvent;
 import cn.rookiex.module.ModuleManager;
-import cn.rookiex.module.PreModule;
+import cn.rookiex.module.mod.BaseModule;
+import cn.rookiex.module.mod.PreModule;
 import cn.rookiex.robot.Robot;
 import cn.rookiex.robot.ctx.RobotContext;
 import com.alibaba.fastjson.JSONArray;

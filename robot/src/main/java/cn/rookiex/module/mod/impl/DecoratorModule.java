@@ -1,7 +1,12 @@
-package cn.rookiex.module.impl;
+package cn.rookiex.module.mod.impl;
 
 import cn.rookiex.event.ReqGameEvent;
 import cn.rookiex.module.*;
+import cn.rookiex.module.mod.BaseModule;
+import cn.rookiex.module.mod.Module;
+import cn.rookiex.module.mod.impl.AITreeModuleImpl;
+import cn.rookiex.module.mod.impl.OrderModuleImpl;
+import cn.rookiex.module.mod.impl.PreModuleImpl;
 import cn.rookiex.robot.ctx.RobotContext;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.log4j.Log4j2;
@@ -12,7 +17,7 @@ import lombok.extern.log4j.Log4j2;
  * @author rookieX 2022/12/7
  */
 @Log4j2
-public class DefaultModule implements Module{
+public class DecoratorModule implements Module {
 
     private final BaseModule baseModule = new BaseModule();
 
