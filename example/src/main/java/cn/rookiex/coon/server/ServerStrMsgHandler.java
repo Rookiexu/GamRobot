@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class ServerStrMsgHandler extends SimpleChannelInboundHandler<StrMessage> {
 
-    private final HashedWheelTimer timer = new HashedWheelTimer(1, TimeUnit.MILLISECONDS, 5);
+    private static final HashedWheelTimer timer = new HashedWheelTimer(1, TimeUnit.MILLISECONDS, 10);
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, StrMessage msg) throws Exception {

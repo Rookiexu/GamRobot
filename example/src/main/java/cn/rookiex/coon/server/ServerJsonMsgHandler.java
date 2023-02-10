@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
  * @author rookieX 2023/2/9
  */
 public class ServerJsonMsgHandler extends SimpleChannelInboundHandler<JsonMessage> {
-    private final HashedWheelTimer timer = new HashedWheelTimer(1, TimeUnit.MILLISECONDS, 5);
+    private static final HashedWheelTimer timer = new HashedWheelTimer(1, TimeUnit.MILLISECONDS, 10);
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, JsonMessage msg) throws Exception {

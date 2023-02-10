@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 @Log4j2
 public class ServerHandler extends ChannelInboundHandlerAdapter {
 
-    private final HashedWheelTimer timer = new HashedWheelTimer(1, TimeUnit.MILLISECONDS, 5);
+    private static final HashedWheelTimer timer = new HashedWheelTimer(1, TimeUnit.MILLISECONDS, 10);
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
