@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
+ * 通过桶记录消息响应时
  * @author rookieX 2022/12/28
  */
 @Getter

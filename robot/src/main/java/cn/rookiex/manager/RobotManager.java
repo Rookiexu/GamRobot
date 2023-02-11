@@ -2,7 +2,7 @@ package cn.rookiex.manager;
 
 import cn.hutool.cron.CronUtil;
 import cn.rookiex.config.RobotConfig;
-import cn.rookiex.module.Module;
+import cn.rookiex.module.mod.Module;
 import cn.rookiex.module.ModuleManager;
 import cn.rookiex.sentinel.pubsub.*;
 import cn.rookiex.sentinel.pubsub.cons.SystemEventsKeys;

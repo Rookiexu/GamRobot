@@ -6,7 +6,7 @@ import cn.rookiex.event.RespGameEvent;
 import cn.rookiex.event.SkipEvent;
 import cn.rookiex.config.RobotConfig;
 import cn.rookiex.manager.RobotManager;
-import cn.rookiex.module.Module;
+import cn.rookiex.module.mod.Module;
 import cn.rookiex.module.ModuleManager;
 import cn.rookiex.module.stage.ModuleStage;
 import cn.rookiex.module.stage.RunModule;
