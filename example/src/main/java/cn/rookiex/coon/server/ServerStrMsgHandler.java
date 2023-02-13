@@ -2,6 +2,7 @@ package cn.rookiex.coon.server;
 
 import cn.hutool.core.util.RandomUtil;
 import cn.rookiex.coon.message.StrMessage;
+import cn.rookiex.coon.server.timer.TimerHolder;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.HashedWheelTimer;
@@ -13,11 +14,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class ServerStrMsgHandler extends SimpleChannelInboundHandler<StrMessage> {
 
-    private static final HashedWheelTimer timer = new HashedWheelTimer(1, TimeUnit.MILLISECONDS, 10);
-
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, StrMessage msg) throws Exception {
-        timer.newTimeout((timeout) -> {
+        TimerHolder.millisTimer.newTimeout((timeout) -> {
             ctx.channel().writeAndFlush(msg);
         }, RandomUtil.randomInt(5), TimeUnit.MILLISECONDS);
     }
