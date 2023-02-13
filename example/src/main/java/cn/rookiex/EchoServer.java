@@ -1,5 +1,6 @@
 package cn.rookiex;
 
+import cn.rookiex.coon.server.timer.TimerHolder;
 import cn.rookiex.robot.ExampleRobotFactory;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -16,6 +17,8 @@ public class EchoServer {
 
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup(4);
+
+        TimerHolder.init();
         try {
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup,workerGroup)
