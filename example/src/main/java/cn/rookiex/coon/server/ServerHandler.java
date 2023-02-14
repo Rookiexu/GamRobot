@@ -6,6 +6,8 @@ import cn.rookiex.coon.server.timer.TimerHolder;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.handler.timeout.IdleState;
+import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.HashedWheelTimer;
 import lombok.extern.log4j.Log4j2;
 
@@ -41,4 +43,12 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         ctx.close();
     }
 
+    @Override
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+        if (evt instanceof IdleStateEvent){
+            IdleState state = ((IdleStateEvent) evt).state();
+            log.info("触发超时事件,连接断开 : " + state);
+            ctx.close();
+        }
+    }
 }
