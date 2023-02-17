@@ -17,7 +17,10 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-       //todo 连接活跃处理
+        RobotManager robotManager = RobotServer.getInstance().getRobotManager();
+        String aLong = ctx.channel().attr(Robot.CHANNEL_ATTR_ID).get();
+        Robot robot = robotManager.getRobotMap().get(aLong);
+        robot.setReady(true);
     }
 
     @Override

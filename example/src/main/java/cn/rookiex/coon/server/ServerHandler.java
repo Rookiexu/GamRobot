@@ -8,7 +8,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
-import io.netty.util.HashedWheelTimer;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.concurrent.TimeUnit;

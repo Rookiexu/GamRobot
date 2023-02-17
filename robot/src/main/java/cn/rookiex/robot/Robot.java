@@ -116,6 +116,8 @@ public class Robot {
 
     private GameRobot gameRobot;
 
+    private boolean ready = false;
+
 
     public void setId(String id) {
         this.id = id;

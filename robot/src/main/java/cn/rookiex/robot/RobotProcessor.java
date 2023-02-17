@@ -17,7 +17,7 @@ import java.util.concurrent.ExecutorService;
  */
 @Getter
 @Log4j2
-public class RobotProcessor implements Runnable{
+public class RobotProcessor implements Runnable {
 
     private int id;
 
@@ -57,8 +57,10 @@ public class RobotProcessor implements Runnable{
                         robot.connect();
                         robotManager.getRecordProcessor().publish(incrEvent);
                     } else {
-                        robot.dealRespEvent();
-                        robot.dealSendEvent();
+                        if (robot.isReady()) {
+                            robot.dealRespEvent();
+                            robot.dealSendEvent();
+                        }
                     }
                 } catch (Exception e) {
                     log.error(e, e);

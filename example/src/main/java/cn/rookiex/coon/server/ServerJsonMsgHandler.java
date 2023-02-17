@@ -5,7 +5,6 @@ import cn.rookiex.coon.message.JsonMessage;
 import cn.rookiex.coon.server.timer.TimerHolder;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.util.HashedWheelTimer;
 
 import java.util.concurrent.TimeUnit;
 
