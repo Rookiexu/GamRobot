@@ -13,6 +13,4 @@ public interface Encrypt {
     byte[] encrypt(byte[] bytes);
 
     void setSecretKey(SecretKey key);
-
-    SecretKey getSecretKey();
 }

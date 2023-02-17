@@ -13,6 +13,4 @@ public interface Decrypt {
     byte[] decrypt(byte[] bytes);
 
     void setSecretKey(SecretKey key);
-
-    SecretKey getSecretKey();
 }
