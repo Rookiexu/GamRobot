@@ -22,6 +22,8 @@ public class RsaEncrypt implements Encrypt {
     public void setSecretKey(SecretKey key) {
         RsaSecretKey rsaSecretKey = (RsaSecretKey) key;
         this.rsa = SecureUtil.rsa(null,rsaSecretKey.getPublicKey());
+
+
     }
 
 }

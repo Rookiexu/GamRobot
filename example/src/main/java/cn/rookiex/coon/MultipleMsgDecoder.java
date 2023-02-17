@@ -20,24 +20,42 @@ public class MultipleMsgDecoder extends ByteToMessageDecoder {
         int totalLength = in.readableBytes();
         short msgType = in.readShort();
         int msgId = in.readInt();
-        byte[] body = new byte[totalLength - 6]; //获取body的内容
-        in.readBytes(body);
 
-        Message message;
-        switch (msgType) {
-            case MessageConstants.STR:
-                message = new StrMessage();
-                break;
-            case MessageConstants.JSON:
-                message = new JsonMessage();
-                break;
-            default:
+        //约定的加密通信消息
+        if (msgId == -1){
+            byte[] body = new byte[totalLength - 6]; //获取body的内容
+            in.readBytes(body);
+            Message message  = new StrMessage();
+            message.setMsgId(msgId);
+            message.setDataBytes(body);
+            out.add(message);
+        }else {
+            byte[] body = new byte[totalLength - 6]; //获取body的内容
+            in.readBytes(body);
+
+            Message message;
+
+            //加密完成前不处理消息
+            if (ctx.channel().attr(AttributeConstants.CLIENT_KEY).get() == null){
                 message = new ErrMessage();
-                break;
-        }
+            }else {
 
-        message.setMsgId(msgId);
-        message.setDataBytes(body);
-        out.add(message);
+                switch (msgType) {
+                    case MessageConstants.STR:
+                        message = new StrMessage();
+                        break;
+                    case MessageConstants.JSON:
+                        message = new JsonMessage();
+                        break;
+                    default:
+                        message = new ErrMessage();
+                        break;
+                }
+            }
+
+            message.setMsgId(msgId);
+            message.setDataBytes(body);
+            out.add(message);
+        }
     }
 }
