@@ -11,6 +11,12 @@ import cn.rookiex.coon.safe.key.SecretKey;
  */
 public class RsaDecrypt implements Decrypt {
 
+    private static final RsaDecrypt defaultRsa = new RsaDecrypt();
+
+    public static RsaDecrypt getDefault() {
+        return defaultRsa;
+    }
+
     private RSA rsa;
 
     @Override
@@ -21,7 +27,17 @@ public class RsaDecrypt implements Decrypt {
     @Override
     public void setSecretKey(SecretKey key) {
         RsaSecretKey rsaSecretKey = (RsaSecretKey) key;
-        this.rsa = SecureUtil.rsa(rsaSecretKey.getPrivateKey(),null);
+        this.rsa = SecureUtil.rsa(rsaSecretKey.getKey(SecretKey.PRIVATE), null);
+    }
+
+    @Override
+    public void setSecretKey(String key) {
+        this.rsa = SecureUtil.rsa(key, null);
+    }
+
+    @Override
+    public void setSecretKey(byte[] key) {
+        this.rsa = SecureUtil.rsa(key, null);
     }
 
 }

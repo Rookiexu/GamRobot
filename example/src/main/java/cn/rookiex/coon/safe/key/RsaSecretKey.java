@@ -1,22 +1,45 @@
 package cn.rookiex.coon.safe.key;
 
-import lombok.Getter;
+import lombok.Data;
 
 /**
  * @author rookieX 2023/2/17
  */
-@Getter
+@Data
 public class RsaSecretKey implements SecretKey {
 
-    private RsaSecretKey(){};
+    private static String pvKey = "MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBAPqTs0AKB7lacd+Jwy5B5HHlEnz8wntcyk+xmGkvQQd9riru05z+guSIjKrDqaH/gMNqwoJdJupnX+cTjl+agySMgJyeTvqshRwgzWRMPqUU2DI/RdrY3/uMizyN/tSOcukUQLi1I1TsCajNmuEtfWQ8WonBqcSkKCbwHR5o1W/lAgMBAAECgYEAqRd8sa1TEwhuqZtsY83BW/5qIH/suZSfTXIZ2Hkz19s+6efqUxoIuDFRQ3bwBMrHWJe1lIVJ2opR1DyFKgy5i12UJHjivguwTZTpJfpiPHoRBE/HmVC+wS+HXZwVb00eofZZ2/Suz4mk2fsHO+1KEx8XGulwxE6JzxaRJOkXAq0CQQD+STgiKsVKKvEITQUfSgrEuywNWLm1eexbEWHfXE3ohXHVbJBS34k8t2ctqzy4C2KOp7ZLkNuqGMasB1JmCxHTAkEA/EQUrvJSrAKIkAx9pj+H7rTAlqjhq5eNV5iteILpjHPS9zC3I4GiP1+qNS6Nj9jYF6bDOhs3I2PN/fvsy8ssZwJBAK+AeW2bd28pFBJWliJyR9xgEpdjlUjbTXXNGW+/lUXWVCqpMzL/dQiizGOIu++KbAtpVTfyUqmjT/uLUiN7oGECQQCp54C2w+cCi0JHIuKN0kRPddYwotY7p/s+gEp13FZIjsoMSvdOJsWMQXZ2E0CtHbONWngq7qGYaGQZKFA4gkMJAkATDr013IjkvqU/l8hh5pPavgXqA+AiCSZnD/ZeUyRxZ8akpEb18NGOvgT2lENMGE1r+UtuSXIufTPSxuEysH5Z";
+    private static String pbKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQD6k7NACge5WnHficMuQeRx5RJ8/MJ7XMpPsZhpL0EHfa4q7tOc/oLkiIyqw6mh/4DDasKCXSbqZ1/nE45fmoMkjICcnk76rIUcIM1kTD6lFNgyP0Xa2N/7jIs8jf7UjnLpFEC4tSNU7AmozZrhLX1kPFqJwanEpCgm8B0eaNVv5QIDAQAB";
 
-    public static final RsaSecretKey key = new RsaSecretKey();
+    /**
+     * 给客户端的文件需要屏蔽私钥,example只是模拟,所以都放进去了
+     */
+    private String privateKey;
+    private String publicKey;
 
-    public static RsaSecretKey getInstance() {
+    public RsaSecretKey() {
+    }
+
+    private RsaSecretKey(String privateKey, String publicKey) {
+        this.privateKey = privateKey;
+        this.publicKey = publicKey;
+    }
+
+    public static final RsaSecretKey key = new RsaSecretKey(pvKey, pbKey);
+
+    public static RsaSecretKey getDefault() {
         return key;
     }
 
-    private final String privateKey = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBALYIMKQkZk2J6Nqn3IduFgGEF7QJGlnWSl7w7eqdIL8+I2vfF81ioz4WIZE+ABd8BeC3s+YlFTjvqQZplWTUTPy2uPolWF+cPgUMPmYi65FvaFr1z9pnGeGYQ9tkc9gOLZE5PE8qh3ZdNDf0MYS4wwNF66PZXO+tbnw/54npKiUnAgMBAAECgYEAhGceojXLp7iZA3o3gNaE8SNYbl50qUWiIL6T/yO9Lv2OnCbQVFbbsAw+7Dsxq+NNDy/vjYYJkrlXs09XF9kICUn1PMbMzsILluwvEN2vNj13ZrW4qua/VURuUqjBpWDz7NGVH1lRmsvMYx2IvzDVkE1yoj5OrdCkHwHiB34Q4HkCQQDqPtc6NEMeTVpzGm8Pzd2K4HkroOkZRsHSIRuErxAfcxcHT3x02G5yumq+cvZG4mQnZoqlfv5yGOZFBWgSlrlNAkEAxu/60rrHgFa6+qJZ3+i+9RbtFp+GC3j6IQPpkbbROxUpnYVMhJqr1r0b3sAjBK1+tCC/2yufvtgdUC+f4rM+QwJAC/WdY3lbm+ZzIcFNvk7Sas6/IP0cKZA1QRczoniVqCVmHZdvUT/jk7P00zhnXoMcfe58UarELusahpeaEqjjWQJAYeEvQsGdaPrDUo/Qsoc8dTBLhKcGd9yVDOt03znY5j36VMOCK3hCdgxjiwxz7lhCj/PREc/78BU7Dvnvq8XPKwJAHCFkyJ+RL4cTOKZ+h1cYqXfktDi3/y4+piApiUxNMO+JuFsrKnOcbsml9fnxbOAZN0Q+e+LxHriVDTxWdQq2Tw==\n";
-
-    private final String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC2CDCkJGZNiejap9yHbhYBhBe0CRpZ1kpe8O3qnSC/PiNr3xfNYqM+FiGRPgAXfAXgt7PmJRU476kGaZVk1Ez8trj6JVhfnD4FDD5mIuuRb2ha9c/aZxnhmEPbZHPYDi2ROTxPKod2XTQ39DGEuMMDReuj2VzvrW58P+eJ6SolJwIDAQAB\n";
+    @Override
+    public String getKey(int type) {
+        switch (type) {
+            case SecretKey.PUBLIC:
+                return getPublicKey();
+            case SecretKey.PRIVATE:
+                return getPrivateKey();
+            default:
+                return null;
+        }
+    }
 }

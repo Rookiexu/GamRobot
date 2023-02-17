@@ -3,41 +3,41 @@ package cn.rookiex.coon.safe;
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.RSA;
+import cn.hutool.crypto.symmetric.AES;
 import cn.rookiex.coon.safe.key.RsaSecretKey;
 import cn.rookiex.coon.safe.key.SecretKey;
 
 /**
  * @author rookieX 2023/2/17
  */
-public class RsaEncrypt implements Encrypt {
+public class AesEncrypt implements Encrypt {
 
-    private RSA rsa;
+    private AES aes;
 
-    private static final RsaEncrypt defaultRsa = new RsaEncrypt();
+    private static final AesEncrypt defaultRsa = new AesEncrypt();
 
-    public static RsaEncrypt getDefault() {
+    public static AesEncrypt getDefault() {
         return defaultRsa;
     }
 
     @Override
     public byte[] encrypt(byte[] bytes) {
-        return rsa.encrypt(bytes, KeyType.PublicKey);
+        return aes.encrypt(bytes);
     }
 
     @Override
     public void setSecretKey(SecretKey key) {
-        RsaSecretKey rsaSecretKey = (RsaSecretKey) key;
-        this.rsa = SecureUtil.rsa(null,rsaSecretKey.getKey(SecretKey.PUBLIC));
+        setSecretKey(key.getKey(SecretKey.SAME));
     }
 
     @Override
     public void setSecretKey(String key) {
-        this.rsa = SecureUtil.rsa(null,key);
+        this.aes = SecureUtil.aes(key.getBytes());
     }
 
     @Override
     public void setSecretKey(byte[] key) {
-        this.rsa = SecureUtil.rsa(null,key);
+        this.aes = SecureUtil.aes(key);
     }
 
 }

@@ -5,7 +5,7 @@ package cn.rookiex.coon.safe.key;
  */
 public interface SecretKey {
 
-    String getPublicKey();
+    int PRIVATE = 1,PUBLIC = 2, SAME = 3;
 
-    String getPrivateKey();
+    String getKey(int type);
 }
