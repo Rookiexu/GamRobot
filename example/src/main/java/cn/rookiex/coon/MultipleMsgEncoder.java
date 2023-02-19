@@ -22,17 +22,8 @@ public class MultipleMsgEncoder extends MessageToByteEncoder<Message> {
         int msgId = msg.getMsgId();
         byte[] bytes = msg.getDataBytes();
 
-        //加密准备完成前不加密消息
         if (msgId >= 0){
-            if (ctx.channel().attr(AttributeConstants.READY).get()) {
-                String s = ctx.channel().attr(AttributeConstants.CLIENT_KEY).get();
-                if (s != null && this.encrypt == null) {
-                    this.encrypt = new AesEncrypt();
-                    byte[] decode = Base64.decode(s);
-                    this.encrypt.setSecretKey(decode);
-                }
-                bytes = this.encrypt.encrypt(bytes);
-            }
+            bytes = encryptMsg(ctx, bytes);
         }
 
         int length = (bytes.length + 2 + 4);
@@ -40,5 +31,19 @@ public class MultipleMsgEncoder extends MessageToByteEncoder<Message> {
         out.writeShort(msg.msgType());
         out.writeInt(msgId);
         out.writeBytes(bytes);
+    }
+
+    private byte[] encryptMsg(ChannelHandlerContext ctx, byte[] bytes) {
+        //加密准备完成前不加密消息
+        if (ctx.channel().attr(AttributeConstants.READY).get()) {
+            String s = ctx.channel().attr(AttributeConstants.CLIENT_KEY).get();
+            if (this.encrypt == null) {
+                this.encrypt = new AesEncrypt();
+                byte[] decode = Base64.decode(s);
+                this.encrypt.setSecretKey(decode);
+            }
+            bytes = this.encrypt.encrypt(bytes);
+        }
+        return bytes;
     }
 }

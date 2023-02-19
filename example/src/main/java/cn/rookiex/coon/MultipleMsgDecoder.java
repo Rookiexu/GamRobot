@@ -32,18 +32,7 @@ public class MultipleMsgDecoder extends ByteToMessageDecoder {
         in.readBytes(body);
         Message message = new StrMessage();//获取body的内容
         if (msgId >= 0){
-            if (ctx.channel().attr(AttributeConstants.READY).get()) {
-                String s = ctx.channel().attr(AttributeConstants.CLIENT_KEY).get();
-                if (s != null) {
-                    if (this.decrypt == null) {
-                        this.decrypt = new AesDecrypt();
-                        byte[] decode = Base64.decode(s);
-                        this.decrypt.setSecretKey(decode);
-                    }
-                    body = this.decrypt.decrypt(body);
-                }
-            }
-
+            body = decryptMsg(ctx, body);
             switch (msgType) {
                 case MessageConstants.STR:
                     message = new StrMessage();
@@ -55,10 +44,22 @@ public class MultipleMsgDecoder extends ByteToMessageDecoder {
                     message = new ErrMessage();
                     break;
             }
-
         }
         message.setMsgId(msgId);
         message.setDataBytes(body);
         out.add(message);
+    }
+
+    private byte[] decryptMsg(ChannelHandlerContext ctx, byte[] body) {
+        if (ctx.channel().attr(AttributeConstants.READY).get()) {
+            String s = ctx.channel().attr(AttributeConstants.CLIENT_KEY).get();
+            if (this.decrypt == null) {
+                this.decrypt = new AesDecrypt();
+                byte[] decode = Base64.decode(s);
+                this.decrypt.setSecretKey(decode);
+            }
+            body = this.decrypt.decrypt(body);
+        }
+        return body;
     }
 }
