@@ -1,4 +1,4 @@
-package cn.rookiex.v2.mapping;
+package cn.rookiex.v2.mapping.proto;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

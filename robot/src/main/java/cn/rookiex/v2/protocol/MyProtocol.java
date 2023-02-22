@@ -73,4 +73,8 @@ public class MyProtocol implements IProtocol {
     public ProtocolBody getBody() {
         return body;
     }
+
+    public byte[] toArray() {
+        return byteBuffer.array();
+    }
 }

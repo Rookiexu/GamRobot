@@ -1,14 +1,16 @@
 package cn.rookiex.v2.handler;
 
+import cn.rookiex.v2.mapping.proto.ProtoMessageHandler;
+
 public class LogicHandler {
 
-    private MessageHandler handler;
+    private ProtoMessageHandler handler;
 
-    public MessageHandler getHandler() {
+    public ProtoMessageHandler getHandler() {
         return handler;
     }
 
-    public void setHandler(MessageHandler handler) {
+    public void setHandler(ProtoMessageHandler handler) {
         this.handler = handler;
     }
 }
