@@ -1,6 +1,8 @@
 package cn.rookiex.v2.coder;
 
 
+import cn.rookiex.v2.protocol.IProtocol;
+
 import java.lang.reflect.Parameter;
 import java.nio.ByteBuffer;
 
@@ -12,6 +14,6 @@ import java.nio.ByteBuffer;
 public interface ProtocolDecoder<T> {
 
 
-    T decode(ByteBuffer byteBuffer, Parameter bodyParameter);
+    T decode(IProtocol protocol, ByteBuffer byteBuffer, Parameter bodyParameter);
 
 }

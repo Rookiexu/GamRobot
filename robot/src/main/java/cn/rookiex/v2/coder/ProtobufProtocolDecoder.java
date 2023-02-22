@@ -1,6 +1,7 @@
 package cn.rookiex.v2.coder;
 
-import cn.rookiex.v2.protocol.MyProtocol;
+import cn.rookiex.v2.protocol.IProtocol;
+import cn.rookiex.v2.protocol.ro.RoProtocol;
 import com.google.protobuf.CodedInputStream;
 import com.google.protobuf.ExtensionRegistry;
 import com.google.protobuf.Message;
@@ -23,13 +24,13 @@ public class ProtobufProtocolDecoder implements ProtocolDecoder<Message> {
     }
 
     @Override
-    public Message decode(ByteBuffer byteBuffer, Parameter bodyParameter) {
+    public Message decode(IProtocol protocol, ByteBuffer byteBuffer, Parameter bodyParameter) {
         try {
             if (Objects.isNull(bodyParameter)) {
                 return null;
             }
             Message.Builder builder = getMessageBuilder(bodyParameter.getType());
-            byteBuffer.position(MyProtocol.bodyIndex);
+            byteBuffer.position(protocol.getBodyIndex());
             builder.mergeFrom(CodedInputStream.newInstance(byteBuffer), this.extensionRegistry);
             return builder.build();
         } catch (Exception ex) {

@@ -17,7 +17,7 @@ public class ProtoMappingHandler {
 
     private static List<Class<?>> HANDLERS = new ArrayList<>();
 
-    public static void addLogicHandler(Class<? extends LogicHandler> handlerClass) {
+    public static void addLogicHandler(Class<?> handlerClass) {
         HANDLERS.add(handlerClass);
     }
 
