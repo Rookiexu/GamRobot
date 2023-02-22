@@ -1,4 +1,4 @@
-package cn.rookiex.protocol;
+package cn.rookiex.v2.protocol;
 
 import java.nio.ByteBuffer;
 

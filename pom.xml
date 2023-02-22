@@ -12,6 +12,7 @@
         <module>robot</module>
         <module>example</module>
         <module>ai</module>
+        <module>protobuf</module>
     </modules>
 
     <properties>
