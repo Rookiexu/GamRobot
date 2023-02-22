@@ -1,7 +1,6 @@
 syntax = "proto3";
-import "sydatabase.proto";
 
-option java_package = "com.synet.protobuf.protocol";
+option java_package = "cn.rookiex.protobuf.protocol";
 
 enum protocol_id
 {
@@ -10,20 +9,19 @@ enum protocol_id
     login_msg  = 2;
 }
 
-message stc_connect
+message s2c_connect
 {
     int64 session_id = 1;
 }
 
-message cts_Login
+message c2s_Login
 {
 	string account = 1;
 	string password = 2;
 	string platform = 3;
-	string extends = 4;
 }
 
-message stc_Login
+message s2c_Login
 {
     int32 state = 1;
 }
