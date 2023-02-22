@@ -1,11 +1,14 @@
-package cn.rookiex.v2.protocol;
+package cn.rookiex.v2.protocol.ro;
+
+import cn.rookiex.v2.protocol.IProtocol;
+import cn.rookiex.v2.protocol.ProtocolBuilder;
 
 import java.nio.ByteBuffer;
 
 /**
  * @author rookieX 2023/2/21
  */
-public class MyProtocol implements IProtocol {
+public class RoProtocol implements IProtocol, ProtocolBuilder {
 
     /**
      * 协议index位置
@@ -17,14 +20,20 @@ public class MyProtocol implements IProtocol {
     public static int sessionIndex = 11;
     public static int bodyIndex = 19;
 
-    protected ProtocolHead head;
-    protected ProtocolBody body;
+    protected RoHead head;
+    protected RoBody body;
     protected ByteBuffer byteBuffer;
 
-    protected MyProtocol(ByteBuffer byteBuffer) {
-        body = new ProtocolBody(byteBuffer);
-        head = new ProtocolHead(byteBuffer);
+    private static final RoProtocol builder = new RoProtocol(null);
+
+    protected RoProtocol(ByteBuffer byteBuffer) {
+        body = new RoBody(byteBuffer);
+        head = new RoHead(byteBuffer);
         this.byteBuffer = byteBuffer;
+    }
+
+    public static RoProtocol getBuilder(){
+        return builder;
     }
 
     /**
@@ -32,29 +41,33 @@ public class MyProtocol implements IProtocol {
      * @return 协议对象
      * @throws RuntimeException
      */
-    public static MyProtocol create(ByteBuffer buffer) throws RuntimeException {
-        return new MyProtocol(buffer);
+    @Override
+    public RoProtocol create(ByteBuffer buffer) throws RuntimeException {
+        return new RoProtocol(buffer);
     }
 
-    public static MyProtocol create(short command, long session, byte[] dataBuf) {
+    @Override
+    public RoProtocol create(short command, long session, byte[] dataBuf) {
         return create(IProtocol.IS_ENCRYPT, IProtocol.VERSION, command, session, dataBuf);
     }
 
-    public static MyProtocol create(boolean isEncrypt, short command, long session, byte[] dataBuf) {
+    @Override
+    public RoProtocol create(boolean isEncrypt, short command, long session, byte[] dataBuf) {
         return create(isEncrypt, IProtocol.VERSION, command, session, dataBuf);
     }
 
-    public static MyProtocol create(boolean isEncrypt, byte version, short command, long session, byte[] dataBuf) {
+    @Override
+    public RoProtocol create(boolean isEncrypt, byte version, short command, long session, byte[] dataBuf) {
         int protobuf_length = dataBuf == null ? 0 : dataBuf.length;
-        ByteBuffer protocolBuffer = ByteBuffer.allocate(ProtocolHead.headSize + protobuf_length);
+        ByteBuffer protocolBuffer = ByteBuffer.allocate(bodyIndex + protobuf_length);
 
-        MyProtocol protocol = new MyProtocol(protocolBuffer);
+        RoProtocol protocol = new RoProtocol(protocolBuffer);
         //设置封包头
         protocol.head.setEncrypt(isEncrypt);
         protocol.head.setVersion(version);
-        protocol.head.setLength(dataBuf.length);
         protocol.head.setCmd(command);
         protocol.head.setSession(session);
+        protocol.head.setLength(protobuf_length);
 
         if (protobuf_length > 0) {
             protocol.body.setData(dataBuf);
@@ -65,13 +78,18 @@ public class MyProtocol implements IProtocol {
 
 
     @Override
-    public ProtocolHead getHead() {
+    public RoHead getHead() {
         return head;
     }
 
     @Override
-    public ProtocolBody getBody() {
+    public RoBody getBody() {
         return body;
+    }
+
+    @Override
+    public int getBodyIndex() {
+        return bodyIndex;
     }
 
     public byte[] toArray() {

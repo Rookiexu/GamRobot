@@ -4,8 +4,11 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.rookiex.v2.coder.ProtobufProtocolDecoder;
 import cn.rookiex.v2.coder.ProtocolDecoder;
 import cn.rookiex.v2.mapping.*;
-import cn.rookiex.v2.protocol.MyProtocol;
+import cn.rookiex.v2.protocol.IProtocol;
 import cn.rookiex.v2.protocol.ProtocolHead;
+import cn.rookiex.v2.protocol.ro.RoProtocol;
+import cn.rookiex.v2.protocol.ProtocolBuilder;
+import cn.rookiex.v2.protocol.ro.RoHead;
 import com.google.protobuf.Message;
 import lombok.extern.log4j.Log4j2;
 
@@ -26,16 +29,17 @@ public class ProtoMessageHandler {
 
     private static final Object[] EMPTY_ARGS = new Object[0];
 
-    private ProtocolDecoder<Message> decoder;
+    private ProtocolDecoder<Message> decoder = new ProtobufProtocolDecoder();
 
     private HeaderBuilder<SimpleHeader> headerBuilder = new SimpleHeaderBuilder<>();
+
+    private ProtocolBuilder protocolBuilder = RoProtocol.getBuilder();
 
     ProtoMappingHandler protoMappingHandler;
 
     public ProtoMessageHandler(ProtoMappingHandler protobufMappingHandler, ProtobufProtocolDecoder protocolDecoder) {
         this.protoMappingHandler = protobufMappingHandler;
         this.protoMappingHandler.initMethod();
-        this.decoder = protocolDecoder;
     }
 
     public ProtoMessageHandler(ProtoMappingHandler protobufMappingHandler, ProtobufProtocolDecoder protocolDecoder, HeaderBuilder<SimpleHeader> headerBuilder) {
@@ -45,9 +49,21 @@ public class ProtoMessageHandler {
         this.headerBuilder = headerBuilder;
     }
 
+    public void setDecoder(ProtocolDecoder<Message> decoder) {
+        this.decoder = decoder;
+    }
+
+    public void setHeaderBuilder(HeaderBuilder<SimpleHeader> headerBuilder) {
+        this.headerBuilder = headerBuilder;
+    }
+
+    public void setProtocolBuilder(ProtocolBuilder protocolBuilder) {
+        this.protocolBuilder = protocolBuilder;
+    }
+
     public void handle(ByteBuffer byteBuffer) {
 
-        MyProtocol protocol = MyProtocol.create(byteBuffer);
+        IProtocol protocol = protocolBuilder.create(byteBuffer);
 
         //找到调用方法
         ProtoMethod protobufMethod = protoMappingHandler.getRespMethod(protocol.getHead().getCmd());
@@ -70,7 +86,7 @@ public class ProtoMessageHandler {
             }
         }
 
-        Message message = decoder.decode(byteBuffer, bodyParameter);
+        Message message = decoder.decode(protocol, byteBuffer, bodyParameter);
         Object[] args = getMethodArgumentValues(protobufMethod, protocol.getHead(), message);
 
         try {
