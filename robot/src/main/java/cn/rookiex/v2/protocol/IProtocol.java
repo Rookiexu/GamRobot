@@ -1,6 +1,8 @@
 package cn.rookiex.v2.protocol;
 
 
+import java.nio.ByteBuffer;
+
 /**
  * @author rookieX 2023/2/21
  */
@@ -15,4 +17,6 @@ public interface IProtocol {
     ProtocolBody getBody();
 
     int getBodyIndex();
+
+    ByteBuffer getByteBuffer();
 }

@@ -1,4 +1,5 @@
-package cn.rookiex.v2.coon.queue;
+package cn.rookiex.v2.queue;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +14,10 @@ public class QueueManager {
 
     public static final QueueManager instance = new QueueManager();
 
+    /**
+     * 单例真的烦,真的得有ioc框架才行
+     * @return ins
+     */
     public static QueueManager getInstance() {
         return instance;
     }

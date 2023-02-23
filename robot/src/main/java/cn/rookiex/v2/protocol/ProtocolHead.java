@@ -9,4 +9,6 @@ public interface ProtocolHead {
     void setCmd(short cmd);
 
     long getSession();
+
+    void setSession(long sessionId);
 }

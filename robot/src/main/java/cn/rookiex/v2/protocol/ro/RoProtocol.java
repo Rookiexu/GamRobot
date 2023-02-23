@@ -14,7 +14,7 @@ public class RoProtocol implements IProtocol, ProtocolBuilder {
      * 协议index位置
      * */
     public static int versionIndex = 0;
-    public static int encryptIndex = 1;
+    public static int encryptIndex = 2;
     public static int lengthIndex = 3;
     public static int cmdIndex = 9;
     public static int sessionIndex = 11;
@@ -42,7 +42,7 @@ public class RoProtocol implements IProtocol, ProtocolBuilder {
      * @throws RuntimeException
      */
     @Override
-    public RoProtocol create(ByteBuffer buffer) throws RuntimeException {
+    public RoProtocol copyFrom(ByteBuffer buffer) throws RuntimeException {
         return new RoProtocol(buffer);
     }
 
@@ -92,7 +92,21 @@ public class RoProtocol implements IProtocol, ProtocolBuilder {
         return bodyIndex;
     }
 
+    @Override
+    public ByteBuffer getByteBuffer() {
+        return byteBuffer;
+    }
+
     public byte[] toArray() {
         return byteBuffer.array();
+    }
+
+    @Override
+    public String toString() {
+        return "RoProtocol{" +
+                "head=" + head +
+                ", body=" + body +
+                ", byteBuffer=" + byteBuffer +
+                '}';
     }
 }

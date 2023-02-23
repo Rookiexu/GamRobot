@@ -8,7 +8,6 @@ import cn.rookiex.v2.protocol.IProtocol;
 import cn.rookiex.v2.protocol.ProtocolHead;
 import cn.rookiex.v2.protocol.ro.RoProtocol;
 import cn.rookiex.v2.protocol.ProtocolBuilder;
-import cn.rookiex.v2.protocol.ro.RoHead;
 import com.google.protobuf.Message;
 import lombok.extern.log4j.Log4j2;
 
@@ -62,8 +61,11 @@ public class ProtoMessageHandler {
     }
 
     public void handle(ByteBuffer byteBuffer) {
+        IProtocol protocol = protocolBuilder.copyFrom(byteBuffer);
+        handle(protocol);
+    }
 
-        IProtocol protocol = protocolBuilder.create(byteBuffer);
+    public void handle(IProtocol protocol) {
 
         //找到调用方法
         ProtoMethod protobufMethod = protoMappingHandler.getRespMethod(protocol.getHead().getCmd());
@@ -86,7 +88,7 @@ public class ProtoMessageHandler {
             }
         }
 
-        Message message = decoder.decode(protocol, byteBuffer, bodyParameter);
+        Message message = decoder.decode(protocol, protocol.getByteBuffer(), bodyParameter);
         Object[] args = getMethodArgumentValues(protobufMethod, protocol.getHead(), message);
 
         try {

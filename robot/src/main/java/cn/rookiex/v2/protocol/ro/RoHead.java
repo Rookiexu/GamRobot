@@ -72,4 +72,14 @@ public class RoHead implements ProtocolHead {
     public void setSession(long session) {
         byteBuffer.putLong(RoProtocol.sessionIndex, session);
     }
+
+    @Override
+    public String toString() {
+        return "RoHead{" +
+                "version=" + getVersion() +
+                "Encrypt=" + getEncrypt() +
+                "cmd=" + getCmd() +
+                "session=" + getSession() +
+                '}';
+    }
 }

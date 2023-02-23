@@ -1,4 +1,4 @@
-package cn.rookiex.v2.coon.queue;
+package cn.rookiex.v2.queue;
 
 import cn.rookiex.v2.mapping.proto.ProtoMessageHandler;
 import cn.rookiex.v2.protocol.IProtocol;
@@ -7,7 +7,6 @@ import lombok.extern.log4j.Log4j2;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * @author rookieX 2023/2/22
@@ -15,7 +14,7 @@ import java.util.concurrent.Executors;
 @Log4j2
 public class ProtocolQueue {
 
-    private ExecutorService pool = Executors.newSingleThreadExecutor();
+    private ExecutorService pool;
 
     ProtoMessageHandler messageHandler;
 
@@ -64,7 +63,6 @@ public class ProtocolQueue {
             if (temp != protocol) {
                 log.error("action queue " + name + " error. temp " + temp.toString() + ", action : " + protocol.toString());
             }
-
         }
 
         if (nextAction != null) {
@@ -74,8 +72,13 @@ public class ProtocolQueue {
 
     public void execute(IProtocol protocol) {
         pool.execute(()->{
-            messageHandler.handle(protocol);
-            dequeue(protocol);
+            try {
+                messageHandler.handle(protocol);
+            }catch (Exception e){
+                log.error(e, e);
+            }finally {
+                dequeue(protocol);
+            }
         });
     }
 
